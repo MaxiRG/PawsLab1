@@ -1,6 +1,5 @@
 import React from 'react';
-import {get} from "../../utils/http";
-import {useState} from "@types/react";
+import { useState } from 'react';
 import {Login} from "../../components/Login";
 import {Register} from "../../components/Register";
 
@@ -11,7 +10,7 @@ const Home = (props) => {const [currentForm, setCurrentForm] = useState('login')
     }
 
     return (
-        <div className="App">
+        <div className="Home">
             {
                 currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />
             }
