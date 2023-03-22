@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import logo from '../images/logo.jpg'
 
 
 export const Login = (props) => {
@@ -15,7 +15,7 @@ export const Login = (props) => {
         <div className="auth-form-container">
             <img 
         className='logo'
-        src={require(`./images/logo.jpg`)}
+        src={logo}
         alt='logo'/>
             <h2>Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
