@@ -13,7 +13,6 @@ class Navbar extends React.Component {
     return (
       <nav className="navbar">
         <div className="brand-title">PAWS </div>
-
         <div className="logo-div">
             <img 
         className='logo-navbar'
