@@ -8,6 +8,12 @@
   color: white;   
 }
 
+.footer{
+  background-color: #222;
+  text-align: center;
+  color: white;
+}
+
 .logo-navbar{
   position: relative;
   margin: 5px;

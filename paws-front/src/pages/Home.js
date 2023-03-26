@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 function App() {
   return (
@@ -6,6 +7,7 @@ function App() {
       <Navbar/>
       <h1>Hello, World!</h1>
       <p>Welcome to my React homepage.</p>
+      <Footer/>
     </div>
   );
 }
