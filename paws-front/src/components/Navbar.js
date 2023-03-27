@@ -4,12 +4,31 @@ import { Link } from "react-router-dom";
 import logo from '../images/logo.jpg'
 
 class Navbar extends React.Component {
+
+  state = {
+    isLoggedIn: false
+  };
+
   handleClick = () => {
     const navbarLinks = document.getElementsByClassName("navbar-links")[0];
     navbarLinks.classList.toggle("active");
   };
 
+  handleLogin = () => {
+    // Set the isLoggedIn state to true
+    this.setState({ isLoggedIn: true });
+  };
+
+  handleLogout = () => {
+    // Set the isLoggedIn state to false
+    this.setState({ isLoggedIn: false });
+  };
+
+
   render() {
+
+    const { isLoggedIn } = this.state;
+
     return (
       <nav className="navbar">
         <div className="brand-title">PAWS </div>
@@ -34,16 +53,17 @@ class Navbar extends React.Component {
               <a href="#adopciones">Historial</a>
             </li>
             <li>
-              <a href="#">Perros</a>
-            </li>
-            <li>
-              <a href="#">Gatos</a>
+              <a href="#">Adoptar</a>
             </li>
             <li>
               <a href="#contacto">Contacto</a>
             </li>
             <li>
-              <a href="#"></a>
+            {isLoggedIn ? (
+                <Link to="/my-account">My Account</Link>
+              ) : (
+                <Link to="/sign-in">Sign In</Link>
+              )}
             </li>
           </ul>
         </div>
