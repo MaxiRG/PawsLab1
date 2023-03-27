@@ -1,17 +1,10 @@
-package com.example.pawsback.paws.adoptant.adoptant;
+package com.example.pawsback.paws.adoptant.adoptant.model;
 
 import jakarta.persistence.*;
-
-import java.io.Serial;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "adoptant")
 public class Adoptant {
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     @Id
     @Column(name = "email")
@@ -19,6 +12,7 @@ public class Adoptant {
 
     @Column(name = "password")
     private String password;
+
 
     public Adoptant(String email, String password) {
         this.email = email;
@@ -29,5 +23,17 @@ public class Adoptant {
 
     }
 
-    // getters and setters
+    public String getPassword() {
+        return this.password;
+    }
+
+
+    public String getEmail() {
+        return this.email;
+    }
+
+
+    public void setEmail(String email){
+        this.email = email;
+    }
 }
