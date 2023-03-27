@@ -62,7 +62,7 @@ class Navbar extends React.Component {
             {isLoggedIn ? (
                 <Link to="/my-account">My Account</Link>
               ) : (
-                <Link to="/sign-in">Sign In</Link>
+                <Link to="/login">Sign In</Link>
               )}
             </li>
           </ul>

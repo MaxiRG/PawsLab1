@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&display=swap');
+
 .navbar {
   display: flex;
   position: relative;
@@ -16,17 +18,15 @@
 .logo-navbar{
   position: relative;
   margin: 5px;
-  right: 240px;
-  width: 70px;
+  right: 255px;
+  width: 60px;
   border-radius: 50%;
 }
 
 
 .brand-title {  
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin: 1rem;
-  font-family: Lobster;
-   
 }
 
 .navbar-links {
@@ -122,6 +122,11 @@
   
 }
 
+@media (max-width: 1300px){
+  .logo-navbar{
+    display: none;
+  }
+}
 
 
 @media (max-width: 1000px) {
@@ -130,7 +135,7 @@
       align-items: flex-start;
 
   }
-  .logo{
+  .logo-navbar{
       display: none;
   }
 

@@ -27,6 +27,16 @@ function App() {
                               Recordá que un perro puede vivir entre 15 y 20 años y estás asumiendo un compromiso serio por todo ese tiempo.
               </div>
             </div>
+            <div className="linea" id="adopciones">
+                        <div class="parrafo">
+                            <div className="adoption-boxes">
+                                A lo largo de los 2 anios trabajando junto con ustedes pudimos encontrar un hogar para: <br/>
+                                <div className="box">172 perros</div>
+                                <div className="box">53 gatos</div>
+                            </div>
+                        </div>      
+                        <h2 className="pelota">Adopciones</h2>
+                </div>
           </div>
                 
                   
