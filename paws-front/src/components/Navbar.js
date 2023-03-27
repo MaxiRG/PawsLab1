@@ -38,11 +38,11 @@ class Navbar extends React.Component {
         src={logo}
         alt='logo'/></div>
 
-        <a href="#" className="toggle-button" onClick={this.handleClick}>
+        <button href="#" className="toggle-button" onClick={this.handleClick}>
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
-        </a>
+        </button>
 
         <div className="navbar-links">
           <ul>
@@ -53,7 +53,7 @@ class Navbar extends React.Component {
               <a href="#adopciones">Historial</a>
             </li>
             <li>
-              <a href="#">Adoptar</a>
+              <a href="#adopciones">Adoptar</a>
             </li>
             <li>
               <a href="#contacto">Contacto</a>

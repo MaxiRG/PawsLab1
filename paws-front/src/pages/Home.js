@@ -3,7 +3,9 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'
 import '../styles/Home.css'
+
 function App() {
+  
   return (
     <div>
       <body>
@@ -30,7 +32,7 @@ function App() {
             <div className="linea" id="adopciones">
                         <div class="parrafo">
                             <div className="adoption-boxes">
-                                A lo largo de los 2 anios trabajando junto con ustedes pudimos encontrar un hogar para: <br/>
+                                A lo largo de los 2 años trabajando junto con ustedes pudimos encontrar un hogar para: <br/>
                                 <div className="box">172 perros</div>
                                 <div className="box">53 gatos</div>
                             </div>
@@ -38,8 +40,43 @@ function App() {
                         <h2 className="pelota">Adopciones</h2>
                 </div>
           </div>
-                
-                  
+          <div className='linea' id='contacto'>
+            <h2 class="pelota">Contactanos</h2>
+            <div className='parrafo'>
+              <div className='contact-form'>
+                <span class="heading">Contact Us</span>
+                <form>
+                  <label htmlFor='name'>Name: </label>
+                  <input type="text" required=""/>
+                  <label htmlFor='email'>Email: </label>
+                  <input type="email" id="email" name="email" required=""/>
+                  <label htmlFor="message">Message:</label>
+                  <textarea id="message" name="message" required=""/>
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="social-media">
+              <ul>
+               <li class="tiktok">
+                <a href="https://www.tiktok.com">
+                 <i class="fa-brands  fa-tiktok"></i>
+                </a>
+              </li>          
+              <li class="instagram">
+               <a href="https://www.instagram.com">
+                 <i class="fa fa-instagram"></i>
+              </a>
+              </li>                
+              <li class="twitter">
+               <a href="https://www.twitter.com">
+                <i class="fa fa-twitter"></i>
+               </a>
+                </li>
+              </ul>
+            </div>
+                      
         <Footer/>
       </body>
     </div>
