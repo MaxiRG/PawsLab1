@@ -215,4 +215,12 @@ body {
     color: rgb(245, 245, 245);
 }
 
+@media (max-width: 1000px){
+  .pelota{
+    display: none;
+  }
+  .foto-perro{
+    width: 89px;
+  }
+}
 
