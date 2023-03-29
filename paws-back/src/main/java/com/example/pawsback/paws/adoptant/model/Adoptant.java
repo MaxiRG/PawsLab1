@@ -1,4 +1,4 @@
-package com.example.pawsback.paws.adoptant.adoptant.model;
+package com.example.pawsback.paws.adoptant.model;
 
 import jakarta.persistence.*;
 

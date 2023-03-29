@@ -1,8 +1,10 @@
-package com.example.pawsback.paws.adoptant.adoptant;
+package com.example.pawsback.paws.adoptant;
 
-import com.example.pawsback.paws.adoptant.adoptant.model.Adoptant;
-import com.example.pawsback.paws.adoptant.adoptant.model.dto.LogInDTO;
+import com.example.pawsback.paws.adoptant.model.Adoptant;
+import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class AdoptantService{
@@ -23,7 +25,7 @@ public class AdoptantService{
 
     public String logInAttempt(LogInDTO cred){
         Adoptant adoptant = getByEmail(cred.getEmail());
-        if(adoptant.getPassword() == cred.getPassword()){
+        if(Objects.equals(adoptant.getPassword(), cred.getPassword())){
             return "Success";
         }
         else{

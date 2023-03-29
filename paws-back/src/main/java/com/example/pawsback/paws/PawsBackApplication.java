@@ -1,4 +1,4 @@
-package com.example.pawsback.paws.adoptant;
+package com.example.pawsback.paws;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

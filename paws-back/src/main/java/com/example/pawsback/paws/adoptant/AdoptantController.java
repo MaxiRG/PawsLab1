@@ -1,7 +1,7 @@
-package com.example.pawsback.paws.adoptant.adoptant;
+package com.example.pawsback.paws.adoptant;
 
-import com.example.pawsback.paws.adoptant.adoptant.model.Adoptant;
-import com.example.pawsback.paws.adoptant.adoptant.model.dto.LogInDTO;
+import com.example.pawsback.paws.adoptant.model.Adoptant;
+import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class AdoptantController {
     private final AdoptantService service;
 
-
-
     @Autowired
     AdoptantRepository repository;
 
@@ -19,7 +17,7 @@ public class AdoptantController {
         this.service = service;
     }
 
-    @PostMapping()
+    @PostMapping("createAdoptant")
     public void createAdoptant(@RequestBody Adoptant adoptant){
        service.save(adoptant);
 
@@ -30,11 +28,5 @@ public class AdoptantController {
     public String login(@RequestBody LogInDTO cred){
         return service.logInAttempt(cred);
     }
-
-//    @GetMapping("/hardCodeAdoptants")
-//    public String hardCodeAdoptants(){
-//
-//    }
-
 
 }
