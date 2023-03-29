@@ -85,13 +85,17 @@ body {
   align-items: center;
   margin: 30px;
 }
+.foto-history{
+  width: 200px;
+  
+}
 
 .box {
     width: 120px;
-    height: 120px;
+    height: 60px;
     margin: 10px;
-    border: #222 double 5px;
-    border-radius: 50%;
+    border: #222 solid 1px;
+    border-radius: 5%;
     display: flex;
     text-align: center;
     justify-content: center;

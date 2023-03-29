@@ -17,7 +17,7 @@ public class ShelterController {
         this.service = service;
     }
 
-    @PostMapping("createShelter")
+    @PostMapping("/createShelter")
     public void createShelter(@RequestBody Shelter shelter){
         service.save(shelter);
     }

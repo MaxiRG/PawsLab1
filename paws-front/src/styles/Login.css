@@ -14,17 +14,18 @@
 .auth-form-container, .login-form, .register-form {
     display: flex;
     flex-direction: column;
-    
-
 }
+
+
 
 @media screen and (min-width: 600px) {
     .auth-form-container {
         padding: 5rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
         border: 1px solid white;
         border-radius: 10px;
         margin: 0.5rem;
-
     }
 }
 
@@ -64,8 +65,9 @@ button:hover{
 }
 
 .logo{
-    width: 180px;
+    width: 150px;
     display: flex;
     margin: 0 auto;
     border-radius: 50%;
 }
+
