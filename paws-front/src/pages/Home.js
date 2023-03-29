@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'
+
 import '../styles/Home.css'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
               <div className='parrafo'>
                 <div className="logo-div">
                   <img className='foto-perro' src={Perro} alt='perro'/>
+                  
                 </div>
                               Paws se formó con el fin de encontrar un hogar para todos los perros y gatos que lo necesiten.
                               Intentamos faciltar la busqueda de su fututa mascota a los adoptantes ya que cualquier refugio o persona
@@ -75,8 +77,7 @@ function App() {
                </a>
                 </li>
               </ul>
-            </div>
-                      
+            </div>                
         <Footer/>
       </body>
     </div>

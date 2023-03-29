@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Navbar-styles.css";
 import logo from '../images/logo.jpg'
-import { HashLink as Link } from "react-router-hash-link"; //npm install react-router-hash-link
+import { Link } from "react-router-dom"
 
 
 class Navbar extends React.Component {
@@ -32,12 +32,11 @@ class Navbar extends React.Component {
 
     return (
       <nav className="navbar">
-        <div className="brand-title">PAWS </div>
-        <div className="logo-div">
-            <img 
+        <div className="brand-title">PAWS</div>
+        <img 
         className='logo-navbar'
         src={logo}
-        alt='logo'/></div>
+        alt='logo'/>
 
         <button href="#" className="toggle-button" onClick={this.handleClick}>
           <span className="bar"></span>

@@ -26,6 +26,11 @@ body {
   margin: 15px;
 }
 
+.foto-perro{
+  width: 150px;
+}
+
+
 .content{
   margin: 1rem;
 }
@@ -34,7 +39,6 @@ body {
   font-family: Arial, sans-serif;
   color: rgb(15, 15, 15);
   display: flex;
-
   width: 200px;
   height: 200px;
   border-radius: 50%;
