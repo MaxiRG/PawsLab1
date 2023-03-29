@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Register = (props) => {
     const [email, setEmail] = useState('');
@@ -6,6 +7,7 @@ export const Register = (props) => {
     const [name, setName] = useState('');
     const [isShelterChecked, setIsShelterChecked] = useState(false);
     const [isAdoptantChecked, setIsAdoptantChecked] = useState(false);
+    const navigate = useNavigate();
 
     const handleShelterCheckboxChange = () => {
         setIsShelterChecked(!isShelterChecked);
@@ -19,8 +21,39 @@ export const Register = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email);
-    }
+        
+        // Create a new user object with the form data
+        const user = {
+          email: email,
+          password: pass,
+          isShelter: isShelterChecked,
+          isAdoptant: isAdoptantChecked,
+        };
+      
+        // Make a POST request to your backend server
+        fetch('/createAdoptant', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user)
+        })
+        .then(response => {
+          if (response.ok) {
+            navigate('/');
+          } else {
+             // Registration failed, display an error message
+             response.json().then(data => alert(data.message));
+             const errorMessage = document.getElementById('error-message');
+             errorMessage.textContent = 'Registration failed. Please try again later.';
+            
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      };
+      
     
     return (
         <div className="auth-form-container">
@@ -42,15 +75,12 @@ export const Register = (props) => {
                 </label>
                 <button type="submit">Log In</button>
             </form>
+            <div id="error-message"></div>
             <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
         </div>
+        
     );
 }
-
-
-
-
-
 
 
 

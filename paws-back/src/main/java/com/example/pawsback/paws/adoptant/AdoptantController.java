@@ -17,7 +17,7 @@ public class AdoptantController {
         this.service = service;
     }
 
-    @PostMapping("createAdoptant")
+    @PostMapping("/createAdoptant")
     public void createAdoptant(@RequestBody Adoptant adoptant){
        service.save(adoptant);
 
