@@ -10,6 +10,11 @@ class Navbar extends React.Component {
     isLoggedIn: false
   };
 
+  role = {
+    isShelter: false
+  }
+  
+
   handleClick = () => {
     const navbarLinks = document.getElementsByClassName("navbar-links")[0];
     navbarLinks.classList.toggle("active");
@@ -24,11 +29,19 @@ class Navbar extends React.Component {
     // Set the isLoggedIn state to false
     this.setState({ isLoggedIn: false });
   };
+  
+  handleShelter = () => {
+    this.setState({isShelter: true})
+  }
 
+  handleAdoptant = () => {
+    this.setState({isShelter: false})
+  }
 
   render() {
 
     const { isLoggedIn } = this.state;
+    const { isShelter } = this.role;
 
     return (
       <nav className="navbar">
@@ -47,23 +60,27 @@ class Navbar extends React.Component {
         <div className="navbar-links">
           <ul>
             <li>
-              <Link to="/#quienes-somos" >Nosotros</Link>
+              <a href="/#quienes-somos" >Nosotros</a>
             </li>
             <li>
-              <Link to="/#adopciones">Historial</Link>
+              <a href="/#adopciones">Historial</a>
             </li>
             <li>
-              <Link to="/busqueda">Adoptar</Link>
+              {isShelter ? 
+              (<Link to="/donacion">Donar</Link>)
+              : 
+              (<Link to="/busqueda">Adoptar</Link>)
+              }
             </li>
             <li>
-              <Link to="/#contacto">Contacto</Link>
+              <a href="/#contacto">Contacto</a>
             </li>
             <li>
-            {isLoggedIn ? (
-                <Link to="/my-account">My Account</Link>
-              ) : (
-                <Link to="/login">Sign In</Link>
-              )}
+            {isLoggedIn ? 
+              (<Link to="/my-account">Account</Link>)
+              :
+              (<Link to="/login">Sign In</Link>)
+              }
             </li>
           </ul>
         </div>

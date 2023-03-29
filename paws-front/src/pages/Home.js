@@ -44,9 +44,9 @@ function App() {
                                 </div>
                             </div>
                             <div className='adoption-images'>
-                              <img className='foto-perro' src={Perro2} alt='perro'/>
-                              <img className='foto-perro' src={Perro3} alt='perro'/>
-                              <img className='foto-perro' src={Perro4} alt='perro'/>
+                              <img className='foto-history' src={Perro2} alt='perro'/>
+                              <img className='foto-history' src={Perro3} alt='perro'/>
+                              <img className='foto-history' src={Perro4} alt='perro'/>
                             </div>
                         </div>      
                         <h2 className="pelota">Adopciones</h2>
