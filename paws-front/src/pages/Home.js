@@ -2,6 +2,9 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'
+import Perro2 from '../images/perro2.jpg'
+import Perro3 from '../images/perro3.jpg'
+import Perro4 from '../images/perro4.jpg'
 
 import '../styles/Home.css'
 
@@ -35,8 +38,15 @@ function App() {
                         <div class="parrafo">
                             <div className="adoption-boxes">
                                 A lo largo de los 2 años trabajando junto con ustedes pudimos encontrar un hogar para: <br/>
-                                <div className="box">172 perros</div>
-                                <div className="box">53 gatos</div>
+                                <div className='history-boxes'>
+                                  <div className="box">172 perros</div>
+                                  <div className="box">53 gatos</div>
+                                </div>
+                            </div>
+                            <div className='adoption-images'>
+                              <img className='foto-perro' src={Perro2} alt='perro'/>
+                              <img className='foto-perro' src={Perro3} alt='perro'/>
+                              <img className='foto-perro' src={Perro4} alt='perro'/>
                             </div>
                         </div>      
                         <h2 className="pelota">Adopciones</h2>
