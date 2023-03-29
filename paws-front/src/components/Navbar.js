@@ -1,7 +1,8 @@
 import React from "react";
 import "../styles/Navbar-styles.css";
-import { Link } from "react-router-dom";
 import logo from '../images/logo.jpg'
+import { HashLink as Link } from "react-router-hash-link"; //npm install react-router-hash-link
+
 
 class Navbar extends React.Component {
 
@@ -47,16 +48,16 @@ class Navbar extends React.Component {
         <div className="navbar-links">
           <ul>
             <li>
-              <a href="#quienes-somos">Nosotros</a>
+              <Link to="/#quienes-somos" >Nosotros</Link>
             </li>
             <li>
-              <a href="#adopciones">Historial</a>
+              <Link to="/#adopciones">Historial</Link>
             </li>
             <li>
-              <a href="#adopciones">Adoptar</a>
+              <Link to="/busqueda">Adoptar</Link>
             </li>
             <li>
-              <a href="#contacto">Contacto</a>
+              <Link to="/#contacto">Contacto</Link>
             </li>
             <li>
             {isLoggedIn ? (
