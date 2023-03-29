@@ -17,7 +17,7 @@ function App() {
                 <div className="logo-div">
                   <img className='foto-perro' src={Perro} alt='perro'/>
                 </div>
-                              Paws se formo con el fin de encontrar un hogar para todos los perros y gatos que lo necesiten.
+                              Paws se formó con el fin de encontrar un hogar para todos los perros y gatos que lo necesiten.
                               Intentamos faciltar la busqueda de su fututa mascota a los adoptantes ya que cualquier refugio o persona
                               es bienvenida a publicar los animales a traves de nuestra pagina.
                               Mediante nosotros, cualquier persona puede contactar al refugio o dador correspondiente para
