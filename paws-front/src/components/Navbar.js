@@ -1,7 +1,8 @@
 import React from "react";
 import "../styles/Navbar-styles.css";
-import { Link } from "react-router-dom";
 import logo from '../images/logo.jpg'
+import { Link } from "react-router-dom"
+
 
 class Navbar extends React.Component {
 
@@ -31,12 +32,11 @@ class Navbar extends React.Component {
 
     return (
       <nav className="navbar">
-        <div className="brand-title">PAWS </div>
-        <div className="logo-div">
-            <img 
+        <div className="brand-title">PAWS</div>
+        <img 
         className='logo-navbar'
         src={logo}
-        alt='logo'/></div>
+        alt='logo'/>
 
         <button href="#" className="toggle-button" onClick={this.handleClick}>
           <span className="bar"></span>
@@ -47,16 +47,16 @@ class Navbar extends React.Component {
         <div className="navbar-links">
           <ul>
             <li>
-              <a href="#quienes-somos">Nosotros</a>
+              <Link to="/#quienes-somos" >Nosotros</Link>
             </li>
             <li>
-              <a href="#adopciones">Historial</a>
+              <Link to="/#adopciones">Historial</Link>
             </li>
             <li>
-              <a href="#adopciones">Adoptar</a>
+              <Link to="/busqueda">Adoptar</Link>
             </li>
             <li>
-              <a href="#contacto">Contacto</a>
+              <Link to="/#contacto">Contacto</Link>
             </li>
             <li>
             {isLoggedIn ? (

@@ -9,6 +9,10 @@
   color: white;   
 }
 
+.foto{
+  width: 100px;
+}
+
 .footer{
   background-color: #222;
   text-align: center;
@@ -33,6 +37,10 @@
   height: 100%;
   margin: 10px;
   font-size: 20px;
+}
+
+.adopt-button{
+  display: none;
 }
 
 .navbar-links ul {
@@ -171,4 +179,5 @@
   .navbar-links.active {
       display: flex;
   }
+
 }

@@ -2,6 +2,10 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'
+import Perro2 from '../images/perro2.jpg'
+import Perro3 from '../images/perro3.jpg'
+import Perro4 from '../images/perro4.jpg'
+
 import '../styles/Home.css'
 
 function App() {
@@ -16,8 +20,9 @@ function App() {
               <div className='parrafo'>
                 <div className="logo-div">
                   <img className='foto-perro' src={Perro} alt='perro'/>
+                  
                 </div>
-                              Paws se formo con el fin de encontrar un hogar para todos los perros y gatos que lo necesiten.
+                              Paws se formó con el fin de encontrar un hogar para todos los perros y gatos que lo necesiten.
                               Intentamos faciltar la busqueda de su fututa mascota a los adoptantes ya que cualquier refugio o persona
                               es bienvenida a publicar los animales a traves de nuestra pagina.
                               Mediante nosotros, cualquier persona puede contactar al refugio o dador correspondiente para
@@ -33,8 +38,15 @@ function App() {
                         <div class="parrafo">
                             <div className="adoption-boxes">
                                 A lo largo de los 2 años trabajando junto con ustedes pudimos encontrar un hogar para: <br/>
-                                <div className="box">172 perros</div>
-                                <div className="box">53 gatos</div>
+                                <div className='history-boxes'>
+                                  <div className="box">172 perros</div>
+                                  <div className="box">53 gatos</div>
+                                </div>
+                            </div>
+                            <div className='adoption-images'>
+                              <img className='foto-perro' src={Perro2} alt='perro'/>
+                              <img className='foto-perro' src={Perro3} alt='perro'/>
+                              <img className='foto-perro' src={Perro4} alt='perro'/>
                             </div>
                         </div>      
                         <h2 className="pelota">Adopciones</h2>
@@ -75,8 +87,7 @@ function App() {
                </a>
                 </li>
               </ul>
-            </div>
-                      
+            </div>                
         <Footer/>
       </body>
     </div>
