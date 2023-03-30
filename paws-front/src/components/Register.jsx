@@ -1,94 +1,120 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { post } from "../utils/http";
 
 export const Register = (props) => {
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
-    const [name, setName] = useState('');
-    const [isShelterChecked, setIsShelterChecked] = useState(false);
-    const [isAdoptantChecked, setIsAdoptantChecked] = useState(false);
-    const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isShelterChecked, setIsShelterChecked] = useState(false);
+  const [isAdoptantChecked, setIsAdoptantChecked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-    const handleShelterCheckboxChange = () => {
-        setIsShelterChecked(!isShelterChecked);
-        setIsAdoptantChecked(false);
-    };
+  const handleShelterCheckboxChange = () => {
+    setIsShelterChecked(!isShelterChecked);
+    setIsAdoptantChecked(false);
+  };
 
-    const handleAdoptantCheckboxChange = () => {
-        setIsAdoptantChecked(!isAdoptantChecked);
-        setIsShelterChecked(false);
-    };
+  const handleAdoptantCheckboxChange = () => {
+    setIsAdoptantChecked(!isAdoptantChecked);
+    setIsShelterChecked(false);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        // Create a new user object with the form data
-        const user = {
-          email: email,
-          password: pass,
-          isShelter: isShelterChecked,
-          isAdoptant: isAdoptantChecked,
-        };
-      
-        // Make a POST request to your backend server
-        fetch('/createAdoptant', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(user)
-        })
-        .then(response => {
-          if (response.ok) {
-            navigate('/');
-          } else {
-             // Registration failed, display an error message
-             response.json().then(data => alert(data.message));
-             const errorMessage = document.getElementById('error-message');
-             errorMessage.textContent = 'Registration failed. Please try again later.';
-            
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-      };
-      
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!email.trim()) {
+      alert('Please enter an email');
+      return;
+    }
+  
+    if (!password.trim()) {
+      alert('Please enter a password');
+      return;
+    }
+
+    // Check if either checkbox is checked
+    if (!isShelterChecked && !isAdoptantChecked) {
+      setErrorMessage("Please select whether you are a shelter or an adoptant.");
+      return;
+    }
+
+     
     
-    return (
-        <div className="auth-form-container">
-            <h2>Register</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                <label htmlFor="name">USERNAME</label>
-                <input value={name} name="name" onChange={(e) => setName(e.target.value)} id="name"  />
-                <label htmlFor="email">EMAIL</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)}type="email"  id="email" name="email" />
-                <label htmlFor="password">PASSWORD</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" id="password" name="password" />
-                <label>
-                    <input type="checkbox" checked={isShelterChecked} onChange={handleShelterCheckboxChange}/>
-                     I'm a shelter
-                </label>
-                <label>
-                    <input type="checkbox" checked={isAdoptantChecked} onChange={handleAdoptantCheckboxChange}/>
-                     I'm an adoptant
-                </label>
-                <button type="submit">Log In</button>
-            </form>
-            <div id="error-message"></div>
-            <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
-        </div>
-        
-    );
-}
 
+    // Create a new user object with the form data
+    const user = {
+      email: email,
+      password: password,
+    };
 
+    let endpoint = "/createAdoptant";
 
+    if (isShelterChecked) {
+      endpoint = "/createShelter";
+    }
 
+    try {
+      const response = await post(endpoint, user);
 
+      if (response.ok) {
+        navigate("/");
+      } else {
+        // Registration failed, display an error message
+        const data = await response.json();
+        setErrorMessage(data.message);
+        errorMessage.textContent = 'Registration failed. Please try again later.';
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-
-
-
-
-
+  return (
+    <div className="auth-form-container">
+      <h2>Register</h2>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <label htmlFor="email">EMAIL</label>
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          id="email"
+          name="email"
+        />
+        <label htmlFor="password">PASSWORD</label>
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          type="password"
+          id="password"
+          name="password"
+        />
+        <label>
+          <input
+            type="checkbox"
+            checked={isShelterChecked}
+            onChange={handleShelterCheckboxChange}
+          />
+          I'm a shelter
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={isAdoptantChecked}
+            onChange={handleAdoptantCheckboxChange}
+          />
+          I'm an adoptant
+        </label>
+        <button type="submit">Register</button>
+      </form>
+      {errorMessage && <div id="error-message">{errorMessage}</div>}
+      <button
+        className="link-btn"
+        onClick={() => props.onFormSwitch("login")}
+      >
+        Already have an account? Login here.
+      </button>
+    </div>
+  );
+};

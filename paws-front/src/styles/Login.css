@@ -71,3 +71,7 @@ button:hover{
     border-radius: 50%;
 }
 
+#error-message{
+    margin-top: .2rem;
+    background-color: red;
+}
