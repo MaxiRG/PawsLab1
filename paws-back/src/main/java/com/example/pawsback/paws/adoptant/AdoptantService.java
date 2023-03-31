@@ -23,14 +23,15 @@ public class AdoptantService{
         return adoptantRepository.findByEmail(email);
     }
 
-    public String logInAttempt(LogInDTO cred){
+    public String logInAttempt(LogInDTO cred) throws Exception {
         Adoptant adoptant = getByEmail(cred.getEmail());
-        if(Objects.equals(adoptant.getPassword(), cred.getPassword())){
-            return "Success";
+        if (adoptant == null) {
+            throw new Exception("User not found");
         }
-        else{
-            return "Failed";
+        if (!adoptant.getPassword().equals(cred.getPassword())) {
+            throw new Exception("Incorrect password");
         }
+        return "Success";
     }
 
     public void delete(String email) {
