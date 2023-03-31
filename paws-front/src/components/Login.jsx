@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export const Login = (props) => {
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
@@ -30,18 +31,19 @@ export const Login = (props) => {
         };
     
         try {
-          const response = await post('/login', user);
-    
-          if (response.ok) {
+          const response = await post("/login", user);
+          console.log(response);
+          
+          if (response.success) {
+            props.setIsLoggedIn(true)
             navigate("/");
           } else {
             // Registration failed, display an error message
-            const data = await response.json();
-            setErrorMessage(data.message);
-            errorMessage.textContent = 'Login failed. Please try again later.';
+            setErrorMessage(response.message);
           }
         } catch (error) {
           console.error(error);
+          setErrorMessage('Registration failed. Please try again later.');
         }
       };
 
@@ -64,3 +66,5 @@ export const Login = (props) => {
         </div>
     )
 }
+
+export default Login
