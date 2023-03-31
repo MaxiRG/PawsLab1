@@ -55,8 +55,20 @@ public class AdoptantController {
 
     //Has an ignored exception when email is not found.
     @PostMapping("/login")
-    public String login(@RequestBody LogInDTO cred){
-        return service.logInAttempt(cred);
+    public ResponseEntity<Object> login(@RequestBody LogInDTO cred){
+        try {
+            service.logInAttempt(cred);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Login successful");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to login");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
+
 
 }
