@@ -11,7 +11,7 @@ public class ShelterController {
     private final ShelterService service;
 
     @Autowired
-    AdoptantRepository repository;
+    ShelterRepository repository;
 
     public ShelterController(ShelterService service) {
         this.service = service;
