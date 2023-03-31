@@ -1,11 +1,12 @@
 package com.example.pawsback.paws.shelter;
 
-import com.example.pawsback.paws.adoptant.model.Adoptant;
+import org.springframework.stereotype.Service;
 import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
 import com.example.pawsback.paws.shelter.model.Shelter;
 
 import java.util.Objects;
 
+@Service
 public class ShelterService {
 
     private final ShelterRepository shelterRepository;
