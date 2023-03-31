@@ -2,13 +2,15 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 
-function Busqueda() {
+function Busqueda(props) {
+  const {isLoggedIn} = props;
+  const {isShelter} = props;
   
   return (
     <div>
       <body>
         <Navbar/>
-      hola
+
         <Footer/>
       </body>
     </div>

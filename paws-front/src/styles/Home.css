@@ -30,8 +30,6 @@ body {
   width: 150px;
 }
 
-
-
 .content{
   margin: 1rem;
 }
@@ -87,7 +85,6 @@ body {
 }
 .foto-history{
   width: 200px;
-  
 }
 
 .box {
@@ -240,6 +237,9 @@ body {
   }
   .foto-perro{
     width: 89px;
+  }
+  .foto-history{
+    width: 100px;
   }
 }
 
