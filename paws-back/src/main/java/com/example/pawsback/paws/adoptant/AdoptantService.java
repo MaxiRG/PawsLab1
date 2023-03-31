@@ -32,4 +32,11 @@ public class AdoptantService{
             return "Failed";
         }
     }
+
+    public void delete(String email) {
+        Adoptant adoptant = getByEmail(email);
+        if (adoptant != null) {
+            adoptantRepository.delete(adoptant);
+        }
+    }
 }
