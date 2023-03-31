@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { post } from "../utils/http";
 
+
+
 export const Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -9,6 +11,7 @@ export const Register = (props) => {
   const [isAdoptantChecked, setIsAdoptantChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  
 
   const handleShelterCheckboxChange = () => {
     setIsShelterChecked(!isShelterChecked);
@@ -39,36 +42,29 @@ export const Register = (props) => {
       return;
     }
 
-     
-    
-
     // Create a new user object with the form data
     const user = {
       email: email,
       password: password,
     };
 
-    let endpoint = "/createAdoptant";
-
-    if (isShelterChecked) {
-      endpoint = "/createShelter";
-    }
-
+    let endpoint = isShelterChecked ? "/createShelter" : "/createAdoptant";
+  
     try {
       const response = await post(endpoint, user);
-
-      if (response.ok) {
+      console.log(response);
+      
+      if (response.success) {
         navigate("/");
       } else {
         // Registration failed, display an error message
-        const data = await response.json();
-        setErrorMessage(data.message);
-        errorMessage.textContent = 'Registration failed. Please try again later.';
+        setErrorMessage(response.message);
       }
     } catch (error) {
       console.error(error);
+      setErrorMessage('Registration failed. Please try again later.');
     }
-  };
+  }    
 
   return (
     <div className="auth-form-container">

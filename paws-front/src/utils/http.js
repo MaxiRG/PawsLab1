@@ -9,7 +9,11 @@ const request = (url, method, body, config) => {
         body: body ? JSON.stringify(body) : undefined,
         headers: Object.keys(config).length === 0 ? headers : config.headers,
     };
-    return fetch(process.env.REACT_APP_API_URL + url, configuration)
+
+    console.log(configuration)
+
+    return fetch('http://localhost:8080' + url, configuration)
+
 
         .then(response => {
             if(response.ok) return response.json();
