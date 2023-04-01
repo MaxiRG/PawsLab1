@@ -1,8 +1,8 @@
 package com.example.pawsback.paws.shelter;
 
-import org.springframework.stereotype.Service;
 import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
 import com.example.pawsback.paws.shelter.model.Shelter;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
@@ -30,6 +30,13 @@ public class ShelterService {
         }
         else{
             return "Failed";
+        }
+    }
+
+    public void delete(String email) {
+        Shelter shelter = getByEmail(email);
+        if (shelter != null) {
+            shelterRepository.delete(shelter);
         }
     }
 }
