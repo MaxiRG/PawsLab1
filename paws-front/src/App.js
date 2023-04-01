@@ -4,10 +4,11 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";//npm install reac
 import Home from "./pages/Home";
 import Login from "./pages/Login"
 import Busqueda from "./pages/Busqueda"
+import Donacion from "./pages/Donacion";
 
 const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isShelter, setIsShelter] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isShelter, setIsShelter] = useState(true);
 
     return(
     <BrowserRouter>
@@ -15,6 +16,7 @@ const App = () => {
             <Route path={'/'} element={<Home isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
             <Route path={'/login'} element={<Login setIsLoggedIn={setIsLoggedIn} setIsShelter={setIsShelter}/>}/>
             <Route path={'/busqueda'} element={<Busqueda isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
+            <Route path={'/donacion'} element={<Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
         </Routes>
     </BrowserRouter>
 );

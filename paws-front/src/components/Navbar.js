@@ -33,7 +33,7 @@ function Navbar(props) {
             <a href="/#adopciones">Historial</a>
           </li>
           <li>
-            {isShelter.current ? (
+            {isShelter ? (
               <Link to="/donacion">Donar</Link>
             ) : (
               <Link to="/busqueda">Adoptar</Link>
