@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+//@ComponentScan("com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface")
 @RestController
 public class AdoptantController {
     private final AdoptantService service;
@@ -60,4 +61,9 @@ public class AdoptantController {
         return service.logInAttempt(cred);
     }
 
+
+    @GetMapping("/restricted")
+    public ResponseEntity<?> getRestrictedMessage() {
+        return new ResponseEntity<>("This is a restricted message", HttpStatus.OK);
+    }
 }

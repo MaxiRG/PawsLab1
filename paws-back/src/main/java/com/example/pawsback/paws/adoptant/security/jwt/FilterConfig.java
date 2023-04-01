@@ -10,8 +10,8 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean jwtFilter() {
         FilterRegistrationBean filter= new FilterRegistrationBean();
-//        filter.setFilter(new JwtFilter());
-        filter.addUrlPatterns("/api/v1/blog/restricted");
+        filter.setFilter(new JwtFilter());
+        filter.addUrlPatterns("/restricted");
         return filter;
     }
 }
