@@ -2,6 +2,7 @@ package com.example.pawsback.paws.adoptant;
 
 import com.example.pawsback.paws.adoptant.model.Adoptant;
 import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class AdoptantService{
         return adoptantRepository.findByEmail(email);
     }
 
-    public Adoptant logInAttempt(LogInDTO cred) throws Exception {
+    public Adoptant logInAttempt(LogInDTO cred) throws EntityNotFoundException {
         Adoptant adoptant = getByEmail(cred.getEmail());
         if(Objects.equals(adoptant.getPassword(), cred.getPassword())){
             return adoptant;

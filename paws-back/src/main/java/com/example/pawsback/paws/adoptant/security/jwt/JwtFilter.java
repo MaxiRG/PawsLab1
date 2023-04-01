@@ -9,8 +9,9 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.GenericFilterBean;
-
 import java.io.IOException;
+import static com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorImpl.KEY;
+
 
 public class JwtFilter extends GenericFilterBean {
 
@@ -28,7 +29,7 @@ public class JwtFilter extends GenericFilterBean {
             }
         }
         final String token = authHeader.substring(7);
-        Claims claims = Jwts.parser().setSigningKey("secret").parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
         request.setAttribute("claims", claims);
         request.setAttribute("blog", servletRequest.getParameter("id"));
         filterChain.doFilter(request, response);

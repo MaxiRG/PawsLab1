@@ -62,8 +62,8 @@ public class AdoptantController {
             Adoptant adoptant =  service.logInAttempt(cred);
             return new ResponseEntity<>(jwtGenerator.generateToken(adoptant), HttpStatus.OK);
         }
-        catch (Exception e){
-            return new ResponseEntity<>("", HttpStatus.OK);
+        catch (jakarta.persistence.EntityNotFoundException e){
+            return new ResponseEntity<>("Wrong credentials", HttpStatus.OK);
         }
     }
 
