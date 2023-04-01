@@ -23,13 +23,13 @@ public class AdoptantService{
         return adoptantRepository.findByEmail(email);
     }
 
-    public String logInAttempt(LogInDTO cred){
+    public Adoptant logInAttempt(LogInDTO cred) throws Exception {
         Adoptant adoptant = getByEmail(cred.getEmail());
         if(Objects.equals(adoptant.getPassword(), cred.getPassword())){
-            return "Success";
+            return adoptant;
         }
         else{
-            return "Failed";
+            throw new jakarta.persistence.EntityNotFoundException();
         }
     }
 

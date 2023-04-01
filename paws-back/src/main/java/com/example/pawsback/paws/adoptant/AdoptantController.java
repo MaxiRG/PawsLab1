@@ -57,8 +57,14 @@ public class AdoptantController {
 
     //Has an ignored exception when email is not found.
     @PostMapping("/login")
-    public String login(@RequestBody LogInDTO cred){
-        return service.logInAttempt(cred);
+    public ResponseEntity<?> login(@RequestBody LogInDTO cred){
+        try{
+            Adoptant adoptant =  service.logInAttempt(cred);
+            return new ResponseEntity<>(jwtGenerator.generateToken(adoptant), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("", HttpStatus.OK);
+        }
     }
 
 
