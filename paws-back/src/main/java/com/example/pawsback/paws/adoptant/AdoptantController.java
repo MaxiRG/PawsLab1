@@ -2,6 +2,7 @@ package com.example.pawsback.paws.adoptant;
 
 import com.example.pawsback.paws.adoptant.model.Adoptant;
 import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
+import com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +14,12 @@ import java.util.Map;
 @RestController
 public class AdoptantController {
     private final AdoptantService service;
+    private final JwtGeneratorInterface jwtGenerator;
 
     @Autowired
-    private AdoptantRepository repository;
-
-    public AdoptantController(AdoptantService service) {
+    public AdoptantController(AdoptantService service, JwtGeneratorInterface jwtGenerator) {
         this.service = service;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/createAdoptant")
