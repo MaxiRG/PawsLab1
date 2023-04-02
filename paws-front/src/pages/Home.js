@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'
@@ -8,12 +8,14 @@ import Perro4 from '../images/perro4.jpg'
 
 import '../styles/Home.css'
 
-function App() {
+function Home(props) {
+  const {isLoggedIn} = props;
+  const {isShelter} = props
   
   return (
     <div>
       <body>
-        <Navbar/>
+        <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
           <div className='content'>
             <div className='linea' id='quienes-somos'>
               <h2 className="pelota">¿Quienes somos?</h2> 
@@ -94,4 +96,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

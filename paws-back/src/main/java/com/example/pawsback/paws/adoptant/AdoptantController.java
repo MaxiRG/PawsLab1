@@ -68,6 +68,7 @@ public class AdoptantController {
     }
 
 
+
     @GetMapping("/restricted")
     public ResponseEntity<?> getRestrictedMessage() {
         return new ResponseEntity<>("This is a restricted message", HttpStatus.OK);

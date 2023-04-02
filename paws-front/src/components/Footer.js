@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../styles/Navbar-styles.css";
+import "../styles/Navbar.css";
 
 
 class Footer extends React.Component {

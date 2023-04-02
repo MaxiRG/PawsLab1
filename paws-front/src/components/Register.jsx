@@ -55,6 +55,7 @@ export const Register = (props) => {
       console.log(response);
       
       if (response.success) {
+        props.setIsLoggedIn(true)
         navigate("/");
       } else {
         // Registration failed, display an error message

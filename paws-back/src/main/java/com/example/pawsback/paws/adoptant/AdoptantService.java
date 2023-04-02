@@ -31,7 +31,7 @@ public class AdoptantService{
         }
         else{
             throw new jakarta.persistence.EntityNotFoundException();
-        }
+            }
     }
 
     public void delete(String email) {
