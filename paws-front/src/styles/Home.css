@@ -107,6 +107,8 @@ body {
     border-radius: 10px;
   }
   
+ 
+
   .contact-form label {
     color: black;
   }
@@ -128,16 +130,14 @@ body {
     margin-bottom: 10px;
   }
   
-  textarea {
-    resize: none;
-    height: 80px;
-  }
+ 
   
   .contact-form input, .contact-form textarea {
     padding: 10px;
     border: none;
     border-radius: 5px;
     margin-bottom: 20px;
+    width: 700px;
   }
   
 

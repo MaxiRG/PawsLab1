@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'

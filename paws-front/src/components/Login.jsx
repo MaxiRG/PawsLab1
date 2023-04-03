@@ -34,8 +34,9 @@ export const Login = (props) => {
           const response = await post("/login", user);
           console.log(response);
           
-          if (response.success) {
-            props.setIsLoggedIn(true)
+          if (response.message === "'Login Successful'") {
+            localStorage.setItem("token", response.token); // Save the token to localStorage
+            props.setIsLoggedIn(true)  // Update the state to indicate that the user is logged in
             navigate("/");
           } else {
             // Registration failed, display an error message
