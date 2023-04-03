@@ -37,7 +37,7 @@ function Busqueda(props) {
           <option value="gato">Gato</option>
           <option value="perro">Perro</option>
         </select>
-        <label htmlFor="age-filter">Edad:</label>
+        <label htmlFor="age-filter">Edad: </label>
         <select
           id="age-filter"
           name="age"
