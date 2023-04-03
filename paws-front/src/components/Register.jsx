@@ -48,15 +48,14 @@ export const Register = (props) => {
       password: password,
     };
 
-    let endpoint = isShelterChecked ? "/createShelter" : "/createAdoptant";
+    let endpoint = isShelterChecked ? "/api/createShelter" : "/api/createAdoptant";
   
     try {
       const response = await post(endpoint, user);
       console.log(response);
       
       if (response.success) {
-        props.setIsLoggedIn(true)
-        navigate("/");
+        props.onFormSwitch("login")
       } else {
         // Registration failed, display an error message
         setErrorMessage(response.message);
