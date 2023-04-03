@@ -1,5 +1,6 @@
 package com.example.pawsback.paws.user;
 
+import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
@@ -56,7 +57,6 @@ public class UserController {
         }
     }
 
-    //Has an ignored exception when email is not found.
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LogInDTO cred){
         try{
@@ -68,7 +68,10 @@ public class UserController {
         }
     }
 
-
+    @GetMapping("/test")
+    public String test(){
+        return "Working";
+    }
 
     @GetMapping("/restricted")
     public ResponseEntity<?> getRestrictedMessage() {

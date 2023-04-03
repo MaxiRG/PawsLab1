@@ -4,9 +4,10 @@ import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
 import com.example.pawsback.paws.user.model.exceptions.EmailExistsException;
+import com.example.pawsback.paws.user.security.jwt.BCryptPasswordEncoder;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -20,8 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public User registerNewUserAccount(RegisterDTO registerDTO) throws EmailExistsException {
         if (emailExist(registerDTO.getEmail())) {
@@ -29,7 +29,7 @@ public class UserService {
                     "There is an account with that email adress:" + registerDTO.getEmail());
         }
         User user = new User();
-        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(registerDTO.getPassword()));
         user.setEmail(registerDTO.getEmail());
         user.setRole(registerDTO.getRole());
         return userRepository.save(user);
@@ -51,7 +51,7 @@ public class UserService {
 
     public User logInAttempt(LogInDTO cred) throws EntityNotFoundException {
         User user = getByEmail(cred.getEmail());
-        if(Objects.equals(user.getPassword(), passwordEncoder.encode(cred.getPassword()))){
+        if(Objects.equals(user.getPassword(), bCryptPasswordEncoder.encode(cred.getPassword()))){
             return user;
         }
         else{
