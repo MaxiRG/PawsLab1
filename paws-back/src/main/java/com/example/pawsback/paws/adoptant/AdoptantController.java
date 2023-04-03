@@ -13,6 +13,7 @@ import java.util.Map;
 
 //@ComponentScan("com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface")
 @RestController
+@RequestMapping("/api")
 public class AdoptantController {
     private final AdoptantService service;
     private final JwtGeneratorInterface jwtGenerator;
