@@ -31,7 +31,7 @@ export const Login = (props) => {
         };
     
         try {
-          const response = await post("/login", user);
+          const response = await post("/api/login", user);
           console.log(response);
           
           if (response.message === "'Login Successful'") {
