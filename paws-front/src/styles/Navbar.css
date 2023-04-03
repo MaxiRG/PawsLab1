@@ -18,20 +18,22 @@
   text-align: center;
   color: white;
 }
-
-.logo-navbar{
-  position: relative;
-  margin: 5px;
-  right: 255px;
+.logo-navbar {
   width: 60px;
   border-radius: 50%;
+   
 }
 
+.brand-logo-container {
+  display: flex;
+  align-items: center;
+}
 
-.brand-title {  
+.brand-title {
   font-size: 2.5rem;
-  margin: 1rem;
+  margin: 1rem 0.5rem;
 }
+
 
 .navbar-links {
   height: 100%;

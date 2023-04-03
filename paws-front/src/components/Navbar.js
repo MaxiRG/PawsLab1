@@ -1,22 +1,22 @@
-
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 import logo from "../images/logo.jpg";
 
 function Navbar(props) {
-  const {isLoggedIn} = props;
-  const {isShelter} = props;
-  
+  const { isLoggedIn } = props;
+  const { isShelter } = props;
+
   const handleClick = () => {
     const navbarLinks = document.getElementsByClassName("navbar-links")[0];
     navbarLinks.classList.toggle("active");
   };
 
-
   return (
     <nav className="navbar">
-      <div className="brand-title">PAWS</div>
-      <img className="logo-navbar" src={logo} alt="logo" />
+      <div className="brand-logo-container">
+        <div className="brand-title">PAWS</div>
+        <img className="logo-navbar" src={logo} alt="logo" />
+      </div>
 
       <button href="#" className="toggle-button" onClick={handleClick}>
         <span className="bar"></span>
@@ -44,7 +44,7 @@ function Navbar(props) {
           </li>
           <li>
             {isLoggedIn ? (
-              <Link to="/my-account">Account</Link>
+              <Link to="/account">Account</Link>
             ) : (
               <Link to="/login">Sign In</Link>
             )}
