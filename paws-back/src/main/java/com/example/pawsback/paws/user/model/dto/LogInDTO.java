@@ -1,4 +1,4 @@
-package com.example.pawsback.paws.adoptant.model.dto;
+package com.example.pawsback.paws.user.model.dto;
 
 import lombok.Data;
 

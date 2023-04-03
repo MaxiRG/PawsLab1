@@ -1,8 +1,9 @@
-package com.example.pawsback.paws.adoptant;
+package com.example.pawsback.paws.user;
 
-import com.example.pawsback.paws.adoptant.model.Adoptant;
-import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
-import com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface;
+import com.example.pawsback.paws.user.model.User;
+import com.example.pawsback.paws.user.model.dto.LogInDTO;
+import com.example.pawsback.paws.user.model.dto.RegisterDTO;
+import com.example.pawsback.paws.user.security.jwt.JwtGeneratorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,47 +12,46 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-//@ComponentScan("com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface")
 @RestController
 @RequestMapping("/api")
-public class AdoptantController {
-    private final AdoptantService service;
+public class UserController {
+    private final UserService service;
     private final JwtGeneratorInterface jwtGenerator;
 
     @Autowired
-    public AdoptantController(AdoptantService service, JwtGeneratorInterface jwtGenerator) {
+    public UserController(UserService service, JwtGeneratorInterface jwtGenerator) {
         this.service = service;
         this.jwtGenerator = jwtGenerator;
     }
 
-    @PostMapping("/createAdoptant")
-    public ResponseEntity<Object> createAdoptant(@RequestBody Adoptant adoptant) {
+    @PostMapping("/createUser")
+    public ResponseEntity<Object> createUser(@RequestBody RegisterDTO registerDTO) {
         try {
-            service.save(adoptant);
+            service.registerNewUserAccount(registerDTO);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("message", "Adoptant created successfully");
+            response.put("message", "User created successfully");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
-            response.put("message", "Failed to create adoptant");
+            response.put("message", "Failed to create user");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
-    @DeleteMapping("/deleteAdoptant/{email}")
-    public ResponseEntity<Object> deleteAdoptant(@PathVariable String email) {
+    @DeleteMapping("/deleteUser/{email}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String email) {
         try {
             service.delete(email);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("message", "Adoptant deleted successfully");
+            response.put("message", "User deleted successfully");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
-            response.put("message", "Failed to delete adoptant");
+            response.put("message", "Failed to delete User");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -60,8 +60,8 @@ public class AdoptantController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LogInDTO cred){
         try{
-            Adoptant adoptant =  service.logInAttempt(cred);
-            return new ResponseEntity<>(jwtGenerator.generateToken(adoptant), HttpStatus.OK);
+            User user =  service.logInAttempt(cred);
+            return new ResponseEntity<>(jwtGenerator.generateToken(user), HttpStatus.OK);
         }
         catch (jakarta.persistence.EntityNotFoundException e){
             return new ResponseEntity<>("Wrong credentials", HttpStatus.OK);

@@ -1,6 +1,6 @@
-package com.example.pawsback.paws.adoptant.security.jwt;
+package com.example.pawsback.paws.user.security.jwt;
 
-import com.example.pawsback.paws.adoptant.model.Adoptant;
+import com.example.pawsback.paws.user.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -21,9 +21,9 @@ public class JwtGeneratorImpl implements JwtGeneratorInterface {
         static public final SecretKey KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         @Override
-        public Map<String, String> generateToken(Adoptant adoptant) {
+        public Map<String, String> generateToken(User user) {
                 String jwtToken="";
-                jwtToken = Jwts.builder().setSubject(adoptant.getEmail()).setIssuedAt(new Date()).signWith(KEY).compact();
+                jwtToken = Jwts.builder().setSubject(user.getEmail()).setIssuedAt(new Date()).signWith(KEY).compact();
                 Map<String, String> jwtTokenGen = new HashMap<>();
                 jwtTokenGen.put("token", jwtToken);
                 jwtTokenGen.put("message", message);

@@ -1,4 +1,4 @@
-package com.example.pawsback.paws.adoptant.security.jwt;
+package com.example.pawsback.paws.user.security.jwt;
 
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

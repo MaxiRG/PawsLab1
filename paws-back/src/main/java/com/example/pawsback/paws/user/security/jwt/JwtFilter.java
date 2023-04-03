@@ -1,4 +1,4 @@
-package com.example.pawsback.paws.adoptant.security.jwt;
+package com.example.pawsback.paws.user.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
-import static com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorImpl.KEY;
+import static com.example.pawsback.paws.user.security.jwt.JwtGeneratorImpl.KEY;
 
 
 public class JwtFilter extends GenericFilterBean {
