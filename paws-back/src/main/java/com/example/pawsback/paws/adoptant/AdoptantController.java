@@ -40,7 +40,7 @@ public class AdoptantController {
         }
     }
 
-    @DeleteMapping("/deleteAdoptant")
+    @DeleteMapping("/deleteAdoptant/{email}")
     public ResponseEntity<Object> deleteAdoptant(@PathVariable String email) {
         try {
             service.delete(email);

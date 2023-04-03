@@ -34,10 +34,14 @@ public class AdoptantService{
             }
     }
 
+
     public void delete(String email) {
         Adoptant adoptant = getByEmail(email);
         if (adoptant != null) {
             adoptantRepository.delete(adoptant);
+        } else {
+            throw new EntityNotFoundException("Adoptant not found for email: " + email);
         }
     }
+
 }
