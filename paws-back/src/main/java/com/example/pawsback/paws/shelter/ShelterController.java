@@ -5,18 +5,18 @@ import com.example.pawsback.paws.shelter.model.Shelter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@RestController
+@RequestMapping("/api")
 public class ShelterController {
     private final ShelterService service;
 
     @Autowired
-    ShelterRepository repository;
+    private ShelterRepository repository;
 
     public ShelterController(ShelterService service) {
         this.service = service;
@@ -55,7 +55,7 @@ public class ShelterController {
     }
 
     //Has an ignored exception when email is not found.
-    @PostMapping("/login")
+    @PostMapping("/loginS")
     public ResponseEntity<Map<String, Object>> login(@RequestBody LogInDTO cred){
         try {
             service.logInAttempt(cred);

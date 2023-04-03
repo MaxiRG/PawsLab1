@@ -4,7 +4,7 @@ package com.example.pawsback.paws.shelter.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Shelter")
+@Table(name = "shelter")
 public class Shelter {
 
     @Id

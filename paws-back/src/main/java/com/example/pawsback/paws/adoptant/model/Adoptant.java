@@ -2,6 +2,8 @@ package com.example.pawsback.paws.adoptant.model;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "adoptant")
 public class Adoptant {
@@ -13,8 +15,7 @@ public class Adoptant {
     @Column(name = "password")
     private String password;
 
-
-    public Adoptant(String email, String password) {
+    public Adoptant(String email, String password){
         this.email = email;
         this.password = password;
     }
@@ -22,6 +23,7 @@ public class Adoptant {
     public Adoptant() {
 
     }
+
 
     public String getPassword() {
         return this.password;

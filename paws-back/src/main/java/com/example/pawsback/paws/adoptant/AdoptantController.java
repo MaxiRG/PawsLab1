@@ -2,6 +2,7 @@ package com.example.pawsback.paws.adoptant;
 
 import com.example.pawsback.paws.adoptant.model.Adoptant;
 import com.example.pawsback.paws.adoptant.model.dto.LogInDTO;
+import com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+//@ComponentScan("com.example.pawsback.paws.adoptant.security.jwt.JwtGeneratorInterface")
 @RestController
+@RequestMapping("/api")
 public class AdoptantController {
     private final AdoptantService service;
+    private final JwtGeneratorInterface jwtGenerator;
 
     @Autowired
-    private AdoptantRepository repository;
-
-    public AdoptantController(AdoptantService service) {
+    public AdoptantController(AdoptantService service, JwtGeneratorInterface jwtGenerator) {
         this.service = service;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("/createAdoptant")
@@ -55,20 +58,20 @@ public class AdoptantController {
 
     //Has an ignored exception when email is not found.
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LogInDTO cred){
-        try {
-            service.logInAttempt(cred);
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "Login successful");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "Failed to login");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    public ResponseEntity<?> login(@RequestBody LogInDTO cred){
+        try{
+            Adoptant adoptant =  service.logInAttempt(cred);
+            return new ResponseEntity<>(jwtGenerator.generateToken(adoptant), HttpStatus.OK);
+        }
+        catch (jakarta.persistence.EntityNotFoundException e){
+            return new ResponseEntity<>("Wrong credentials", HttpStatus.OK);
         }
     }
 
 
+
+    @GetMapping("/restricted")
+    public ResponseEntity<?> getRestrictedMessage() {
+        return new ResponseEntity<>("This is a restricted message", HttpStatus.OK);
+    }
 }
