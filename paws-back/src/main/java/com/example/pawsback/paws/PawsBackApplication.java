@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 
-@SpringBootApplication
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class PawsBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PawsBackApplication.class, args);
