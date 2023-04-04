@@ -6,18 +6,24 @@ import Login from "./pages/Login"
 import Busqueda from "./pages/Busqueda"
 import Donacion from "./pages/Donacion";
 import Account from "./pages/Account"
+import jwt_decode from "jwt-decode";
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isShelter, setIsShelter] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-          setIsLoggedIn(true);
-        }
-      }, []);
+      const token = localStorage.getItem("token");
+      if (token) {
+        setIsLoggedIn(true);
+        // Check if the user has the role shelter
+        const user = jwt_decode(token);
+        console.log(user)
+        setIsShelter(user.role === "SHELTER");
+      }
+    }, []);
 
+    
     return(
     <BrowserRouter>
         <Routes>
@@ -25,7 +31,7 @@ const App = () => {
             <Route path={'/login'} element={<Login setIsLoggedIn={setIsLoggedIn} setIsShelter={setIsShelter}/>}/>
             <Route path={'/busqueda'} element={<Busqueda isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
             <Route path={'/donacion'} element={<Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
-            <Route path={'/account'} element={<Account setIsLoggedIn={setIsLoggedIn} isShelter={isShelter}/>}/>
+            <Route path={'/account'} element={<Account setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
         </Routes>
     </BrowserRouter>
 );
