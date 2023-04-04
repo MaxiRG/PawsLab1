@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping({"/api"})
 public class UserController {
     private final UserService service;
     private final JwtGeneratorInterface jwtGenerator;
