@@ -23,7 +23,7 @@ function Busqueda(props) {
   };
 
   return (
-    <div>
+    <div className='all'>
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
       <form onSubmit={handleSearch}>
         <label htmlFor="animal-filter"> Animal: </label>
