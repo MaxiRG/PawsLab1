@@ -31,7 +31,7 @@ const Account = (props) => {
       },
 
     };
-    del("/api/deleteAdoptant/" + email, config)
+    del("/api/deleteUser/" + email, config)
       .then((data) => {
         console.log(data);
         localStorage.removeItem("token");
@@ -42,6 +42,7 @@ const Account = (props) => {
         console.log(error);
         // handle error
       });
+      window.location.reload();
   };
   
 
@@ -55,8 +56,10 @@ const Account = (props) => {
             <li className="account-action">View profile</li>
             <li className="account-action">Edit profile</li>
             <li className="account-action">Change password</li>
-            <li className="account-action">My posts</li>
-            <li className="account-action">View donation history</li>
+            <li className="account-action"> 
+            {isShelter ?  <div>My posts </div> : <div>Favourites</div>}
+            </li>
+            {isShelter ? <li className="account-action">View donation history</li> : null}
             <li className="account-action">View notifications</li>
             <li className="account-action">
               <button className="logout-button" onClick={handleLogout}>

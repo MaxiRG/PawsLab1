@@ -28,6 +28,7 @@ export const Login = (props) => {
         const user = {
           email: email,
           password: password,
+          
         };
     
         try {
