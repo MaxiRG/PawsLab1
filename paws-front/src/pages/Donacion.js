@@ -8,11 +8,11 @@ function Donacion(props) {
   
   return (
     <div>
-      <body>
+      <div className="body">
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
         publicar mascota
         <Footer/>
-      </body>
+      </div>
     </div>
 
   )

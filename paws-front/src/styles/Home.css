@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-body {
+.body {
   margin: 0 auto;
   padding: 0;
   width: 100%;
@@ -107,7 +107,6 @@ body {
     border-radius: 10px;
   }
   
- 
 
   .contact-form label {
     color: black;
@@ -129,8 +128,6 @@ body {
   .contact-form label {
     margin-bottom: 10px;
   }
-  
- 
   
   .contact-form input, .contact-form textarea {
     padding: 10px;
@@ -240,6 +237,9 @@ body {
   }
   .foto-history{
     width: 100px;
+  }
+  .contact-form input, .contact-form textarea {
+    width: 400px;
   }
 }
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { post } from "../utils/http";
 
 
@@ -10,7 +10,7 @@ export const Register = (props) => {
   const [isShelterChecked, setIsShelterChecked] = useState(false);
   const [isAdoptantChecked, setIsAdoptantChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   
 
   const handleShelterCheckboxChange = () => {
@@ -34,7 +34,11 @@ export const Register = (props) => {
     if (!password.trim()) {
       alert('Please enter a password');
       return;
+    } else if (password.trim().length < 6) {
+      alert('Password must be at least 6 characters long');
+      return;
     }
+    
 
     // Check if either checkbox is checked
     if (!isShelterChecked && !isAdoptantChecked) {
@@ -42,19 +46,21 @@ export const Register = (props) => {
       return;
     }
 
+    let role = isShelterChecked ? "SHELTER" : "ADOPTER";
+
     // Create a new user object with the form data
     const user = {
       email: email,
       password: password,
+      role : role
     };
-
-    let endpoint = isShelterChecked ? "/api/createShelter" : "/api/createAdoptant";
   
     try {
-      const response = await post(endpoint, user);
+      const response = await post("/api/createUser", user);
       console.log(response);
       
       if (response.success) {
+        
         props.onFormSwitch("login")
       } else {
         // Registration failed, display an error message

@@ -17,7 +17,7 @@ const Log = (props) => {
             {
                 currentForm === "login" 
                 ? <Login onFormSwitch={toggleForm} setIsLoggedIn={setIsLoggedIn} setIsShelter={setIsShelter} /> 
-                : <Register onFormSwitch={toggleForm} setIsLoggedIn={setIsLoggedIn} setIsShelter={setIsShelter} />
+                : <Register onFormSwitch={toggleForm}  />
             }
         </div>
     );
