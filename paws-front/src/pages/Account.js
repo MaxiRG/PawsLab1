@@ -5,6 +5,9 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Account.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { del } from "../utils/http";
+import jwt_decode from "jwt-decode";
+
 
 const Account = (props) => {
   const { isLoggedIn, isShelter } = props;
@@ -15,6 +18,32 @@ const Account = (props) => {
     props.setIsLoggedIn(false); // Update the state to indicate that the user is logged out
     navigate("/");
   };
+
+  const deleteAccount = () => {
+    const token = localStorage.getItem("token");
+    const decodedToken = jwt_decode(token);
+    const email = decodedToken.sub;
+    console.log(email); // This will print the user's email to the console
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+
+    };
+    del("/api/deleteAdoptant/" + email, config)
+      .then((data) => {
+        console.log(data);
+        localStorage.removeItem("token");
+        props.setIsLoggedIn(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        // handle error
+      });
+  };
+  
 
   return (
     <div>
@@ -32,6 +61,11 @@ const Account = (props) => {
             <li className="account-action">
               <button className="logout-button" onClick={handleLogout}>
                 <FontAwesomeIcon icon={faSignOutAlt} /> Log out
+              </button>
+            </li>
+            <li className="account-action">
+              <button className="delete-account-button" onClick={deleteAccount}>
+                Delete Account
               </button>
             </li>
           </ul>

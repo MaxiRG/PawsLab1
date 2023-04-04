@@ -14,7 +14,7 @@ function Home(props) {
   
   return (
     <div>
-      <body>
+      <div className='body'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
           <div className='content'>
             <div className='linea' id='quienes-somos'>
@@ -91,7 +91,7 @@ function Home(props) {
               </ul>
             </div>                
         <Footer/>
-      </body>
+      </div>
     </div>
   );
 }
