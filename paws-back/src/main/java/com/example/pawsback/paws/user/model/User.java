@@ -1,7 +1,10 @@
 package com.example.pawsback.paws.user.model;
 
+import com.example.pawsback.paws.post.model.Post;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -28,11 +31,14 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "phone_Number")
+    @Column(name = "phone_number")
     private int phoneNumber;
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
     public User(String email, String password){
         this.email = email;
