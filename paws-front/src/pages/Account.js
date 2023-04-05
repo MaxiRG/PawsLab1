@@ -49,7 +49,7 @@ const Account = (props) => {
   return (
     <div className="all">
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
-      <div className="account">
+      <div className="body">
         <div className="account-container">
           <h1 className="account-title">My Account</h1>
           <ul className="account-actions">

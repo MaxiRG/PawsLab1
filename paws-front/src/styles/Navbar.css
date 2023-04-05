@@ -16,8 +16,10 @@
 .footer{
   background-color: #222;
   text-align: center;
-  color: white;
+  color: white; 
+  margin-top: auto;
 }
+
 .logo-navbar {
   width: 60px;
   border-radius: 50%;

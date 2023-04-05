@@ -39,6 +39,7 @@ export const Login = (props) => {
             localStorage.setItem("token", response.token); // Save the token to localStorage
             props.setIsLoggedIn(true)  // Update the state to indicate that the user is logged in
             navigate("/");
+            window.location.reload()
           } else {
             // Registration failed, display an error message
             setErrorMessage(response.message);

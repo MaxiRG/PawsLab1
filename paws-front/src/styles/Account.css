@@ -32,3 +32,10 @@
 .logout-button:hover {
   background-color: #d32f2f;
 }
+
+.body {
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
