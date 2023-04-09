@@ -4,19 +4,20 @@ import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
 import com.example.pawsback.paws.user.model.exceptions.EmailExistsException;
+import com.example.pawsback.paws.user.security.jwt.JwtGeneratorImpl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final JwtGeneratorImpl jwtGenerator;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtGeneratorImpl jwtGenerator) {
         this.userRepository = userRepository;
+        this.jwtGenerator = jwtGenerator;
     }
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -41,6 +42,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User getByToken(String token){
+        return userRepository.findByEmail(getEmail(token));
+    }
+
     public User logInAttempt(LogInDTO cred) throws EntityNotFoundException {
         User user = getByEmail(cred.getEmail());
         if(encoder.matches(cred.getPassword(), user.getPassword())){
@@ -59,6 +64,14 @@ public class UserService {
         } else {
             throw new EntityNotFoundException("User not found for email: " + email);
         }
+    }
+
+    public String getEmail(String token){
+        return jwtGenerator.parseToken(token).getSubject();
+    }
+
+    public String getRole(String token){
+        return jwtGenerator.parseToken(token).get("role", String.class);
     }
 
 }

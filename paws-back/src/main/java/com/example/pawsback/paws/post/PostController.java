@@ -1,13 +1,30 @@
 package com.example.pawsback.paws.post;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.pawsback.paws.post.model.Post;
+import com.example.pawsback.paws.post.model.dto.PostDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class PostController {
 
-    @PostMapping
-    public PostDTO
+    private final PostService postService;
 
+    @Autowired
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @PostMapping("/createPost")
+    public PostDTO createPost(@RequestBody Post post, @RequestHeader("authorization") String token){
+        return postService.toDto(postService.save(post, token), token);
+    }
+
+    @GetMapping("/getMyPosts")
+    public List<Post> getMyPosts(@RequestHeader("Authorization") String token){
+        return postService.getMyPosts(token);
+    }
     
 }
