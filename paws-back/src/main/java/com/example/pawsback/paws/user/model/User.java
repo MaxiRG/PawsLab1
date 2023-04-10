@@ -4,6 +4,7 @@ import com.example.pawsback.paws.post.model.Post;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -37,7 +38,7 @@ public class User {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
     public User(String email, String password){
@@ -110,4 +111,11 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<Post> getPosts(){
+        return this.posts;
+    }
+
+
+
 }

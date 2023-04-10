@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserService {
 
@@ -31,6 +33,7 @@ public class UserService {
         user.setEmail(registerDTO.getEmail());
         user.setPassword(encoder.encode(registerDTO.getPassword()));
         user.setRole(registerDTO.getRole());
+        user.setPosts(new ArrayList<>());
         return userRepository.save(user);
     }
 

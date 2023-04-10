@@ -6,10 +6,11 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name="post")
 public class Post {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "pet_name")
@@ -27,16 +28,19 @@ public class Post {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
+    }
+
+    public User getUser(){
+        return this.user;
     }
 }
