@@ -7,6 +7,8 @@ import Busqueda from "./pages/Busqueda"
 import Donacion from "./pages/Donacion";
 import Account from "./pages/Account"
 import jwt_decode from "jwt-decode";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
