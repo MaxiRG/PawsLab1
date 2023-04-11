@@ -2,6 +2,8 @@ package com.example.pawsback.paws.post;
 
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.dto.PostDTO;
+import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +33,28 @@ public class PostController {
     }
 
     @GetMapping("/getMyPosts")
-    public List<Post> getMyPosts(@RequestHeader("Authorization") String token){
-        return postService.getMyPosts(token);
+    public ResponseEntity<?> getMyPosts(@RequestHeader("Authorization") String token){
+        try{
+            return new ResponseEntity<>(postService.getMyPosts(token), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Failed to get posts", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/deletePost/{petName}")
+    public ResponseEntity<?> deletePost(@PathVariable String petName, @RequestHeader("Authorization") String token){
+        try{
+            postService.delete(petName, token);
+            return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+        }
+        catch(NoAuthorizationException | EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+
+        } catch(Exception e){
+            return new ResponseEntity<>("Failed to delete post", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
     
 }

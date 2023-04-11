@@ -10,4 +10,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostByUserId(Long id);
 
+    Post findPostByPetName(String petName);
+
+
 }
