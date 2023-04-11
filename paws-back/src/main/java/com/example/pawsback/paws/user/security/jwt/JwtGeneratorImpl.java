@@ -41,6 +41,7 @@ public class JwtGeneratorImpl implements JwtGeneratorInterface {
                 return jwtTokenGen;
         }
 
+
         public Claims parseToken(String token) {
                 return Jwts.parserBuilder()
                         .setSigningKey(KEY)

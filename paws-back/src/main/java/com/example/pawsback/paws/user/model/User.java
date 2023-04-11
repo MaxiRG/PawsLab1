@@ -1,6 +1,7 @@
 package com.example.pawsback.paws.user.model;
 
 import com.example.pawsback.paws.post.model.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -38,6 +39,7 @@ public class User {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 

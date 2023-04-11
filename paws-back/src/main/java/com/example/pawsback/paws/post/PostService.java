@@ -19,15 +19,12 @@ public class PostService {
         this.userService = userService;
     }
 
-    public Post save(Post post, String rawToken) {
-        final String token = rawToken.substring(7);
+    public Post save(Post post, String token) {
         post.setUser(userService.getByToken(token));
-        userService.getByToken(token).getPosts().add(post);
         return postRepository.save(post);
     }
 
-    public PostDTO toDto(Post post, String rawToken) {
-        final String token = rawToken.substring(7);
+    public PostDTO toDto(Post post, String token) {
         PostDTO postDTO = new PostDTO();
         postDTO.setDescription(post.getDescription());
         postDTO.setPetName(post.getPetName());
@@ -38,8 +35,7 @@ public class PostService {
         return postDTO;
     }
 
-    public List<Post> getMyPosts(String rawToken) {
-        final String token = rawToken.substring(7);
+    public List<Post> getMyPosts(String token) {
         return postRepository.findPostByUserId(userService.getByToken(token).getId());
     }
 }

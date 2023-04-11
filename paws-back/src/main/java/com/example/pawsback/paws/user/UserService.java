@@ -69,11 +69,13 @@ public class UserService {
         }
     }
 
-    public String getEmail(String token){
+    public String getEmail(String rawToken){
+        String token = rawToken.substring(7);
         return jwtGenerator.parseToken(token).getSubject();
     }
 
-    public String getRole(String token){
+    public String getRole(String rawToken){
+        String token = rawToken.substring(7);
         return jwtGenerator.parseToken(token).get("role", String.class);
     }
 
