@@ -1,10 +1,9 @@
 package com.example.pawsback.paws.user;
 
-import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
-import com.example.pawsback.paws.user.model.exceptions.EmailExistsException;
+import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
 import com.example.pawsback.paws.user.security.jwt.JwtGeneratorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,7 @@ public class UserController {
             response.put("success", true);
             response.put("message", "User created successfully");
             return ResponseEntity.ok(response);
-        } catch (EmailExistsException e) {
+        } catch (EmailNotValidException e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "Failed to create user");

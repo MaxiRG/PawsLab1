@@ -3,13 +3,14 @@ package com.example.pawsback.paws.user;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
-import com.example.pawsback.paws.user.model.exceptions.EmailExistsException;
+import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
 import com.example.pawsback.paws.user.security.jwt.JwtGeneratorImpl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -24,10 +25,10 @@ public class UserService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public User registerNewUserAccount(RegisterDTO registerDTO) throws EmailExistsException {
-        if (emailExist(registerDTO.getEmail())) {
-            throw new EmailExistsException(
-                    "There is an account with that email adress:" + registerDTO.getEmail());
+    public User registerNewUserAccount(RegisterDTO registerDTO) throws EmailNotValidException {
+        if (emailValid(registerDTO.getEmail())) {
+            throw new EmailNotValidException(
+                    "Email:" + registerDTO.getEmail() + "already exists or is invalid");
         }
         User user = new User();
         user.setEmail(registerDTO.getEmail());
@@ -37,8 +38,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private boolean emailExist(String email) {
-        return userRepository.findByEmail(email) != null;
+    private boolean emailValid(String email) {
+        return userRepository.findByEmail(email) != null && Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$").matcher(email).matches();
     }
 
     public User getByEmail(String email){
