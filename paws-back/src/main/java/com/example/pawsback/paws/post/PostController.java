@@ -21,8 +21,8 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/createPost")
-    public ResponseEntity<?> createPost(@RequestBody Post post, @RequestHeader("authorization") String token){
+    @PostMapping(value = "/createPost", consumes = {"application/json"})
+    public ResponseEntity<?> createPost(@RequestBody Post post, @RequestHeader("Authorization") String token){
         try{
             PostDTO postDTO = postService.toDto(postService.save(post, token), token);
             return new ResponseEntity<>(postDTO, HttpStatus.OK);
