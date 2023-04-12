@@ -3,6 +3,7 @@ const request = (url, method, body, config) => {
     let headers = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
+        
     };
     const configuration = {
         method: method,
@@ -11,7 +12,7 @@ const request = (url, method, body, config) => {
     };
 
     console.log(configuration)
-
+    
     return fetch('http://localhost:8080' + url, configuration)
 
 
