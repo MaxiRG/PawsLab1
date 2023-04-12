@@ -26,12 +26,14 @@ public class JwtFilter extends GenericFilterBean {
         } else {
             if(authHeader == null || !authHeader.startsWith("Bearer ")){
                 throw new ServletException("An exception occurred");
+            } else {
+                final String token = authHeader.substring(7);
+                Claims claims = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
+                request.setAttribute("claims", claims);
+                request.setAttribute("blog", servletRequest.getParameter("id"));
+                filterChain.doFilter(request, response);
             }
         }
-        final String token = authHeader.substring(7);
-        Claims claims = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
-        request.setAttribute("claims", claims);
-        request.setAttribute("blog", servletRequest.getParameter("id"));
-        filterChain.doFilter(request, response);
+
     }
 }
