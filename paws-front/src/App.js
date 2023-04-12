@@ -6,7 +6,8 @@ import Login from "./pages/Login"
 import Busqueda from "./pages/Busqueda"
 import Donacion from "./pages/Donacion";
 import Account from "./pages/Account"
-import Protected from "./components/Protected";
+import LogProtected from "./components/LogProtected";
+import RoleProtected from "./components/RoleProtected";
 import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -33,8 +34,8 @@ const App = () => {
             <Route path={'/'} element={<Home isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
             <Route path={'/login'} element={<Login setIsLoggedIn={setIsLoggedIn} setIsShelter={setIsShelter}/>}/>
             <Route path={'/busqueda'} element={<Busqueda isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
-            <Route path={'/donacion'} element={<Protected isLoggedIn={isLoggedIn}><Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/></Protected>}/>
-            <Route path={'/account'} element={<Protected isLoggedIn={isLoggedIn}><Account setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isShelter={isShelter}/></Protected>}/>
+            <Route path={'/donacion'} element={<RoleProtected isLoggedIn={isLoggedIn} isShelter={isShelter}><Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/></RoleProtected>}/>
+            <Route path={'/account'} element={<LogProtected isLoggedIn={isLoggedIn}><Account setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isShelter={isShelter}/></LogProtected>}/>
         </Routes>
     </BrowserRouter>
 );
