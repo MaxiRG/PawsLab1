@@ -1,7 +1,12 @@
 package com.example.pawsback.paws.user.model;
 
+import com.example.pawsback.paws.post.model.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,11 +33,15 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "phone_Number")
+    @Column(name = "phone_number")
     private int phoneNumber;
 
     @Column(name = "description")
     private String description;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
     public User(String email, String password){
         this.email = email;
@@ -104,4 +113,11 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<Post> getPosts(){
+        return this.posts;
+    }
+
+
+
 }
