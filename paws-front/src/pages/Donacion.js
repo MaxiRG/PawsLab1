@@ -1,15 +1,14 @@
   import React, { useState } from 'react';
-  import { useNavigate } from "react-router-dom";
   import Footer from '../components/Footer';
   import Navbar from '../components/Navbar';
   import "../styles/Donacion.css";
   import Button from 'react-bootstrap/Button';
+  import Card from 'react-bootstrap/Card';
   import { post, get} from "../utils/http";
 
   function Donacion(props) {
     const { isLoggedIn } = props;
     const { isShelter } = props;
-    const navigate = useNavigate();
     const [isFormExpanded, setIsFormExpanded] = useState(false);
     const [petName, setPetName] = useState('');
     const [petSex, setPetSex] = useState('');
@@ -17,6 +16,8 @@
     const [petRace, setPetRace] = useState('');
     const [petDescription, setPetDescription] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
+    const [myPosts, setMyPosts] = useState([]);
+    
 
 
 
@@ -36,11 +37,12 @@
         .then(response => {
           console.log(response)
           console.log("success")
-
+          setMyPosts(response);
+      
         })
         .catch(error => {
           console.error(error)
-          setErrorMessage('Post creation failed. Please try again later.');
+          setErrorMessage('Post retrieval failed. Please try again later.');
         });
       }
 
@@ -85,6 +87,15 @@
           setErrorMessage('Post creation failed. Please try again later.');
         });
       }
+
+      const handleFormCancel = () => {
+        setPetName('');
+        setPetSex('');
+        setPetAge('');
+        setPetRace('');
+        setPetDescription('');
+        setIsFormExpanded(false);
+      }
     
 
     return (
@@ -121,9 +132,28 @@
                 <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)}  required/>
               </label>
               <Button className='submitButton' variant="primary" type="submit" >Submit</Button>
+              <Button className='cancelButton' variant="outline-danger"  onClick={handleFormCancel}>Cancel</Button>
             </form>
           )}
-          <Button className='button' variant="light" onClick={handleMyPosts}> My posts </Button> 
+          <Button className='button' variant="light" onClick={handleMyPosts}> My posts </Button>
+            <div className='card-container'>
+              {myPosts.length > 0 &&
+              myPosts.map(post => (
+                <Card key={post.id} className="custom-card" >
+                  <Card.Body>
+                    <Card.Title>{post.petName}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">ID: {post.id}</Card.Subtitle>
+                    <Card.Text>
+                      Sex: {post.sex ? 'Male' : 'Female'}<br />
+                      Age: {post.age}<br />
+                      Race: {post.race}<br />
+                      Description: {post.description}<br />
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              ))
+            }
+          </div>
         </div>
         <Footer/>
       </div>

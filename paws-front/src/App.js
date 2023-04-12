@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import Busqueda from "./pages/Busqueda"
 import Donacion from "./pages/Donacion";
 import Account from "./pages/Account"
+import Protected from "./components/Protected";
 import jwt_decode from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -32,8 +33,8 @@ const App = () => {
             <Route path={'/'} element={<Home isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
             <Route path={'/login'} element={<Login setIsLoggedIn={setIsLoggedIn} setIsShelter={setIsShelter}/>}/>
             <Route path={'/busqueda'} element={<Busqueda isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
-            <Route path={'/donacion'} element={<Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
-            <Route path={'/account'} element={<Account setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
+            <Route path={'/donacion'} element={<Protected isLoggedIn={isLoggedIn}><Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/></Protected>}/>
+            <Route path={'/account'} element={<Protected isLoggedIn={isLoggedIn}><Account setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isShelter={isShelter}/></Protected>}/>
         </Routes>
     </BrowserRouter>
 );
