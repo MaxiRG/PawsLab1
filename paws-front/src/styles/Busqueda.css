@@ -60,3 +60,8 @@ button[type="submit"]:hover {
   margin-right: 10px;
   font-weight: bold;
 }
+
+.submit{
+  margin: 10px;
+  border-radius: 5%;
+}

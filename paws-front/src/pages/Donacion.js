@@ -4,7 +4,7 @@
   import Navbar from '../components/Navbar';
   import "../styles/Donacion.css";
   import Button from 'react-bootstrap/Button';
-  import { post } from "../utils/http";
+  import { post, get} from "../utils/http";
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -16,53 +16,83 @@
     const [petAge, setPetAge] = useState('');
     const [petRace, setPetRace] = useState('');
     const [petDescription, setPetDescription] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
 
 
-    const createPost = async (Post, token) => {
-      try {
-        const response = await post('/createPost', Post, {
-          headers: {
-            'authorization': token
-          }
-        });
-        return response;
-      } catch (error) {
-        console.log(error);
+
+    const handleMyPosts = (e) => {
+      e.preventDefault();
+
+      const token = localStorage.getItem('token');
+
+      const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json', // Set your authorization header here
+        }
       }
-    };
+
+      get('/getMyPosts', config)
+        .then(response => {
+          console.log(response)
+          console.log("success")
+
+        })
+        .catch(error => {
+          console.error(error)
+          setErrorMessage('Post creation failed. Please try again later.');
+        });
+      }
+
+
     
-    const handleFormSubmit = (event) => {
-      event.preventDefault();
-    
-      const Post = {
-        name: petName,
+    const handleFormSubmit = (e) => {
+      e.preventDefault();
+      
+      const body = {
+        petName: petName,
         age: petAge,
-        description: petDescription,
-        sex: petSex,
-        race: petRace
+        sex: true,
+        race: petRace,
+        description: petDescription
       };
     
-      // Call the createPost function with the post object and the token
       const token = localStorage.getItem('token');
-      createPost(Post, token)
+      console.log(token)
+
+      const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json', // Set your authorization header here
+        }
+      }
+      console.log(config)
+      console.log(body)
+      
+      post('/createPost', body, config)
         .then(response => {
-          console.log(response);
-          // Reset the form fields and hide the form
+          console.log(response)
+          console.log("success")
           setPetName('');
           setPetSex('');
           setPetAge('');
           setPetRace('');
           setPetDescription('');
           setIsFormExpanded(false);
+        })
+        .catch(error => {
+          console.error(error)
+          setErrorMessage('Post creation failed. Please try again later.');
         });
-    };
-     
+      }
+    
 
     return (
       <div className='donacion'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
         <div className='body'>
         <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
+        {errorMessage && <div id="error-message">{errorMessage}</div>}
 
           {isFormExpanded && (
             <form className='form' onSubmit={handleFormSubmit}>
@@ -84,16 +114,16 @@
               </label>
               <label>
                 Race<br/>
-                <input type="text" name="petRace" value={petRace} onChange={(event) => setPetRace(event.target.value)} required />
+                <input type="text" name="petRace" value={petRace} onChange={(event) => setPetRace(event.target.value)}  required/>
               </label>
               <label>
                 Description <br/>
-                <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)} required />
+                <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)}  required/>
               </label>
               <Button className='submitButton' variant="primary" type="submit" >Submit</Button>
             </form>
           )}
-          <Button className='button' variant="light" > My posts </Button> 
+          <Button className='button' variant="light" onClick={handleMyPosts}> My posts </Button> 
         </div>
         <Footer/>
       </div>

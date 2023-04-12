@@ -17,6 +17,7 @@ const Account = (props) => {
     localStorage.removeItem("token"); // Remove the token from localStorage
     props.setIsLoggedIn(false); // Update the state to indicate that the user is logged out
     navigate("/");
+    window.location.reload()
   };
 
   const deleteAccount = () => {
@@ -42,7 +43,7 @@ const Account = (props) => {
         console.log(error);
         // handle error
       });
-      window.location.reload();
+      
   };
   
 

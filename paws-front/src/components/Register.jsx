@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from '../images/logo.jpg'
 //import { useNavigate } from "react-router-dom";
 import { post } from "../utils/http";
 
@@ -60,10 +61,8 @@ export const Register = (props) => {
       console.log(response);
       
       if (response.success) {
-        
         props.onFormSwitch("login")
       } else {
-        // Registration failed, display an error message
         setErrorMessage(response.message);
       }
     } catch (error) {
@@ -74,6 +73,10 @@ export const Register = (props) => {
 
   return (
     <div className="auth-form-container">
+      <img 
+        className='logo'
+        src={logo}
+        alt='logo'/>
       <h2>Register</h2>
       <form className="register-form" onSubmit={handleSubmit}>
         <label htmlFor="email">EMAIL</label>

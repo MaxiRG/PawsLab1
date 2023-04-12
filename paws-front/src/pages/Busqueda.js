@@ -73,7 +73,7 @@ function Busqueda(props) {
             <option value="pastor_aleman">Pastor alemán</option>
             <option value="bulldog_frances">Bulldog francés</option>
           </select>
-          <button type="submit">Buscar</button>
+          <button className='submit' type="submit">Buscar</button>
         </form>
         </div>
       <Footer />
