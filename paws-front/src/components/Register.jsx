@@ -28,15 +28,15 @@ export const Register = (props) => {
     e.preventDefault();
 
     if (!email.trim()) {
-      alert('Please enter an email');
+      setErrorMessage('Please enter an email');
       return;
     }
   
     if (!password.trim()) {
-      alert('Please enter a password');
+      setErrorMessage('Please enter a password');
       return;
     } else if (password.trim().length < 6) {
-      alert('Password must be at least 6 characters long');
+      setErrorMessage('Password must be at least 6 characters long');
       return;
     }
     

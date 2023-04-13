@@ -6,6 +6,7 @@
   import Card from 'react-bootstrap/Card';
   import { post, get} from "../utils/http";
 
+
   function Donacion(props) {
     const { isLoggedIn } = props;
     const { isShelter } = props;
@@ -54,7 +55,7 @@
       const body = {
         petName: petName,
         age: petAge,
-        sex: true,
+        sex: petSex === 'Male',
         race: petRace,
         description: petDescription
       };
@@ -81,6 +82,7 @@
           setPetRace('');
           setPetDescription('');
           setIsFormExpanded(false);
+          setErrorMessage('')
         })
         .catch(error => {
           console.error(error)
@@ -141,8 +143,7 @@
               myPosts.map(post => (
                 <Card key={post.id} className="custom-card" >
                   <Card.Body>
-                    <Card.Title>{post.petName}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">ID: {post.id}</Card.Subtitle>
+                    <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>
                       Sex: {post.sex ? 'Male' : 'Female'}<br />
                       Age: {post.age}<br />

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import Button from 'react-bootstrap/Button';
 import "../styles/Account.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -68,9 +69,9 @@ const Account = (props) => {
               </button>
             </li>
             <li className="account-action">
-              <button className="delete-account-button" onClick={deleteAccount}>
+              <Button className="delete-account-button" variant="outline-danger" onClick={deleteAccount}>
                 Delete Account
-              </button>
+              </Button>
             </li>
           </ul>
         </div>
