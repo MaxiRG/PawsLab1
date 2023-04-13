@@ -39,3 +39,9 @@
   flex-wrap: wrap; 
   justify-content: space-between; 
 }
+
+.card-title{
+  text-transform: uppercase;
+  color: #ff960c;
+}
+
