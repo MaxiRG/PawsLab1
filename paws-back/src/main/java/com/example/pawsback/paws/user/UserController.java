@@ -3,6 +3,7 @@ package com.example.pawsback.paws.user;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.ChangePasswordDTO;
+import com.example.pawsback.paws.user.model.dto.ChangePhoneNumberDTO;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
 import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
@@ -58,6 +59,22 @@ public class UserController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "Failed to modify user password," + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifyPhoneNumber/{email}")
+    public ResponseEntity<Object> modifyPhoneNumber(@RequestBody ChangePhoneNumberDTO changePhoneNumberDTO,@RequestHeader("Authorization") String token){
+        try{
+            service.modifyPhoneNumber(token,changePhoneNumberDTO.getNewPhoneNumber(),changePhoneNumberDTO.getOldPhoneNumber());
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed phone number successfully");
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify phone number," + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
