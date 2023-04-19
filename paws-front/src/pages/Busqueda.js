@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import { get } from "../utils/http";
 import '../styles/Busqueda.css'
+import Card from 'react-bootstrap/Card';
 
 function Busqueda(props) {
   const { isLoggedIn, isShelter } = props;
+  const [posts, setPosts] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const [searchFilters, setSearchFilters] = useState({
     animal: '',
     age: '',
@@ -14,7 +18,20 @@ function Busqueda(props) {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    // Perform search logic using the searchFilters state
+    
+    get('/getAll')
+        .then(response => {
+          console.log(response)
+          console.log("success")
+          setPosts(response);
+      
+        })
+        .catch(error => {
+          console.error(error)
+          setErrorMessage('Post retrieval failed. Please try again later.');
+        });
+  
+
   };
 
   const handleFilterChange = (event) => {
@@ -75,7 +92,28 @@ function Busqueda(props) {
           </select>
           <button className='submit' type="submit">Buscar</button>
         </form>
+        {errorMessage && <div id="error-message">{errorMessage}</div>}
+        <div className='card-container'>
+              {posts.length > 0 &&
+              posts.map(post => (
+                <Card key={post.id} className="custom-card" >
+                  <Card.Body>
+                    <Card.Title className='card-title'>{post.petName}</Card.Title>
+                    <Card.Text>
+                      Sex: {post.sex ? 'Male' : 'Female'}<br />
+                      Age: {post.age}<br />
+                      Race: {post.race}<br />
+                      Description: {post.description}<br />
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              ))
+            }
+          </div>
         </div>
+        
+
+        
       <Footer />
     </div>
   );
