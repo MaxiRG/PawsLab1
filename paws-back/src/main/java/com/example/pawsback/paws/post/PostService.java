@@ -66,4 +66,8 @@ public class PostService {
             throw new EntityNotFoundException("Could not find the post with name " + petName);
         }
     }
+
+    public List<Post> getAll(){
+        return postRepository.findAll();
+    }
 }
