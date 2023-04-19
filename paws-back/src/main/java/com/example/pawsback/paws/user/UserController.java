@@ -72,7 +72,7 @@ public class UserController {
     @GetMapping("/getInfo/{email}")
     public ResponseEntity<?> getInfo(@PathVariable String email){
         try{
-            return new ResponseEntity<>(service.getByEmail(email), HttpStatus.OK);
+            return new ResponseEntity<>(service.toInfoDTO(service.getByEmail(email)), HttpStatus.OK);
         }
         catch(EntityNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
