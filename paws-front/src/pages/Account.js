@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import Button from 'react-bootstrap/Button';
 import "../styles/Account.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -47,6 +48,11 @@ const Account = (props) => {
   };
   
 
+  const handleMyPosts = () => {
+    // Navigate to /donacion when My Posts is clicked
+    navigate("/donacion");
+  };
+
   return (
     <div className="all">
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
@@ -58,7 +64,7 @@ const Account = (props) => {
             <li className="account-action">Edit profile</li>
             <li className="account-action">Change password</li>
             <li className="account-action"> 
-            {isShelter ?  <div>My posts </div> : <div>Favourites</div>}
+              {isShelter ?  <div onClick={handleMyPosts}>My posts </div> : <div>Favourites</div>}
             </li>
             {isShelter ? <li className="account-action">View donation history</li> : null}
             <li className="account-action">View notifications</li>
@@ -68,9 +74,9 @@ const Account = (props) => {
               </button>
             </li>
             <li className="account-action">
-              <button className="delete-account-button" onClick={deleteAccount}>
+              <Button className="delete-account-button" variant="outline-danger" onClick={deleteAccount}>
                 Delete Account
-              </button>
+              </Button>
             </li>
           </ul>
         </div>

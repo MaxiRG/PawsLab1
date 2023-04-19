@@ -1,10 +1,15 @@
   import React, { useState } from 'react';
+  import { useNavigate } from "react-router-dom";
   import Footer from '../components/Footer';
   import Navbar from '../components/Navbar';
   import "../styles/Donacion.css";
   import Button from 'react-bootstrap/Button';
   import Card from 'react-bootstrap/Card';
-  import { post, get} from "../utils/http";
+  import { Form } from 'react-bootstrap';
+  import { post, get } from "../utils/http";
+
+
+
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -17,10 +22,11 @@
     const [petDescription, setPetDescription] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
-    
+    const [selectedPost, setSelectedPost] = useState(null);
+    const navigate = useNavigate();
+   
 
-
-
+  
     const handleMyPosts = (e) => {
       e.preventDefault();
 
@@ -46,15 +52,13 @@
         });
       }
 
-
-    
     const handleFormSubmit = (e) => {
       e.preventDefault();
       
       const body = {
         petName: petName,
         age: petAge,
-        sex: true,
+        sex: petSex === 'Male',
         race: petRace,
         description: petDescription
       };
@@ -81,6 +85,7 @@
           setPetRace('');
           setPetDescription('');
           setIsFormExpanded(false);
+          setErrorMessage('')
         })
         .catch(error => {
           console.error(error)
@@ -88,6 +93,13 @@
         });
       }
 
+      const handleDeletePost = (postId) => {
+        //setShowConfirmationModal(true);
+        const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+        if (confirmDelete) {
+          navigate("/")
+        }
+      }
       const handleFormCancel = () => {
         setPetName('');
         setPetSex('');
@@ -96,13 +108,18 @@
         setPetDescription('');
         setIsFormExpanded(false);
       }
+
     
 
     return (
       <div className='donacion'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
         <div className='body'>
-        <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
+        {!selectedPost && (
+          <>
+            <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
+          </>
+        )}
         {errorMessage && <div id="error-message">{errorMessage}</div>}
 
           {isFormExpanded && (
@@ -135,25 +152,62 @@
               <Button className='cancelButton' variant="outline-danger"  onClick={handleFormCancel}>Cancel</Button>
             </form>
           )}
-          <Button className='button' variant="light" onClick={handleMyPosts}> My posts </Button>
-            <div className='card-container'>
+          {!selectedPost && (
+          <>
+            <Button className='button' variant="light" onClick={handleMyPosts}> My posts </Button>
+          </>
+        )}
+           {selectedPost ? (
+            <div>
+              <div className="post-expanded">
+                <div className='post-info'>
+                {/* Contenido ampliado del post */}
+                  <h1 className='post-title'>{selectedPost.petName}</h1>
+                  <p className='info'>Sex: {selectedPost.sex ? 'Male' : 'Female'}</p>
+                  <p className='info'>Age: {selectedPost.age}</p>
+                  <p className='info'>Race: {selectedPost.race}</p>
+                  <p className='description'>Description: {selectedPost.description}</p>
+                </div>  
+                <div className='shelter-info'>
+                  <h1 className='shelter-title'>SHELTER</h1>
+                  <p className='description'>Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                  <p className='info'>Number: 5555-5555</p>
+                </div>
+              </div>  
+                <div className='expanded-buttons'>
+                    <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
+                    <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+                </div>
+              
+            </div>  
+            ):(
+              <div className='card-container'>
               {myPosts.length > 0 &&
               myPosts.map(post => (
-                <Card key={post.id} className="custom-card" >
+                <Card key={post.id} className="custom-card" onClick={() => setSelectedPost(post)} >
                   <Card.Body>
-                    <Card.Title>{post.petName}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">ID: {post.id}</Card.Subtitle>
+                    <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>
                       Sex: {post.sex ? 'Male' : 'Female'}<br />
                       Age: {post.age}<br />
                       Race: {post.race}<br />
                       Description: {post.description}<br />
                     </Card.Text>
+                    <Form.Check
+                      type="checkbox"
+                      label="Adopted"
+                      className="check"
+                      //checked={post.adopted} 
+                      //onChange={(e) => handleMarkAsAdopted(post._id, e.target.checked)} 
+                    />
+                    <Button variant="outline-danger" className="delete-button" onClick={() => handleDeletePost(post.id)}>Delete</Button> {}
+
                   </Card.Body>
                 </Card>
               ))
             }
           </div>
+            )}             
         </div>
         <Footer/>
       </div>
