@@ -48,6 +48,11 @@ const Account = (props) => {
   };
   
 
+  const handleMyPosts = () => {
+    // Navigate to /donacion when My Posts is clicked
+    navigate("/donacion");
+  };
+
   return (
     <div className="all">
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
@@ -59,7 +64,7 @@ const Account = (props) => {
             <li className="account-action">Edit profile</li>
             <li className="account-action">Change password</li>
             <li className="account-action"> 
-            {isShelter ?  <div>My posts </div> : <div>Favourites</div>}
+              {isShelter ?  <div onClick={handleMyPosts}>My posts </div> : <div>Favourites</div>}
             </li>
             {isShelter ? <li className="account-action">View donation history</li> : null}
             <li className="account-action">View notifications</li>
