@@ -82,21 +82,16 @@ public class UserService {
         } else throw new NoAuthorizationException("Incorrect password");
     }
 
-    public void modifyPhoneNumber(String token, int newPhone, int oldPhone) throws NoAuthorizationException {
+    public void modifyPhoneNumber(String token, int newPhone){
         User user = this.getByToken(token);
-        if (oldPhone == newPhone){
-            throw new NoAuthorizationException("Same as old phone number");
-        }
-        if (user.getPhoneNumber() == 0){
-            user.setPhoneNumber(newPhone);
-            userRepository.save(user);
-        }
-        else if(oldPhone == user.getPhoneNumber()){
-            user.setPhoneNumber(newPhone);
-            userRepository.save(user);
-        }
-        else
-            throw new NoAuthorizationException("Invalid phone number");
+        user.setPhoneNumber(newPhone);
+        userRepository.save(user);
+    }
+
+    public void modifyDescription(String token, String description){
+        User user = this.getByToken(token);
+        user.setDescription(description);
+        userRepository.save(user);
     }
 
     public String getEmail(String rawToken){
