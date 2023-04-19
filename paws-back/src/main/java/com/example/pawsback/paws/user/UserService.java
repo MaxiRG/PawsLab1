@@ -1,6 +1,7 @@
 package com.example.pawsback.paws.user;
 
 import com.example.pawsback.paws.user.model.User;
+import com.example.pawsback.paws.user.model.dto.InfoDTO;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
 import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
@@ -8,8 +9,8 @@ import com.example.pawsback.paws.user.security.jwt.JwtGeneratorImpl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -43,7 +44,14 @@ public class UserService {
     }
 
     public User getByEmail(String email){
-        return userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+        Optional<User> optional = Optional.ofNullable(user);
+        if(optional.isPresent()){
+            return user;
+        }
+        else{
+            throw new EntityNotFoundException("No user found with email " + email);
+        }
     }
 
     public User getByToken(String token){
@@ -78,6 +86,17 @@ public class UserService {
     public String getRole(String rawToken){
         String token = rawToken.substring(7);
         return jwtGenerator.parseToken(token).get("role", String.class);
+    }
+
+    public InfoDTO toInfoDTO(User user){
+        InfoDTO infoDTO = new InfoDTO();
+        infoDTO.setEmail(user.getEmail());
+        infoDTO.setRole(user.getRole());
+        infoDTO.setPhoneNumber(user.getPhoneNumber());
+        infoDTO.setSurname(user.getSurname());
+        infoDTO.setName(user.getName());
+        infoDTO.setDescription(user.getDescription());
+        return infoDTO;
     }
 
 }

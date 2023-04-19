@@ -31,8 +31,7 @@ public class JwtFilter extends GenericFilterBean {
                 Claims claims = Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token).getBody();
                 request.setAttribute("claims", claims);
                 request.setAttribute("blog", servletRequest.getParameter("id"));
-                filterChain.doFilter(request, response);
-            }
+                filterChain.doFilter(request, response);            }
         }
 
     }
