@@ -39,10 +39,10 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/deletePost/{petName}")
-    public ResponseEntity<?> deletePost(@PathVariable String petName, @RequestHeader("Authorization") String token) {
+    @DeleteMapping("/deletePost/{postId}")
+    public ResponseEntity<?> deletePost(@PathVariable int postId, @RequestHeader("Authorization") String token) {
         try {
-            postService.delete(petName, token);
+            postService.delete(postId, token);
             return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
         } catch (NoAuthorizationException | EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
