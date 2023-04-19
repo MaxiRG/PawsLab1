@@ -1,12 +1,12 @@
   import React, { useState } from 'react';
-  import { useNavigate } from "react-router-dom";
+  //import { useNavigate } from "react-router-dom";
   import Footer from '../components/Footer';
   import Navbar from '../components/Navbar';
   import "../styles/Donacion.css";
   import Button from 'react-bootstrap/Button';
   import Card from 'react-bootstrap/Card';
   import { Form } from 'react-bootstrap';
-  import { post, get } from "../utils/http";
+  import { post, get, del } from "../utils/http";
 
 
 
@@ -23,7 +23,7 @@
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
    
 
   
@@ -94,12 +94,30 @@
       }
 
       const handleDeletePost = (postId) => {
-        //setShowConfirmationModal(true);
+        console.log(postId)
         const confirmDelete = window.confirm("Are you sure you want to delete this post?");
         if (confirmDelete) {
-          navigate("/")
+          const token = localStorage.getItem('token');
+          const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json', 
+            }
+          }
+          del("/deletePost/" + postId  , config)
+            .then((data) => {
+            console.log(data)
+            console.log("success")
+            window.location.reload()
+          })
+          .catch((error) => {
+            console.log(error);
+            setErrorMessage("Failed to delete Post")
+            // handle error
+          });
+          }
         }
-      }
+
       const handleFormCancel = () => {
         setPetName('');
         setPetSex('');
@@ -107,6 +125,7 @@
         setPetRace('');
         setPetDescription('');
         setIsFormExpanded(false);
+        setErrorMessage('')
       }
 
     
@@ -114,13 +133,13 @@
     return (
       <div className='donacion'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
+        {errorMessage && <div id="error-message">{errorMessage}</div>}
         <div className='body'>
         {!selectedPost && (
           <>
             <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
           </>
         )}
-        {errorMessage && <div id="error-message">{errorMessage}</div>}
 
           {isFormExpanded && (
             <form className='form' onSubmit={handleFormSubmit}>
@@ -209,6 +228,7 @@
           </div>
             )}             
         </div>
+
         <Footer/>
       </div>
     );

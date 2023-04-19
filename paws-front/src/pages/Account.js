@@ -31,7 +31,6 @@ const Account = (props) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-
     };
     del("/api/deleteUser/" + email, config)
       .then((data) => {

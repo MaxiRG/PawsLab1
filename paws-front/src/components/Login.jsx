@@ -15,20 +15,19 @@ export const Login = (props) => {
         e.preventDefault();
     
         if (!email.trim()) {
-          alert('Please enter an email');
+          setErrorMessage('Please enter an email');
           return;
         }
       
         if (!password.trim()) {
-          alert('Please enter a password');
+          setErrorMessage('Please enter a password');
           return;
         }
          
         // Create a new user object with the form data
         const user = {
           email: email,
-          password: password,
-          
+          password: password
         };
     
         try {
