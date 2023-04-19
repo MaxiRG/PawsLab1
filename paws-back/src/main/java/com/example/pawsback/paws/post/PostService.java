@@ -41,8 +41,8 @@ public class PostService {
         return postRepository.findPostByUserId(userService.getByToken(token).getId());
     }
 
-    public void delete(String petName, String token) throws NoAuthorizationException {
-        Post post = postRepository.findPostByPetName(petName);
+    public void delete(int postId, String token) throws NoAuthorizationException {
+        Post post = postRepository.findPostById(postId);
         User user = userService.getByToken(token);
         if(post != null && user != null){
             if(post.getUser().getId() == user.getId()){
