@@ -1,5 +1,6 @@
 package com.example.pawsback.paws.user;
 
+import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
@@ -68,6 +69,17 @@ public class UserService {
         } else {
             throw new EntityNotFoundException("User not found for email: " + email);
         }
+    }
+
+    public void modifyPassword(String token, String newPassword, String oldPassword) throws NoAuthorizationException {
+        User user = this.getByToken(token);
+        if (oldPassword.equals(newPassword)){
+            throw new NoAuthorizationException("Same as old password");
+        }
+        if(encoder.matches(oldPassword,user.getPassword())){
+            user.setPassword(encoder.encode(newPassword));
+            userRepository.save(user);
+        } else throw new NoAuthorizationException("Incorrect password");
     }
 
     public String getEmail(String rawToken){

@@ -3,7 +3,6 @@ const request = (url, method, body, config) => {
     let headers = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        
     };
     const configuration = {
         method: method,
@@ -12,8 +11,8 @@ const request = (url, method, body, config) => {
     };
 
     console.log(configuration)
-    
-    return fetch('http://localhost:8080' + url, configuration)
+// insert your used port in http://localhost:num
+    return fetch('http://localhost:8090' + url, configuration)
 
 
         .then(response => {
