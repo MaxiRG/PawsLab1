@@ -26,6 +26,8 @@ public class JwtFilter extends GenericFilterBean {
         } else {
             if(authHeader == null || !authHeader.startsWith("Bearer ")){
                 throw new ServletException("An exception occurred");
+            }else{
+
             }
         }
         final String token = authHeader.substring(7);

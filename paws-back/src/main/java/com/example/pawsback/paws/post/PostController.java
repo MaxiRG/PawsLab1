@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class PostController {
 
@@ -55,6 +53,19 @@ public class PostController {
             return new ResponseEntity<>("Failed to delete post", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("/getPost/{petName}")
+    public ResponseEntity<?> getPost(@PathVariable String petName){
+        try{
+            return new ResponseEntity<>(postService.getPost(petName), HttpStatus.OK);
+        }
+        catch(EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Failed to get post", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }

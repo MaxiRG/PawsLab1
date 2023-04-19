@@ -8,9 +8,8 @@ import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -57,5 +56,14 @@ public class PostService {
         }
     }
 
-
+    public Post getPost(String petName) {
+        Post post = postRepository.findPostByPetName(petName);
+        Optional<Post> optional = Optional.ofNullable(post);
+        if(optional.isPresent()){
+            return post;
+        }
+        else{
+            throw new EntityNotFoundException("Could not find the post with name " + petName);
+        }
+    }
 }

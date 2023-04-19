@@ -8,8 +8,8 @@ import com.example.pawsback.paws.user.security.jwt.JwtGeneratorImpl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -43,7 +43,14 @@ public class UserService {
     }
 
     public User getByEmail(String email){
-        return userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+        Optional<User> optional = Optional.ofNullable(user);
+        if(optional.isPresent()){
+            return user;
+        }
+        else{
+            throw new EntityNotFoundException("No user found with email " + email);
+        }
     }
 
     public User getByToken(String token){
