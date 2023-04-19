@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class PostController {
 
@@ -39,19 +42,24 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/deletePost/{postId}")
+    @DeleteMapping(value = "/deletePost/{postId}", consumes = {"application/json"})
     public ResponseEntity<?> deletePost(@PathVariable int postId, @RequestHeader("Authorization") String token) {
         try {
             postService.delete(postId, token);
-            return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Post deleted successfully");
+            return ResponseEntity.ok(response);
         } catch (NoAuthorizationException | EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
-
+            return ResponseEntity.ok("{\"error\":\"" + e.getMessage() + "\"}");
         } catch (Exception e) {
-            return new ResponseEntity<>("Failed to delete post", HttpStatus.INTERNAL_SERVER_ERROR);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to delete Post");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
     }
+
 
     @GetMapping("/getPost/{petName}")
     public ResponseEntity<?> getPost(@PathVariable String petName) {
