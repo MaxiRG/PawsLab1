@@ -14,7 +14,6 @@
   function Donacion(props) {
     const { isLoggedIn } = props;
     const { isShelter } = props;
-    const [isFormExpanded, setIsFormExpanded] = useState(false);
     const [petName, setPetName] = useState('');
     const [petSex, setPetSex] = useState('');
     const [petAge, setPetAge] = useState('');
