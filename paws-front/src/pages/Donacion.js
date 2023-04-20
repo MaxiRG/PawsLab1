@@ -6,7 +6,7 @@
   import Button from 'react-bootstrap/Button';
   import Card from 'react-bootstrap/Card';
   import { Form } from 'react-bootstrap';
-  import { post, get } from "../utils/http";
+  import { post, get, del } from "../utils/http";
 
 
 
@@ -94,12 +94,33 @@
       }
 
       const handleDeletePost = (postId) => {
-        //setShowConfirmationModal(true);
+        console.log(postId)
+        
         const confirmDelete = window.confirm("Are you sure you want to delete this post?");
         if (confirmDelete) {
-          navigate("/")
+          const token = localStorage.getItem('token');
+          const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json', 
+            }
+          }
+          del("/deletePost/" + postId  , config)
+            .then((data) => {
+            console.log(data)
+            console.log("success")
+            setErrorMessage('')
+            navigate('/')
+            
+          })
+          .catch((error) => {
+            console.log(error);
+            setErrorMessage("Failed to delete Post")
+            // handle error
+          });
+          }
         }
-      }
+
       const handleFormCancel = () => {
         setPetName('');
         setPetSex('');
@@ -107,6 +128,7 @@
         setPetRace('');
         setPetDescription('');
         setIsFormExpanded(false);
+        setErrorMessage('')
       }
 
     
@@ -114,13 +136,13 @@
     return (
       <div className='donacion'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
+        {errorMessage && <div id="error-message">{errorMessage}</div>}
         <div className='body'>
         {!selectedPost && (
           <>
             <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
           </>
         )}
-        {errorMessage && <div id="error-message">{errorMessage}</div>}
 
           {isFormExpanded && (
             <form className='form' onSubmit={handleFormSubmit}>
@@ -177,6 +199,8 @@
                 <div className='expanded-buttons'>
                     <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
                     <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+                    <Button variant="outline-danger" className="deleteButton" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
+
                 </div>
               
             </div>  
@@ -200,8 +224,6 @@
                       //checked={post.adopted} 
                       //onChange={(e) => handleMarkAsAdopted(post._id, e.target.checked)} 
                     />
-                    <Button variant="outline-danger" className="delete-button" onClick={() => handleDeletePost(post.id)}>Delete</Button> {}
-
                   </Card.Body>
                 </Card>
               ))
@@ -209,6 +231,7 @@
           </div>
             )}             
         </div>
+
         <Footer/>
       </div>
     );

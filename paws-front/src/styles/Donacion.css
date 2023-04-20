@@ -14,6 +14,9 @@
   flex-direction: column;
 }
 
+
+
+
 .submitButton {
   margin: 1rem;
 }
@@ -57,9 +60,10 @@
   font-size: 19px;
 }
 
-.delete-button{
-  margin-top: 5px;
+.deleteButton{
+  margin-top: 8px;
 }
+
 
 .post-expanded {
   display: flex;
