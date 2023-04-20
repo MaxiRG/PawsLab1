@@ -1,5 +1,5 @@
   import React, { useState } from 'react';
-  //import { useNavigate } from "react-router-dom";
+  import { useNavigate } from "react-router-dom";
   import Footer from '../components/Footer';
   import Navbar from '../components/Navbar';
   import "../styles/Donacion.css";
@@ -23,7 +23,7 @@
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
    
 
   
@@ -95,6 +95,7 @@
 
       const handleDeletePost = (postId) => {
         console.log(postId)
+        
         const confirmDelete = window.confirm("Are you sure you want to delete this post?");
         if (confirmDelete) {
           const token = localStorage.getItem('token');
@@ -108,7 +109,9 @@
             .then((data) => {
             console.log(data)
             console.log("success")
-            window.location.reload()
+            setErrorMessage('')
+            navigate('/')
+            
           })
           .catch((error) => {
             console.log(error);
@@ -196,6 +199,8 @@
                 <div className='expanded-buttons'>
                     <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
                     <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+                    <Button variant="outline-danger" className="deleteButton" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
+
                 </div>
               
             </div>  
@@ -219,8 +224,6 @@
                       //checked={post.adopted} 
                       //onChange={(e) => handleMarkAsAdopted(post._id, e.target.checked)} 
                     />
-                    <Button variant="outline-danger" className="delete-button" onClick={() => handleDeletePost(post.id)}>Delete</Button> {}
-
                   </Card.Body>
                 </Card>
               ))
