@@ -3,12 +3,16 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { get } from "../utils/http";
 import '../styles/Busqueda.css'
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 function Busqueda(props) {
   const { isLoggedIn, isShelter } = props;
   const [posts, setPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedPost, setSelectedPost] = useState(null);
+
+
   const [searchFilters, setSearchFilters] = useState({
     animal: '',
     age: '',
@@ -43,60 +47,62 @@ function Busqueda(props) {
     <div className='all'>
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
       <div className='body'>
-        <form onSubmit={handleSearch}>
-          <label htmlFor="animal-filter"> Animal: </label>
-          <select
-            id="animal-filter"
-            name="animal"
-            value={searchFilters.animal}
-            onChange={handleFilterChange}
-          >
-            <option value="">Cualquier animal</option>
-            <option value="gato">Gato</option>
-            <option value="perro">Perro</option>
-          </select>
-          <label htmlFor="age-filter">Edad: </label>
+      {!selectedPost && (
+          <form onSubmit={handleSearch}>
+          <label htmlFor="age-filter">Age: </label>
           <select
             id="age-filter"
             name="age"
             value={searchFilters.age}
             onChange={handleFilterChange}
           >
-            <option value="">Cualquier edad</option>
-            <option value="joven">Joven</option>
-            <option value="adulto">Adulto</option>
-            <option value="senior">Senior</option>
+            <option value="">Any age</option>
+            <option value="puppy">Puppy</option>
+            <option value="adult">Adult</option>
+            
           </select>
-          <label htmlFor="sex-filter"> Sexo: </label>
+          <label htmlFor="sex-filter"> Sex: </label>
           <select
             id="sex-filter"
             name="sex"
             value={searchFilters.sex}
             onChange={handleFilterChange}
           >
-            <option value="">Cualquier sexo</option>
-            <option value="macho">Macho</option>
-            <option value="hembra">Hembra</option>
-          </select>
-          <label htmlFor="race-filter"> Raza:</label>
-          <select
-            id="race-filter"
-            name="race"
-            value={searchFilters.race}
-            onChange={handleFilterChange}
-          >
-            <option value="">Cualquier raza</option>
-            <option value="labrador">Labrador</option>
-            <option value="pastor_aleman">Pastor alemán</option>
-            <option value="bulldog_frances">Bulldog francés</option>
+            <option value="">Any sex</option>
+            <option value="macho">Male</option>
+            <option value="hembra">Female</option>
           </select>
           <button className='submit' type="submit">Buscar</button>
-        </form>
+        </form>     
+        )}
         {errorMessage && <div id="error-message">{errorMessage}</div>}
-        <div className='card-container'>
+
+        {selectedPost ? (
+          <div>
+          <div className="post-expanded">
+            <div className='post-info'>
+            {/* Contenido ampliado del post */}
+              <h1 className='post-title'>{selectedPost.petName}</h1>
+              <p className='info'>Sex: {selectedPost.sex ? 'Male' : 'Female'}</p>
+              <p className='info'>Age: {selectedPost.age}</p>
+              <p className='info'>Race: {selectedPost.race}</p>
+              <p className='description'>Description: {selectedPost.description}</p>
+            </div>  
+            <div className='shelter-info'>
+              <h1 className='shelter-title'>SHELTER</h1>
+              <p className='description'>Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+              <p className='info'>Number: 5555-5555</p>
+            </div>
+          </div>  
+            <div className='expanded-buttons'>
+                <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+            </div>   
+        </div> 
+        ):(
+          <div className='card-container'>
               {posts.length > 0 &&
               posts.map(post => (
-                <Card key={post.id} className="custom-card" >
+                <Card key={post.id} className="custom-card" onClick={() => setSelectedPost(post)} >
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>
@@ -110,10 +116,8 @@ function Busqueda(props) {
               ))
             }
           </div>
+        )}
         </div>
-        
-
-        
       <Footer />
     </div>
   );
