@@ -14,10 +14,8 @@ function Busqueda(props) {
 
 
   const [searchFilters, setSearchFilters] = useState({
-    animal: '',
     age: '',
     sex: '',
-    race: ''
   });
 
   const handleSearch = (event) => {
