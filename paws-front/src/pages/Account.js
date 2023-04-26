@@ -14,7 +14,6 @@
   const Account = (props) => {
     const { isLoggedIn, isShelter } = props;
     const [profile, setProfile] = useState(null);
-    //const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
 
 
@@ -25,16 +24,20 @@
       const email = decodedToken.sub;
       console.log(email); 
 
-      // Fetch profile data from the server
+      
       get("/api/getInfo/" + email)
         .then((data) => {
           console.log(data);
-          setProfile(data); // Update the profile state with the fetched data
+          setProfile(data);
+          
         })
         .catch((error) => {
           console.log(error);
+         
         });
     }, []);
+
+   
 
     const handleLogout = () => {
       localStorage.removeItem("token"); // Remove the token from localStorage
@@ -74,6 +77,8 @@
       navigate("/donacion");
     };
 
+  
+
     return (
       <div className="all">
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
@@ -84,19 +89,19 @@
                  <ProfileCard
                   name={profile.name}
                   email={profile.email}
-                  number={profile.phoneNumber}/>
+                  number={profile.phoneNumber}
+                  description={profile.description}/>
                 ) : <p>Failed to fetch user info</p>}
             </div>
             
             <ul className="account-actions">
              
-              <li className="account-action">Edit profile</li>
-              <li className="account-action">Change password</li>
+              <li className="account-action"><Button className="action-button">Change password</Button></li>
               <li className="account-action">
-                {isShelter ? <div onClick={handleMyPosts}>My posts </div> : <div>Favourites</div>}
+                {isShelter ? <Button className="action-button"onClick={handleMyPosts}>My posts </Button> : <Button className="action-button">Favourites</Button>}
               </li>
-              {isShelter ? <li className="account-action">View donation history</li> : null}
-              <li className="account-action">View notifications</li>
+              {isShelter ? <li className="account-action"><Button className="action-button">View donation history</Button></li> : null}
+              <li className="account-action"><Button className="action-button">View notifications</Button></li>
               <li className="account-logout">
                 <button className="logout-button" onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} /> Log out
