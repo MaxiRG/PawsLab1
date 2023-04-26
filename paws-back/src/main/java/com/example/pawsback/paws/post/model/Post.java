@@ -28,6 +28,9 @@ public class Post {
     @Column(name = "description")
     private String description;
 
+    @Column (name = "isAdopted")
+    private boolean isAdopted;
+
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;

@@ -1,9 +1,7 @@
 package com.example.pawsback.paws.user;
 
 import com.example.pawsback.paws.user.model.User;
-import com.example.pawsback.paws.user.model.dto.ChangePasswordDTO;
-import com.example.pawsback.paws.user.model.dto.LogInDTO;
-import com.example.pawsback.paws.user.model.dto.RegisterDTO;
+import com.example.pawsback.paws.user.model.dto.*;
 import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
 import com.example.pawsback.paws.user.security.jwt.JwtGeneratorInterface;
 import jakarta.persistence.EntityNotFoundException;
@@ -59,10 +57,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/modifyPhoneNumber/{newPhoneNumber}")
-    public ResponseEntity<Object> modifyPhoneNumber(@PathVariable int newPhoneNumber,@RequestHeader("Authorization") String token){
+    @PutMapping("/modifyPhoneNumber")
+    public ResponseEntity<Object> modifyPhoneNumber(@RequestBody ChangePhoneDTO phoneDTO, @RequestHeader("Authorization") String token){
         try{
-            service.modifyPhoneNumber(token,newPhoneNumber);
+            service.modifyPhoneNumber(token,phoneDTO.getPhoneNumber());
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message","Changed phone number successfully");
@@ -75,10 +73,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/modifyDescription/{description}")
-    public ResponseEntity<Object> modifyDescription(@PathVariable String description, @RequestHeader("Authorization") String token) {
+    @PutMapping("/modifyDescription")
+    public ResponseEntity<Object> modifyDescription(@RequestBody ChangeDescriptionDTO changeDescriptionDTO, @RequestHeader("Authorization") String token) {
         try{
-            service.modifyDescription(token,description);
+            service.modifyDescription(token, changeDescriptionDTO.getDescription());
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message","Changed description successfully");
@@ -91,10 +89,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/modifyEmail/{newEmail}")
-    public ResponseEntity<Object> modifyEmail(@PathVariable String newEmail, @RequestHeader("Authorization") String token) {
+    @PutMapping("/modifyEmail")
+    public ResponseEntity<Object> modifyEmail(@RequestBody ChangeEmailDTO changeEmailDTO, @RequestHeader("Authorization") String token) {
         try{
-            service.modifyEmail(newEmail,token);
+            service.modifyEmail(changeEmailDTO.getEmail(), token);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message","Changed email successfully");
@@ -107,10 +105,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/modifyName/{newName}")
-    public ResponseEntity<Object> modifyName(@PathVariable String newName, @RequestHeader("Authorization") String token) {
+    @PutMapping("/modifyName")
+    public ResponseEntity<Object> modifyName(@RequestBody ChangeNameDTO nameDTO, @RequestHeader("Authorization") String token) {
         try{
-            service.modifyName(newName,token);
+            service.modifyName(nameDTO.getName(), token);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message","Changed name successfully");
@@ -123,10 +121,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/modifySurname/{newSurname}")
-    public ResponseEntity<Object> modifySurname(@PathVariable String newSurname, @RequestHeader("Authorization") String token) {
+    @PutMapping("/modifySurname")
+    public ResponseEntity<Object> modifySurname(@RequestBody ChangeSurnameDTO changeSurnameDTO, @RequestHeader("Authorization") String token) {
         try{
-            service.modifySurname(newSurname,token);
+            service.modifySurname(changeSurnameDTO.getSurname(), token);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message","Changed surname successfully");
