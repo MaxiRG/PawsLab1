@@ -69,7 +69,7 @@
       const config = {
         headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', // Set your authorization header here
+            'Content-Type': 'application/json', 
         }
       }
       console.log(config)
