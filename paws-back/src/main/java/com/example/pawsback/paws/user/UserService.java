@@ -1,5 +1,6 @@
 package com.example.pawsback.paws.user;
 
+import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.InfoDTO;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
@@ -81,6 +82,50 @@ public class UserService {
         } else {
             throw new EntityNotFoundException("User not found for email: " + email);
         }
+    }
+    public void modifyEmail(String newEmail,String token) throws EmailNotValidException {
+        User user = this.getByToken(token);
+        if (!emailValid(newEmail)) {
+            throw new EmailNotValidException("Email:" + newEmail + " already exists or is invalid");
+        }else{
+            user.setEmail(newEmail);
+            userRepository.save(user);
+        }
+    }
+
+    public void modifyPassword(String token, String newPassword, String oldPassword) throws NoAuthorizationException {
+        User user = this.getByToken(token);
+        if (oldPassword.equals(newPassword)){
+            throw new NoAuthorizationException("Same as old password");
+        }
+        if(encoder.matches(oldPassword,user.getPassword())){
+            user.setPassword(encoder.encode(newPassword));
+            userRepository.save(user);
+        } else throw new NoAuthorizationException("Incorrect password");
+    }
+
+    public void modifyName(String name,String token){
+        User user = this.getByToken(token);
+        user.setName(name);
+        userRepository.save(user);
+    }
+
+    public void modifySurname(String surname, String token){
+        User user = this.getByToken(token);
+        user.setSurname(surname);
+        userRepository.save(user);
+    }
+
+    public void modifyPhoneNumber(String token, int newPhone){
+        User user = this.getByToken(token);
+        user.setPhoneNumber(newPhone);
+        userRepository.save(user);
+    }
+
+    public void modifyDescription(String token, String description){
+        User user = this.getByToken(token);
+        user.setDescription(description);
+        userRepository.save(user);
     }
 
     public String getEmail(String rawToken){

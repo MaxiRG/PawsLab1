@@ -1,6 +1,7 @@
 package com.example.pawsback.paws.user;
 
 import com.example.pawsback.paws.user.model.User;
+import com.example.pawsback.paws.user.model.dto.ChangePasswordDTO;
 import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
 import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
@@ -38,6 +39,102 @@ public class UserController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifyPassword/{email}")
+    public ResponseEntity<Object> modifyPassword(@RequestBody ChangePasswordDTO changePasswordDTO,@RequestHeader("Authorization") String token) {
+        try{
+            service.modifyPassword(token , changePasswordDTO.getNewPassword(), changePasswordDTO.getOldPassword());
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed password successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify user password," + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifyPhoneNumber/{newPhoneNumber}")
+    public ResponseEntity<Object> modifyPhoneNumber(@PathVariable int newPhoneNumber,@RequestHeader("Authorization") String token){
+        try{
+            service.modifyPhoneNumber(token,newPhoneNumber);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed phone number successfully");
+            return ResponseEntity.ok(response);
+        }catch (Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify phone number");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifyDescription/{description}")
+    public ResponseEntity<Object> modifyDescription(@PathVariable String description, @RequestHeader("Authorization") String token) {
+        try{
+            service.modifyDescription(token,description);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed description successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify description");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifyEmail/{newEmail}")
+    public ResponseEntity<Object> modifyEmail(@PathVariable String newEmail, @RequestHeader("Authorization") String token) {
+        try{
+            service.modifyEmail(newEmail,token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed email successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify email" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifyName/{newName}")
+    public ResponseEntity<Object> modifyName(@PathVariable String newName, @RequestHeader("Authorization") String token) {
+        try{
+            service.modifyName(newName,token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed name successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify name" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/modifySurname/{newSurname}")
+    public ResponseEntity<Object> modifySurname(@PathVariable String newSurname, @RequestHeader("Authorization") String token) {
+        try{
+            service.modifySurname(newSurname,token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","Changed surname successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to modify surname" + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

@@ -11,7 +11,7 @@ public class FilterConfig {
     public FilterRegistrationBean jwtFilter() {
         FilterRegistrationBean filter= new FilterRegistrationBean();
         filter.setFilter(new JwtFilter());
-        filter.addUrlPatterns("/restricted", "/createPost");
+        filter.addUrlPatterns("/restricted", "/createPost", "/modifyPassword");
         return filter;
     }
 }
