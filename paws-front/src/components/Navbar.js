@@ -27,20 +27,20 @@ function Navbar(props) {
       <div className="navbar-links">
         <ul>
           <li>
-            <a href="/#quienes-somos">Nosotros</a>
+            <a href="/#quienes-somos">About us</a>
           </li>
           <li>
-            <a href="/#adopciones">Historial</a>
+            <a href="/#adopciones">History</a>
           </li>
           <li>
             {isShelter ? (
-              <Link to="/donacion">Donar</Link>
+              <Link to="/donacion">Donate</Link>
             ) : (
-              <Link to="/busqueda">Adoptar</Link>
+              <Link to="/busqueda">Adopt</Link>
             )}
           </li>
           <li>
-            <a href="/#contacto">Contacto</a>
+            <a href="/#contacto">Contact us</a>
           </li>
           <li>
             {isLoggedIn ? (

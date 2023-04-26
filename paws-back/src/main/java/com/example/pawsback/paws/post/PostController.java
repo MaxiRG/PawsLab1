@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class PostController {
@@ -21,40 +22,64 @@ public class PostController {
         this.postService = postService;
     }
 
+
     @PostMapping(value = "/createPost", consumes = {"application/json"})
     public ResponseEntity<?> createPost(@RequestBody Post post, @RequestHeader("Authorization") String token){
         try{
             PostDTO postDTO = postService.toDto(postService.save(post, token), token);
             return new ResponseEntity<>(postDTO, HttpStatus.OK);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("Failed to create post", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/getMyPosts")
-    public ResponseEntity<?> getMyPosts(@RequestHeader("Authorization") String token){
-        try{
+    public ResponseEntity<?> getMyPosts(@RequestHeader("Authorization") String token) {
+        try {
             return new ResponseEntity<>(postService.getMyPosts(token), HttpStatus.OK);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("Failed to get posts", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/deletePost/{petName}")
-    public ResponseEntity<?> deletePost(@PathVariable String petName, @RequestHeader("Authorization") String token){
-        try{
-            postService.delete(petName, token);
-            return new ResponseEntity<>("Post deleted successfully", HttpStatus.OK);
+    @DeleteMapping(value = "/deletePost/{postId}", consumes = {"application/json"})
+    public ResponseEntity<?> deletePost(@PathVariable int postId, @RequestHeader("Authorization") String token) {
+        try {
+            postService.delete(postId, token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", "Post deleted successfully");
+            return ResponseEntity.ok(response);
+        } catch (NoAuthorizationException | EntityNotFoundException e) {
+            return ResponseEntity.ok("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to delete Post");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        catch(NoAuthorizationException | EntityNotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
-
-        } catch(Exception e){
-            return new ResponseEntity<>("Failed to delete post", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     }
-    
+
+
+    @GetMapping("/getPost/{petName}")
+    public ResponseEntity<?> getPost(@PathVariable String petName) {
+        try {
+            return new ResponseEntity<>(postService.getPost(petName), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get post", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAll() {
+        try {
+            return new ResponseEntity<>(postService.getAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve posts", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
+    
+

@@ -6,6 +6,7 @@ import com.example.pawsback.paws.user.model.dto.LogInDTO;
 import com.example.pawsback.paws.user.model.dto.RegisterDTO;
 import com.example.pawsback.paws.user.model.exceptions.EmailNotValidException;
 import com.example.pawsback.paws.user.security.jwt.JwtGeneratorInterface;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class UserController {
         } catch (EmailNotValidException e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
-            response.put("message", "Failed to create user");
+            response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
@@ -114,6 +115,19 @@ public class UserController {
         }
         catch (jakarta.persistence.EntityNotFoundException e){
             return new ResponseEntity<>("Wrong credentials", HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/getInfo/{email}")
+    public ResponseEntity<?> getInfo(@PathVariable String email){
+        try{
+            return new ResponseEntity<>(service.toInfoDTO(service.getByEmail(email)), HttpStatus.OK);
+        }
+        catch(EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Failed to get user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

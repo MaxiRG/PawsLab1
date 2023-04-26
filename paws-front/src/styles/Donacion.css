@@ -1,5 +1,11 @@
-.donacion{
-  background: linear-gradient(to bottom, rgba(255, 207, 118, 1) 0%, rgba(255, 207, 118, 0.5) 50%, rgba(255, 207, 118, 1) 100%);
+:root {
+  --color-primary: rgba(255, 207, 118, 1);
+  --color-secondary: rgba(255, 207, 118, 0.5);
+  --color-accent: #ff960c;
+}
+
+.donacion {
+  background: linear-gradient(to bottom, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-primary) 100%);
 }
 
 .body {
@@ -8,8 +14,9 @@
   flex-direction: column;
 }
 
+
 .submitButton {
-  margin: 10px;
+  margin: 1rem;
 }
 
 .form{
@@ -21,21 +28,77 @@
 
 .button{
   height: 100px;
-  margin: 10px;
+  margin: 1rem;
 }
 
 .custom-card {
-  margin: 10px;
-  width: calc(33.33% - 20px);
+  margin: 1rem;
+  width: calc(33.33% - 2rem);
+  background-color: #f0f0f0;
 }
 
 .custom-card:hover {
   background-color: #e2e6ea; 
-  border-color: #ff960c; 
+  border-color: var(--color-accent); 
 }
 
 .card-container {
   display: flex;
-  flex-wrap: wrap; 
-  justify-content: space-between; 
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+
+.card-title{
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.check label{
+  font-size: 19px;
+}
+
+.deleteButton{
+  margin: 8px;
+}
+
+
+.post-expanded {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  
+}
+
+.post-expanded h1 {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  
+  
+}
+.post-expanded .post-info {
+  font-size: 20px;
+  width: 40%;
+}
+
+.post-expanded .shelter-info {
+  font-size: 20px;
+  width: 40%;
+}
+
+
+.post-expanded .post-actions button {
+  margin-right: 10px;
+}
+
+ .expanded-buttons{
+  display: flex;
+  flex-direction: column;
+}
+
+.expanded-button{
+
+  margin: 7px;
 }
