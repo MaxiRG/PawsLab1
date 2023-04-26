@@ -1,7 +1,6 @@
 package com.example.pawsback.paws.image;
 
 import com.example.pawsback.paws.image.model.Image;
-import com.example.pawsback.paws.image.model.dto.UploadDTO;
 import com.example.pawsback.paws.post.PostRepository;
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
@@ -29,8 +28,8 @@ public class ImageService {
     }
 
 
-    public void upload(UploadDTO dto, String token, MultipartFile imageData) throws NoAuthorizationException, IOException {
-        Post post = postRepository.findPostById(dto.getPostId());
+    public void upload(int id, String token, MultipartFile imageData) throws NoAuthorizationException, IOException {
+        Post post = postRepository.findPostById(id);
         User user = userService.getByToken(token);
         if(post.getUser() != user){
             throw new NoAuthorizationException("You dont have authorization to do this");

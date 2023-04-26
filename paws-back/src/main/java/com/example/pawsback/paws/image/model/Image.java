@@ -15,6 +15,6 @@ public class Image {
     @Lob
     private byte[] imageData;
 
-    @OneToOne(mappedBy = "Image")
+    @OneToOne(mappedBy = "profilePicture")
     private Post post;
 }
