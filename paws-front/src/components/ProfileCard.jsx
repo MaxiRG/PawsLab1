@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { FaPencilAlt } from 'react-icons/fa';
 import '../styles/ProfileCard.css';
 import { put } from "../utils/http";
 
 const ProfileCard = ({ name, number, description, email }) => {
-
   const [showEditDescription, setShowEditDescription] = useState(false);
   const [showEditNumber, setShowEditNumber] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
@@ -42,8 +42,6 @@ const ProfileCard = ({ name, number, description, email }) => {
     const body = {
       description: editedDescription
     }
-
-    console.log(body);
 
     put("/api/modifyDescription",body, config)
       .then((data) => {
@@ -105,7 +103,7 @@ const ProfileCard = ({ name, number, description, email }) => {
           <div>
             <p className="profile-card-number">
               Description: {description}
-              <button onClick={handleEditDescription}>Edit Description</button>
+              <FaPencilAlt className='pencil' onClick={handleEditDescription} />
             </p>
           </div>
         )}
@@ -122,11 +120,12 @@ const ProfileCard = ({ name, number, description, email }) => {
           <div>
             <p className="profile-card-number">
               Number: {number}
-              <button onClick={handleEditNumber}>Edit Number</button>
+              <FaPencilAlt className='pencil' onClick={handleEditNumber} />
             </p>
           </div>
         )}
       </div>
+
     </div>
   );
 };
