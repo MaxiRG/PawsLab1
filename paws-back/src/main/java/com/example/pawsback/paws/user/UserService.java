@@ -1,5 +1,6 @@
 package com.example.pawsback.paws.user;
 
+import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.InfoDTO;
@@ -74,7 +75,6 @@ public class UserService {
             }
     }
 
-
     public void delete(String email) {
         User user = getByEmail(email);
         if (user != null) {
@@ -83,6 +83,7 @@ public class UserService {
             throw new EntityNotFoundException("User not found for email: " + email);
         }
     }
+
     public void modifyEmail(String newEmail,String token) throws EmailNotValidException {
         User user = this.getByToken(token);
         if (!emailValid(newEmail)) {
