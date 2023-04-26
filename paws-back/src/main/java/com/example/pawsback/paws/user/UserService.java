@@ -83,6 +83,15 @@ public class UserService {
             throw new EntityNotFoundException("User not found for email: " + email);
         }
     }
+    public void modifyEmail(String newEmail,String token) throws EmailNotValidException {
+        User user = this.getByToken(token);
+        if (!emailValid(newEmail)) {
+            throw new EmailNotValidException("Email:" + newEmail + " already exists or is invalid");
+        }else{
+            user.setEmail(newEmail);
+            userRepository.save(user);
+        }
+    }
 
     public void modifyPassword(String token, String newPassword, String oldPassword) throws NoAuthorizationException {
         User user = this.getByToken(token);
@@ -93,6 +102,18 @@ public class UserService {
             user.setPassword(encoder.encode(newPassword));
             userRepository.save(user);
         } else throw new NoAuthorizationException("Incorrect password");
+    }
+
+    public void modifyName(String name,String token){
+        User user = this.getByToken(token);
+        user.setName(name);
+        userRepository.save(user);
+    }
+
+    public void modifySurname(String surname, String token){
+        User user = this.getByToken(token);
+        user.setSurname(surname);
+        userRepository.save(user);
     }
 
     public void modifyPhoneNumber(String token, int newPhone){
