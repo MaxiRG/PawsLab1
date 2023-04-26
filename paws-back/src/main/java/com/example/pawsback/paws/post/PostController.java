@@ -34,21 +34,21 @@ public class PostController {
         }
     }
 
-//    @PutMapping("/modifyAdoptedStatus")
-//    public ResponseEntity<Object> modifyAdoptedStatus(@RequestBody ChangeAdoptedStatusDTO changeStatusDTO, @RequestHeader("Authorization") String token){
-//        try{
-//            postService.modifyAdoptedStatus(changeStatusDTO.isNewStatus(), changeStatusDTO.getPostID(), token);
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("success", true);
-//            response.put("message","changed status successfully");
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e){
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("success", false);
-//            response.put("message", "Failed to change status, " + e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
-//    }
+    @PutMapping("/modifyAdoptedStatus")
+    public ResponseEntity<Object> modifyAdoptedStatus(@RequestBody ChangeAdoptedStatusDTO changeStatusDTO, @RequestHeader("Authorization") String token){
+        try{
+            postService.modifyAdoptedStatus(changeStatusDTO.isNewStatus(), changeStatusDTO.getPostID(), token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","changed status successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to change status, " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
     @GetMapping("/getMyPosts")
     public ResponseEntity<?> getMyPosts(@RequestHeader("Authorization") String token) {
