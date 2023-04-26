@@ -41,7 +41,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/modifyPassword/{email}")
+    @PutMapping("/modifyPassword")
     public ResponseEntity<Object> modifyPassword(@RequestBody ChangePasswordDTO changePasswordDTO,@RequestHeader("Authorization") String token) {
         try{
             service.modifyPassword(token , changePasswordDTO.getNewPassword(), changePasswordDTO.getOldPassword());

@@ -26,18 +26,18 @@ public class PostService {
         return postRepository.save(post);
     }
 
-//    public void modifyAdoptedStatus(boolean status, int postId, String token) throws NoAuthorizationException {
-//        Post post = postRepository.findPostById(postId);
-//        if (post == null){
-//            throw new EntityNotFoundException("Post does not exist");
-//        }
-//        User user = userService.getByToken(token);
-//        if (post.getUser().getId() == user.getId()){
-//            post.setAdopted(status);
-//            postRepository.save(post);
-//        }else throw new NoAuthorizationException("Invalid id");
-//
-//    }
+    public void modifyAdoptedStatus(boolean status, int postId, String token) throws NoAuthorizationException {
+        Post post = postRepository.findPostById(postId);
+        if (post == null){
+            throw new EntityNotFoundException("Post does not exist");
+        }
+        User user = userService.getByToken(token);
+        if (post.getUser().getId() == user.getId()){
+            post.setAdopted(status);
+            postRepository.save(post);
+        }else throw new NoAuthorizationException("Invalid id");
+
+    }
 
     public PostDTO toDto(Post post, String token) {
         PostDTO postDTO = new PostDTO();
