@@ -90,7 +90,8 @@
                   name={profile.name}
                   email={profile.email}
                   number={profile.phoneNumber}
-                  description={profile.description}/>
+                  description={profile.description}
+                  isLoggedIn={isLoggedIn}/>
                 ) : <p>Failed to fetch user info</p>}
             </div>
             
