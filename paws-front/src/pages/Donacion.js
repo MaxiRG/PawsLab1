@@ -23,6 +23,7 @@
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [cardShelter, setCardShelter] = useState(null);
     const navigate = useNavigate();
    
 
@@ -131,6 +132,19 @@
         setErrorMessage('')
       }
 
+      const handleSelectedPost = (post) => {
+        console.log(post.user.id)
+        get("/api/getInfoById/" + post.user.id)
+        .then((data) => {
+          console.log(data);
+          setCardShelter(data)
+          setSelectedPost(post);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+
     
 
     return (
@@ -191,9 +205,9 @@
                   <p className='description'>Description: {selectedPost.description}</p>
                 </div>  
                 <div className='shelter-info'>
-                  <h1 className='shelter-title'>SHELTER</h1>
-                  <p className='description'>Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                  <p className='info'>Number: 5555-5555</p>
+                  <h1 className='shelter-title'>{cardShelter.name}</h1>
+                  <p className='description'>Description: {cardShelter.description}</p>
+                  <p className='info'>Number: {cardShelter.phoneNumber}</p>
                 </div>
               </div>  
                 <div className='expanded-buttons'>
@@ -208,7 +222,7 @@
               <div className='card-container'>
               {myPosts.length > 0 &&
               myPosts.map(post => (
-                <Card key={post.id} className="custom-card" onClick={() => setSelectedPost(post)} >
+                <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>

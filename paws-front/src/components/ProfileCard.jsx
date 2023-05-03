@@ -91,8 +91,6 @@ const ProfileCard = ({ name, number, description, email }) => {
         });
   }
  
-  
-
 
   return (
     <div className="profile-card">
