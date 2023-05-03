@@ -2,14 +2,12 @@
   import { useNavigate } from "react-router-dom";
   import Footer from '../components/Footer';
   import Navbar from '../components/Navbar';
+  import SelectedPost from '../components/SelectedPost';
   import "../styles/Donacion.css";
   import Button from 'react-bootstrap/Button';
   import Card from 'react-bootstrap/Card';
   import { Form } from 'react-bootstrap';
   import { post, get, del } from "../utils/http";
-
-
-
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -26,8 +24,6 @@
     const [cardShelter, setCardShelter] = useState(null);
     const navigate = useNavigate();
    
-
-  
     const handleMyPosts = (e) => {
       e.preventDefault();
 
@@ -195,27 +191,12 @@
         )}
            {selectedPost ? (
             <div>
-              <div className="post-expanded">
-                <div className='post-info'>
-                {/* Contenido ampliado del post */}
-                  <h1 className='post-title'>{selectedPost.petName}</h1>
-                  <p className='info'>Sex: {selectedPost.sex ? 'Male' : 'Female'}</p>
-                  <p className='info'>Age: {selectedPost.age}</p>
-                  <p className='info'>Race: {selectedPost.race}</p>
-                  <p className='description'>Description: {selectedPost.description}</p>
-                </div>  
-                <div className='shelter-info'>
-                  <h1 className='shelter-title'>{cardShelter.name}</h1>
-                  <p className='description'>Description: {cardShelter.description}</p>
-                  <p className='info'>Number: {cardShelter.phoneNumber}</p>
-                </div>
-              </div>  
-                <div className='expanded-buttons'>
-                    <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
-                    <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
-                    <Button variant="outline-danger" className="deleteButton" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
-
-                </div>
+              <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter}/>   
+              <div className='expanded-buttons'>
+                  <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
+                  <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+                  <Button variant="outline-danger" className="deleteButton" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
+              </div>
               
             </div>  
             ):(
