@@ -21,8 +21,7 @@
     useEffect(() => {
       const token = localStorage.getItem("token");
       const decodedToken = jwt_decode(token);
-      const email = decodedToken.sub;
-      console.log(email); 
+      const email = decodedToken.sub; 
 
       
       get("/api/getInfo/" + email)

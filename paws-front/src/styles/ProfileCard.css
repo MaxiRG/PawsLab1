@@ -13,21 +13,28 @@
 }
 
 .profile-card-name {
-  font-size: 24px;
+  font-size: 29px;
   font-weight: bold;
   margin-bottom: 8px;
   color: #333;
 }
 
+.profile-card-email {
+  font-size: 19px;
+  margin-bottom: 4px;
+  color: #666;
+}
+
 .profile-card-number {
-  font-size: 18px;
+  font-size: 19px;
   margin-bottom: 4px;
   color: #666;
 }
 
 .profile-card-description {
-  font-size: 16px;
-  color: #777;
+  font-size: 19px;
+  margin-bottom: 4px;
+  color: #666;
 }
 
 .pencil{

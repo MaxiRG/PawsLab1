@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import SelectedPost from '../components/SelectedPost';
 import { get } from "../utils/http";
 import '../styles/Busqueda.css'
 import Button from 'react-bootstrap/Button';
@@ -11,8 +12,7 @@ function Busqueda(props) {
   const [posts, setPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
-
-
+  const [cardShelter, setCardShelter] = useState(null);
   const [searchFilters, setSearchFilters] = useState({
     age: '',
     sex: '',
@@ -32,9 +32,21 @@ function Busqueda(props) {
           console.error(error)
           setErrorMessage('Post retrieval failed. Please try again later.');
         });
-  
-
   };
+
+  const handleSelectedPost = (post) => {
+    console.log(post.user.id)
+    get("/api/getInfo/" + post.user.email)
+    .then((data) => {
+      console.log(data);
+      setCardShelter(data)
+      setSelectedPost(post);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -77,21 +89,7 @@ function Busqueda(props) {
 
         {selectedPost ? (
           <div>
-          <div className="post-expanded">
-            <div className='post-info'>
-            {/* Contenido ampliado del post */}
-              <h1 className='post-title'>{selectedPost.petName}</h1>
-              <p className='info'>Sex: {selectedPost.sex ? 'Male' : 'Female'}</p>
-              <p className='info'>Age: {selectedPost.age}</p>
-              <p className='info'>Race: {selectedPost.race}</p>
-              <p className='description'>Description: {selectedPost.description}</p>
-            </div>  
-            <div className='shelter-info'>
-              <h1 className='shelter-title'>SHELTER</h1>
-              <p className='description'>Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-              <p className='info'>Number: 5555-5555</p>
-            </div>
-          </div>  
+            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter}/>
             <div className='expanded-buttons'>
                 <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
             </div>   
@@ -100,7 +98,7 @@ function Busqueda(props) {
           <div className='card-container'>
               {posts.length > 0 &&
               posts.map(post => (
-                <Card key={post.id} className="custom-card" onClick={() => setSelectedPost(post)} >
+                <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>

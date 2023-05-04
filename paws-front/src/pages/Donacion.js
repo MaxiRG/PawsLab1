@@ -2,14 +2,12 @@
   import { useNavigate } from "react-router-dom";
   import Footer from '../components/Footer';
   import Navbar from '../components/Navbar';
+  import SelectedPost from '../components/SelectedPost';
   import "../styles/Donacion.css";
   import Button from 'react-bootstrap/Button';
   import Card from 'react-bootstrap/Card';
   import { Form } from 'react-bootstrap';
   import { post, get, del } from "../utils/http";
-
-
-
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -23,10 +21,9 @@
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [cardShelter, setCardShelter] = useState(null);
     const navigate = useNavigate();
    
-
-  
     const handleMyPosts = (e) => {
       e.preventDefault();
 
@@ -131,6 +128,19 @@
         setErrorMessage('')
       }
 
+      const handleSelectedPost = (post) => {
+        console.log(post.user.id)
+        get("/api/getInfo/" + post.user.email)
+        .then((data) => {
+          console.log(data);
+          setCardShelter(data)
+          setSelectedPost(post);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+
     
 
     return (
@@ -181,34 +191,19 @@
         )}
            {selectedPost ? (
             <div>
-              <div className="post-expanded">
-                <div className='post-info'>
-                {/* Contenido ampliado del post */}
-                  <h1 className='post-title'>{selectedPost.petName}</h1>
-                  <p className='info'>Sex: {selectedPost.sex ? 'Male' : 'Female'}</p>
-                  <p className='info'>Age: {selectedPost.age}</p>
-                  <p className='info'>Race: {selectedPost.race}</p>
-                  <p className='description'>Description: {selectedPost.description}</p>
-                </div>  
-                <div className='shelter-info'>
-                  <h1 className='shelter-title'>SHELTER</h1>
-                  <p className='description'>Description: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                  <p className='info'>Number: 5555-5555</p>
-                </div>
-              </div>  
-                <div className='expanded-buttons'>
-                    <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
-                    <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
-                    <Button variant="outline-danger" className="deleteButton" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
-
-                </div>
+              <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter}/>   
+              <div className='expanded-buttons'>
+                  <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
+                  <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+                  <Button className='deleteButton' id='expanded-button' variant="outline-danger" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
+              </div>
               
             </div>  
             ):(
               <div className='card-container'>
               {myPosts.length > 0 &&
               myPosts.map(post => (
-                <Card key={post.id} className="custom-card" onClick={() => setSelectedPost(post)} >
+                <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>
