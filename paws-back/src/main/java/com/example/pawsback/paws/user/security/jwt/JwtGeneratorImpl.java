@@ -26,6 +26,7 @@ public class JwtGeneratorImpl implements JwtGeneratorInterface {
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("sub", user.getEmail());
                 claims.put("role", user.getRole());
+                claims.put("id", user.getId());
 
                 String jwtToken = Jwts.builder()
                         .setClaims(claims)
