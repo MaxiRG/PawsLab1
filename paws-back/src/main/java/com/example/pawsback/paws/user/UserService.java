@@ -1,6 +1,5 @@
 package com.example.pawsback.paws.user;
 
-import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.model.User;
 import com.example.pawsback.paws.user.model.dto.InfoDTO;
@@ -60,6 +59,19 @@ public class UserService {
             throw new EntityNotFoundException("No user found with email " + email);
         }
     }
+
+    public User getById(long id){
+        User user = userRepository.findById(id);
+        Optional<User> optional = Optional.ofNullable(user);
+        if(optional.isPresent()){
+            return user;
+        }
+        else{
+            throw new EntityNotFoundException("No user found with id " + id);
+        }
+    }
+
+
 
     public User getByToken(String token){
         return userRepository.findByEmail(getEmail(token));
