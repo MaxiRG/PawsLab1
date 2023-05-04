@@ -1,3 +1,5 @@
+import '../styles/SelectedPost.css'
+
 export default function SelectedPost({ selectedPost, cardShelter }) {
   return (
     <div>

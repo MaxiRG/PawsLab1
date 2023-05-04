@@ -21,10 +21,10 @@
     useEffect(() => {
       const token = localStorage.getItem("token");
       const decodedToken = jwt_decode(token);
-      const id = decodedToken.id; 
+      const email = decodedToken.sub; 
 
       
-      get("/api/getInfoById/" + id)
+      get("/api/getInfo/" + email)
         .then((data) => {
           console.log(data);
           setProfile(data);

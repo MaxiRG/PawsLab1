@@ -36,7 +36,7 @@ function Busqueda(props) {
 
   const handleSelectedPost = (post) => {
     console.log(post.user.id)
-    get("/api/getInfoById/" + post.user.id)
+    get("/api/getInfo/" + post.user.email)
     .then((data) => {
       console.log(data);
       setCardShelter(data)

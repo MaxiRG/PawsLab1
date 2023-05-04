@@ -130,7 +130,7 @@
 
       const handleSelectedPost = (post) => {
         console.log(post.user.id)
-        get("/api/getInfoById/" + post.user.id)
+        get("/api/getInfo/" + post.user.email)
         .then((data) => {
           console.log(data);
           setCardShelter(data)
@@ -193,9 +193,9 @@
             <div>
               <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter}/>   
               <div className='expanded-buttons'>
-                  <Button className='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
-                  <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
-                  <Button variant="outline-danger" className="deleteButton" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
+                  <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
+                  <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+                  <Button className='deleteButton' id='expanded-button' variant="outline-danger" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
               </div>
               
             </div>  

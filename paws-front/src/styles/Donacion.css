@@ -63,42 +63,19 @@
 }
 
 
-.post-expanded {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  
-}
-
-.post-expanded h1 {
-  font-size: 50px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  
-  
-}
-.post-expanded .post-info {
-  font-size: 20px;
-  width: 40%;
-}
-
-.post-expanded .shelter-info {
-  font-size: 20px;
-  width: 40%;
-}
-
-
-.post-expanded .post-actions button {
-  margin-right: 10px;
-}
-
  .expanded-buttons{
   display: flex;
   flex-direction: column;
+  width: 96%;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .expanded-button{
-
   margin: 7px;
+}
+
+#expanded-button{
+  border-radius: 19px;
+  font-size: 20px;
 }
