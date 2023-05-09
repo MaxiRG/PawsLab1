@@ -7,7 +7,7 @@
   import Button from 'react-bootstrap/Button';
   import Card from 'react-bootstrap/Card';
   import { Form } from 'react-bootstrap';
-  import { post, get, del } from "../utils/http";
+  import { post, get, del, put } from "../utils/http";
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -26,9 +26,7 @@
    
     const handleMyPosts = (e) => {
       e.preventDefault();
-
       const token = localStorage.getItem('token');
-
       const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -41,7 +39,6 @@
           console.log(response)
           console.log("success")
           setMyPosts(response);
-      
         })
         .catch(error => {
           console.error(error)
@@ -51,6 +48,11 @@
 
     const handleFormSubmit = (e) => {
       e.preventDefault();
+
+      if (petAge < 0) {
+        setErrorMessage("Age cannot be negative.");
+        return;
+      }
       
       const body = {
         petName: petName,
@@ -141,16 +143,47 @@
         });
       }
 
-    
-
+      const handleMarkAsAdopted = (postId, checked) => {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          }
+        }
+        const body = {
+          postID: postId,
+          newStatus: checked,
+        }; 
+        put("/modifyAdoptedStatus", body, config)
+          .then((data) => {
+            console.log(data);
+            // update the state of the post with the new adopted status
+            const updatedPosts = myPosts.map(post => {
+              if (post.id === postId) {
+                return {
+                  ...post,
+                  adopted: checked
+                }
+              } else {
+                return post
+              }
+            })
+            setMyPosts(updatedPosts);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      
     return (
       <div className='donacion'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
-        {errorMessage && <div id="error-message">{errorMessage}</div>}
         <div className='body'>
         {!selectedPost && (
           <>
             <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
+            {errorMessage && <div id="error-message">{errorMessage}</div>}
           </>
         )}
 
@@ -180,8 +213,10 @@
                 Description <br/>
                 <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)}  required/>
               </label>
-              <Button className='submitButton' variant="primary" type="submit" >Submit</Button>
-              <Button className='cancelButton' variant="outline-danger"  onClick={handleFormCancel}>Cancel</Button>
+              <div className='form-buttons'>
+                <Button className='submitButton' variant="primary" type="submit" >Submit</Button>
+                <Button className='cancelButton' variant="outline-danger"  onClick={handleFormCancel}>Cancel</Button>
+              </div>
             </form>
           )}
           {!selectedPost && (
@@ -216,8 +251,9 @@
                       type="checkbox"
                       label="Adopted"
                       className="check"
-                      //checked={post.adopted} 
-                      //onChange={(e) => handleMarkAsAdopted(post._id, e.target.checked)} 
+                      checked={post.adopted} 
+                      onChange={(e) => handleMarkAsAdopted(post.id, e.target.checked)}
+                      onClick={(e) => e.stopPropagation()} 
                     />
                   </Card.Body>
                 </Card>
