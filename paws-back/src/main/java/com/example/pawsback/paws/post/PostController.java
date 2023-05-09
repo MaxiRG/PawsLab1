@@ -34,7 +34,7 @@ public class PostController {
         }
     }
 
-    @PutMapping("/modifyAdoptedStatus")
+    @PutMapping(value ="/modifyAdoptedStatus", consumes = {"application/json"})
     public ResponseEntity<Object> modifyAdoptedStatus(@RequestBody ChangeAdoptedStatusDTO changeStatusDTO, @RequestHeader("Authorization") String token){
         try{
             postService.modifyAdoptedStatus(changeStatusDTO.isNewStatus(), changeStatusDTO.getPostID(), token);
