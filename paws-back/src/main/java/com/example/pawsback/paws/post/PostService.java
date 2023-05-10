@@ -8,6 +8,7 @@ import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +70,17 @@ public class PostService {
 
     public List<Post> getAll(){
         return postRepository.findAll();
+    }
+
+    public byte[] getProfilePicture(int id) {
+        Post post = postRepository.findPostById(id);
+        Optional<Post> optional = Optional.ofNullable(post);
+        if(optional.isPresent()){
+            return optional.get().getProfilePicture().getImageData();
+        }
+        else{
+            throw new EntityNotFoundException("Could not find post with id " + id);
+        }
+
     }
 }

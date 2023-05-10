@@ -1,8 +1,11 @@
 package com.example.pawsback.paws.image.model;
 
 import com.example.pawsback.paws.post.model.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.sql.Blob;
 
 @Data
 @Entity
@@ -15,6 +18,7 @@ public class Image {
     @Lob
     private byte[] imageData;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "profilePicture")
     private Post post;
 }

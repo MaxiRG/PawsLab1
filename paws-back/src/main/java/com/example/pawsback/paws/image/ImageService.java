@@ -37,6 +37,7 @@ public class ImageService {
             Image image = new Image();
             image.setImageData(imageData.getBytes());
             image.setPost(post);
+            post.setProfilePicture(image);
             save(image);
         }
     }

@@ -33,7 +33,7 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Image profilePicture;
 
