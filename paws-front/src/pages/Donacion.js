@@ -17,22 +17,24 @@
     const [petSex, setPetSex] = useState('');
     const [petAge, setPetAge] = useState('');
     const [petRace, setPetRace] = useState('');
-    const [petDescription, setPetDescription] = useState('');
+    const [petDescription, setPetDescription] = useState('')
+    const [selectedImage, setSelectedImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
     const [cardShelter, setCardShelter] = useState(null);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+          const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json', 
+            }
+          }
    
     const handleMyPosts = (e) => {
       e.preventDefault();
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', // Set your authorization header here
-        }
-      }
+      
 
       get('/getMyPosts', config)
         .then(response => {
@@ -54,29 +56,21 @@
         return;
       }
       
+      
+      
       const body = {
         petName: petName,
         age: petAge,
-        sex: petSex === 'Male',
+        sex: petSex === 'male',
         race: petRace,
         description: petDescription
       };
     
-      const token = localStorage.getItem('token');
-      console.log(token)
-
-      const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', 
-        }
-      }
-      console.log(config)
-      console.log(body)
       
       post('/createPost', body, config)
         .then(response => {
           console.log(response)
+          console.log(petSex)
           console.log("success")
           setPetName('');
           setPetSex('');
@@ -183,6 +177,7 @@
         {!selectedPost && (
           <>
             <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
+          
             {errorMessage && <div id="error-message">{errorMessage}</div>}
           </>
         )}
@@ -213,6 +208,11 @@
                 Description <br/>
                 <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)}  required/>
               </label>
+              <label>
+                Image<br/>
+                <input type="file" accept="image/*" onChange={(event) => setSelectedImage(event.target.files[0])} />
+              </label>
+
               <div className='form-buttons'>
                 <Button className='submitButton' variant="primary" type="submit" >Submit</Button>
                 <Button className='cancelButton' variant="outline-danger"  onClick={handleFormCancel}>Cancel</Button>
