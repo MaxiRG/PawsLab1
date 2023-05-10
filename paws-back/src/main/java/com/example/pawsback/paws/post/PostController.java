@@ -97,6 +97,15 @@ public class PostController {
             return new ResponseEntity<>("Failed to retrieve posts", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getAllNotAdopted")
+    public ResponseEntity<?> getAllNotAdopted(){
+        try {
+            return new ResponseEntity<>(postService.getAllNotAdopted(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve posts", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
     
 

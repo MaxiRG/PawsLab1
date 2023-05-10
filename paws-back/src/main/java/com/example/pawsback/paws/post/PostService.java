@@ -8,6 +8,8 @@ import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,5 +84,9 @@ public class PostService {
 
     public List<Post> getAll(){
         return postRepository.findAll();
+    }
+
+    public List<Post> getAllNotAdopted(){
+        return postRepository.findAllNonAdoptedPosts();
     }
 }
