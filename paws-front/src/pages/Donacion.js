@@ -1,13 +1,13 @@
-  import React, { useState } from 'react';
-  import { useNavigate } from "react-router-dom";
-  import Footer from '../components/Footer';
-  import Navbar from '../components/Navbar';
-  import SelectedPost from '../components/SelectedPost';
-  import "../styles/Donacion.css";
-  import Button from 'react-bootstrap/Button';
-  import Card from 'react-bootstrap/Card';
-  import { Form } from 'react-bootstrap';
-  import { post, get, del, put } from "../utils/http";
+import React, { useState } from 'react';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import SelectedPost from '../components/SelectedPost';
+import '../styles/Donacion.css';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import { Form } from 'react-bootstrap';
+import { post, get, del, put } from '../utils/http';
+
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -23,7 +23,6 @@
     const [myPosts, setMyPosts] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
     const [cardShelter, setCardShelter] = useState(null);
-    const navigate = useNavigate();
     const token = localStorage.getItem('token');
           const config = {
             headers: {
@@ -35,7 +34,6 @@
     const handleMyPosts = (e) => {
       e.preventDefault();
       
-
       get('/getMyPosts', config)
         .then(response => {
           console.log(response)
@@ -48,44 +46,39 @@
         });
       }
 
-    const handleFormSubmit = (e) => {
-      e.preventDefault();
-
-      if (petAge < 0) {
-        setErrorMessage("Age cannot be negative.");
-        return;
-      }
+      const handleFormSubmit = (e) => {
+        e.preventDefault();
       
+        if (petAge < 0) {
+          setErrorMessage("Age cannot be negative.");
+          return;
+        }
       
+        const body = {
+          petName: petName,
+          age: petAge,
+          sex: petSex === "male",
+          race: petRace,
+          description: petDescription,
+        };
       
-      const body = {
-        petName: petName,
-        age: petAge,
-        sex: petSex === 'male',
-        race: petRace,
-        description: petDescription
+        post("/createPost", body, config)
+          .then((response) => {
+            console.log(response);
+            setPetName("");
+            setPetSex("");
+            setPetAge("");
+            setPetRace("");
+            setPetDescription("");
+            setIsFormExpanded(false);
+            setErrorMessage("");
+          })
+          .catch((error) => {
+            console.error(error);
+            setErrorMessage("Post creation failed. Please try again later.");
+          });
       };
-    
       
-      post('/createPost', body, config)
-        .then(response => {
-          console.log(response)
-          console.log(petSex)
-          console.log("success")
-          setPetName('');
-          setPetSex('');
-          setPetAge('');
-          setPetRace('');
-          setPetDescription('');
-          setIsFormExpanded(false);
-          setErrorMessage('')
-        })
-        .catch(error => {
-          console.error(error)
-          setErrorMessage('Post creation failed. Please try again later.');
-        });
-      }
-
       const handleDeletePost = (postId) => {
         console.log(postId)
         
@@ -103,7 +96,9 @@
             console.log(data)
             console.log("success")
             setErrorMessage('')
-            navigate('/')
+            const updatedPosts = myPosts.filter(post => post.id !== postId);
+            setMyPosts(updatedPosts);
+            setSelectedPost(null)
             
           })
           .catch((error) => {
@@ -138,13 +133,6 @@
       }
 
       const handleMarkAsAdopted = (postId, checked) => {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-          }
-        }
         const body = {
           postID: postId,
           newStatus: checked,
@@ -239,6 +227,7 @@
               {myPosts.length > 0 &&
               myPosts.map(post => (
                 <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
+                  <Card.Img className='card-img'variant="top" src={selectedImage} alt={post.petName} />
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>

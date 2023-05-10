@@ -47,8 +47,8 @@
 }
 
 .custom-card {
-  margin: 1rem;
-  width: calc(33.33% - 2rem);
+  margin: 2rem;
+  width: calc(25% - 4rem);
   background-color: #f0f0f0;
 }
 
@@ -68,6 +68,12 @@
   text-transform: uppercase;
   color: var(--color-accent);
 }
+
+.card-img {
+  object-fit: cover;
+  margin: 0 auto;
+}
+
 
 .check label{
   font-size: 19px;
