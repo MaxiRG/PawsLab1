@@ -2,6 +2,7 @@ package com.example.pawsback.paws.post.model;
 
 import com.example.pawsback.paws.image.model.Image;
 import com.example.pawsback.paws.user.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -36,6 +37,7 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Image profilePicture;

@@ -5,6 +5,7 @@ import com.example.pawsback.paws.post.model.dto.ChangeAdoptedStatusDTO;
 import com.example.pawsback.paws.post.model.dto.PostDTO;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Transactional
 @RestController
 public class PostController {
 
@@ -81,11 +83,11 @@ public class PostController {
     @GetMapping("/getPost/{petName}")
     public ResponseEntity<?> getPost(@PathVariable String petName) {
         try {
-            return new ResponseEntity<>(postService.getPost(petName), HttpStatus.OK);
+            return new ResponseEntity<>(postService.getPost(petName),HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Failed to get post", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -85,7 +85,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public byte[] getProfilePicture(int id) {
+    public byte[] getProfilePictureByteArray(int id) {
         Post post = postRepository.findPostById(id);
         Optional<Post> optional = Optional.ofNullable(post);
         if(optional.isPresent()){
