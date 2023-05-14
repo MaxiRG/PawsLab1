@@ -44,7 +44,7 @@ public class ImageController {
     @GetMapping("/getProfilePicture/{id}")
     public ResponseEntity<?> getProfilePicture(@PathVariable int id){
         try{
-            byte[] imageBytes = postService.getProfilePicture(id);
+            byte[] imageBytes = postService.getProfilePictureByteArray(id);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentLength(imageBytes.length);
