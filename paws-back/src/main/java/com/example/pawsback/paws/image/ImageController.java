@@ -26,7 +26,7 @@ public class ImageController {
         this.postService = postService;
     }
 
-    @PostMapping("/uploadProfilePicture/{id}")
+    @PostMapping(value = "/uploadProfilePicture/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadProfilePicture(@PathVariable int id, @RequestHeader("Authorization") String token, @RequestParam("file") MultipartFile imageData){
         try{
             imageService.upload(id, token, imageData);
@@ -41,7 +41,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/getProfilePicture/{id}")
+    @GetMapping(value = "/getProfilePicture/{id}")
     public ResponseEntity<?> getProfilePicture(@PathVariable int id){
         try{
             byte[] imageBytes = postService.getProfilePictureByteArray(id);
