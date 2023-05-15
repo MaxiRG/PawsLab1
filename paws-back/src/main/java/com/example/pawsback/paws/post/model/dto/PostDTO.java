@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class PostDTO {
+    private Integer id;
     private String petName, race, description;
     private Boolean sex;
     private Integer age;
