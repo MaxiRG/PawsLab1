@@ -47,14 +47,13 @@
 }
 
 .custom-card {
-  margin: 1rem;
-  width: calc(33.33% - 2rem);
+  margin: 2rem;
+  width: calc(25% - 4rem);
   background-color: #f0f0f0;
 }
 
 .custom-card:hover {
   background-color: #e2e6ea; 
-  border-color: var(--color-accent); 
 }
 
 .card-container {
@@ -69,10 +68,16 @@
   color: var(--color-accent);
 }
 
+.card-img {
+  object-fit: cover;
+  margin: 0 auto;
+  width: 10px;
+}
+
+
 .check label{
   font-size: 19px;
 }
-
 
  .expanded-buttons{
   display: flex;

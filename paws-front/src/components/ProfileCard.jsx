@@ -11,6 +11,10 @@ const ProfileCard = ({ name, number, description, email }) => {
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedNumber, setEditedNumber] = useState(number);
   const [editedName, setEditedName] = useState(name);
+  const MAX_DESCRIPTION_LENGTH = 250;
+  const [rows, setRows] = useState(1);
+
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
     const config = {
@@ -21,6 +25,7 @@ const ProfileCard = ({ name, number, description, email }) => {
     };
 
   const handleEditDescription = () => {
+    setEditedDescription(description);
     setShowEditDescription(true);
   };
   const handleEditNumber = () => {
@@ -40,9 +45,15 @@ const ProfileCard = ({ name, number, description, email }) => {
   };
 
   const handleSaveDescription = () => {
-    const body = {
-      description: editedDescription
+    let truncatedDescription = editedDescription;
+
+    if (editedDescription.length > MAX_DESCRIPTION_LENGTH) {
+      truncatedDescription = editedDescription.substring(0, MAX_DESCRIPTION_LENGTH);
     }
+
+    const body = {
+      description: truncatedDescription
+    };
 
     put("/api/modifyDescription",body, config)
       .then((data) => {
@@ -53,7 +64,6 @@ const ProfileCard = ({ name, number, description, email }) => {
       })
       .catch((error) => {
         console.log(error);
-        // handle error
       });
   };
   const handleSaveNumber = () => {
@@ -119,7 +129,11 @@ const ProfileCard = ({ name, number, description, email }) => {
             <input
               type="text"
               value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
+              rows={rows}
+              onChange={(e) => {
+                setEditedDescription(e.target.value);
+                setRows(Math.ceil(e.target.value.length / 50)); // Adjust the number 50 according to your preference
+              }}
             />
             <button onClick={handleSaveDescription}>Save Description</button>
           </div>
