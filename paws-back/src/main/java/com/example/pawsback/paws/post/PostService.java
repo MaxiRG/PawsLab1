@@ -42,6 +42,7 @@ public class PostService {
 
     public PostDTO toDto(Post post, String token) {
         PostDTO postDTO = new PostDTO();
+        postDTO.setId(Math.toIntExact(post.getId()));
         postDTO.setDescription(post.getDescription());
         postDTO.setPetName(post.getPetName());
         postDTO.setAge(post.getAge());
