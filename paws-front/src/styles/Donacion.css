@@ -54,7 +54,6 @@
 
 .custom-card:hover {
   background-color: #e2e6ea; 
-  border-color: var(--color-accent); 
 }
 
 .card-container {
@@ -72,13 +71,13 @@
 .card-img {
   object-fit: cover;
   margin: 0 auto;
+  width: 10px;
 }
 
 
 .check label{
   font-size: 19px;
 }
-
 
  .expanded-buttons{
   display: flex;

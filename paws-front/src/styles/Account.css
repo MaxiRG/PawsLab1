@@ -8,8 +8,9 @@
 }
 .account-actions {
   list-style: none;
-  margin: 10px;
+  margin: 20px;
   padding: 0;
+  height: 100%;
 }
 
 .account-title{
@@ -22,8 +23,9 @@
   width: 16%;
 }
 
-.action-button{
+.action-button, .logout-button, .delete-account-button{
   width: 100%;
+  height: 45px;
 }
 
 
@@ -35,19 +37,35 @@
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 10px;
+  
 }
 
 .logout-button, .delete-account-button{
-  width: 16%;
-}
+    width: 16%;
+ }
 
 .logout-button:hover {
   background-color: #d32f2f;
 }
 
-
 .body {
   min-height: 85vh;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 900px){
+ .profile{
+  float: none;
+  margin: 10px auto ;
+ }
+ .logout-button, .delete-account-button{
+  width: 100%;
+  height: 45px;
+}
+.account-action{
+  width: 100%;
+}
+
+  
 }

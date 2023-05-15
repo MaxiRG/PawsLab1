@@ -100,8 +100,8 @@
               <li className="account-action">
                 {isShelter ? <Button className="action-button"onClick={handleMyPosts}>My posts </Button> : <Button className="action-button">Favourites</Button>}
               </li>
-              {isShelter ? <li className="account-action"><Button className="action-button">View donation history</Button></li> : null}
-              <li className="account-action"><Button className="action-button">View notifications</Button></li>
+              {isShelter ? <li className="account-action"><Button className="action-button">Donation history</Button></li> : null}
+              <li className="account-action"><Button className="action-button">Notifications</Button></li>
               <li className="account-logout">
                 <button className="logout-button" onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} /> Log out
