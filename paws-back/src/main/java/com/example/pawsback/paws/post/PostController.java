@@ -1,9 +1,7 @@
 package com.example.pawsback.paws.post;
 
 import com.example.pawsback.paws.post.model.Post;
-import com.example.pawsback.paws.post.model.dto.ChangeAdoptedStatusDTO;
-import com.example.pawsback.paws.post.model.dto.FilteredListDataDTO;
-import com.example.pawsback.paws.post.model.dto.PostDTO;
+import com.example.pawsback.paws.post.model.dto.*;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -49,6 +47,38 @@ public class PostController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("message", "Failed to change status, " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping(value = "/modifyPostAge",consumes = {"application/json"})
+    public ResponseEntity<Object> modifyPostAge(@RequestBody ChangePostAgeDTO changeAgeDTO, @ RequestHeader("Authorization") String token){
+        try{
+            postService.modifyAge(changeAgeDTO.getPostID(),changeAgeDTO.getAge(),token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","changed age successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to change age, " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping(value="/modifyPostDescription",consumes = {"application/json"})
+    public ResponseEntity<Object> modifyPostDescription(@RequestBody ChangePostDescriptionDTO changeDescriptionDTO, @RequestHeader("Authorization") String token){
+        try{
+            postService.modifyPostDescription(changeDescriptionDTO.getPostID(),changeDescriptionDTO.getDescription(),token);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message","changed description successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e){
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Failed to change description, " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
