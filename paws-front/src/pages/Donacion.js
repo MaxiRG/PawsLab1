@@ -1,13 +1,16 @@
-  import React, { useState } from 'react';
-  import { useNavigate } from "react-router-dom";
-  import Footer from '../components/Footer';
-  import Navbar from '../components/Navbar';
-  import SelectedPost from '../components/SelectedPost';
-  import "../styles/Donacion.css";
-  import Button from 'react-bootstrap/Button';
-  import Card from 'react-bootstrap/Card';
-  import { Form } from 'react-bootstrap';
-  import { post, get, del, put } from "../utils/http";
+import React, { useState } from 'react';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import SelectedPost from '../components/SelectedPost';
+import '../styles/Donacion.css';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import { Form } from 'react-bootstrap';
+import { post, get, del, put } from '../utils/http';
+import axios from 'axios';
+
+
+
 
   function Donacion(props) {
     const { isLoggedIn } = props;
@@ -17,81 +20,119 @@
     const [petSex, setPetSex] = useState('');
     const [petAge, setPetAge] = useState('');
     const [petRace, setPetRace] = useState('');
-    const [petDescription, setPetDescription] = useState('');
+    const [petDescription, setPetDescription] = useState('')
+    const [profilePictures, setProfilePictures] = useState({});
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
+    const [postImage, setPostImage] = useState([])
     const [selectedPost, setSelectedPost] = useState(null);
     const [cardShelter, setCardShelter] = useState(null);
-    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+          const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json', 
+            }
+          }
    
-    const handleMyPosts = (e) => {
-      e.preventDefault();
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', // Set your authorization header here
-        }
-      }
+      const handleMyPosts = (e) => {
+            e.preventDefault();
+          
+            get('/getMyPosts', config)
+              .then(response => {
+                console.log(response)
+                console.log("posts retrieved")
+                setMyPosts(response);
+                setErrorMessage('')
 
-      get('/getMyPosts', config)
-        .then(response => {
-          console.log(response)
-          console.log("success")
-          setMyPosts(response);
-        })
-        .catch(error => {
-          console.error(error)
-          setErrorMessage('Post retrieval failed. Please try again later.');
-        });
-      }
-
-    const handleFormSubmit = (e) => {
-      e.preventDefault();
-
-      if (petAge < 0) {
-        setErrorMessage("Age cannot be negative.");
-        return;
-      }
+                myPosts.forEach(post => {
+                const postId = post.id;
+                handleGetProfilePictures(postId);
+              });
+                
+              })
+              .catch(error => {
+                console.error(error)
+                setErrorMessage('Post retrieval failed. Please try again later.');
+              });
+       };
       
-      const body = {
-        petName: petName,
-        age: petAge,
-        sex: petSex === 'Male',
-        race: petRace,
-        description: petDescription
+       const handleGetProfilePictures = (id) => {
+        get(`/getProfilePicture/${id}`, { responseType: 'arraybuffer' })
+          .then(response => {
+            console.log('images retrieved')
+            const blob = new Blob([response], { type: 'image/jpeg' }); // Adjust the 'type' accordingly
+            const blobUrl = URL.createObjectURL(blob);
+            setProfilePictures((prevState) => ({
+            ...prevState,
+            [id]: blobUrl,
+         }));
+            
+          })
+          .catch(error => {
+            console.error(error);
+            setErrorMessage('Failed to retrieve images');
+          });
       };
-    
-      const token = localStorage.getItem('token');
-      console.log(token)
-
-      const config = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json', 
-        }
-      }
-      console.log(config)
-      console.log(body)
       
-      post('/createPost', body, config)
-        .then(response => {
-          console.log(response)
-          console.log("success")
-          setPetName('');
-          setPetSex('');
-          setPetAge('');
-          setPetRace('');
-          setPetDescription('');
-          setIsFormExpanded(false);
-          setErrorMessage('')
-        })
-        .catch(error => {
-          console.error(error)
-          setErrorMessage('Post creation failed. Please try again later.');
-        });
-      }
 
+      const handleFormSubmit = (e) => {
+        e.preventDefault();
+      
+        if (petAge < 0) {
+          setErrorMessage("Age cannot be negative.");
+          return;
+        }
+      
+        const body = {
+          petName: petName,
+          age: petAge,
+          sex: petSex === "male",
+          race: petRace,
+          description: petDescription,
+        };
+      
+        post("/createPost", body, config)
+          .then((response) => {
+            console.log(response);
+            console.log("post created")
+            setPetName("");
+            setPetSex("");
+            setPetAge("");
+            setPetRace("");
+            setPetDescription("");
+            setIsFormExpanded(false);
+            setErrorMessage("");
+  
+            const formData = new FormData();
+            formData.append("file", postImage);
+
+            console.log([...formData]); // Convert FormData to an array and log it
+
+            const uploadConfig = {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data',
+                  
+              }
+            }
+            post(`/uploadProfilePicture/${response.id}`, formData, uploadConfig)
+              .then((uploadResponse) => {
+                console.log("Profile picture uploaded successfully:", uploadResponse);
+                
+                handleMyPosts();
+              })
+              .catch((uploadError) => {
+                console.error("Profile picture upload failed:", uploadError);
+                setErrorMessage("Failed to upload profile picture. Please try again later.");
+              });
+          })
+          .catch((error) => {
+            console.error(error);
+            setErrorMessage("Post creation failed. Please try again later.");
+          });
+      };
+      
       const handleDeletePost = (postId) => {
         console.log(postId)
         
@@ -109,7 +150,9 @@
             console.log(data)
             console.log("success")
             setErrorMessage('')
-            navigate('/')
+            const updatedPosts = myPosts.filter(post => post.id !== postId);
+            setMyPosts(updatedPosts);
+            setSelectedPost(null)
             
           })
           .catch((error) => {
@@ -144,13 +187,6 @@
       }
 
       const handleMarkAsAdopted = (postId, checked) => {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-          }
-        }
         const body = {
           postID: postId,
           newStatus: checked,
@@ -183,6 +219,7 @@
         {!selectedPost && (
           <>
             <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
+          
             {errorMessage && <div id="error-message">{errorMessage}</div>}
           </>
         )}
@@ -213,6 +250,11 @@
                 Description <br/>
                 <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)}  required/>
               </label>
+              <label>
+                Image<br/>
+                <input type="file" accept="image/*" onChange={(event) => setPostImage(event.target.files[0])} required />
+              </label>
+
               <div className='form-buttons'>
                 <Button className='submitButton' variant="primary" type="submit" >Submit</Button>
                 <Button className='cancelButton' variant="outline-danger"  onClick={handleFormCancel}>Cancel</Button>
@@ -239,6 +281,7 @@
               {myPosts.length > 0 &&
               myPosts.map(post => (
                 <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
+                  <Card.Img className='card-img'variant="top" src={profilePictures[post.id]} alt={post.petName} />
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>

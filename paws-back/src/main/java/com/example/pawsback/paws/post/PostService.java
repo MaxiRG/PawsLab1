@@ -14,7 +14,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +48,7 @@ public class PostService {
 
     public PostDTO toDto(Post post, String token) {
         PostDTO postDTO = new PostDTO();
+        postDTO.setId(Math.toIntExact(post.getId()));
         postDTO.setDescription(post.getDescription());
         postDTO.setPetName(post.getPetName());
         postDTO.setAge(post.getAge());
@@ -123,5 +123,18 @@ public class PostService {
 
     private List<Post> getFilteredPostsQuery(@RequestParam(value = "minAge", required = false) Integer minAge, @RequestParam(value = "maxAge", required = false) Integer maxAge, @RequestParam(value = "sex", required = false) Boolean sex, @RequestParam(value = "race",required = false) String race){
         return postRepository.filteredPostSearch(minAge,maxAge,sex,race);
+    }
+}
+
+    public byte[] getProfilePictureByteArray(int id) {
+        Post post = postRepository.findPostById(id);
+        Optional<Post> optional = Optional.ofNullable(post);
+        if(optional.isPresent()){
+            return optional.get().getProfilePicture().getImageData();
+        }
+        else{
+            throw new EntityNotFoundException("Could not find post with id " + id);
+        }
+
     }
 }

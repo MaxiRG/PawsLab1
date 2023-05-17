@@ -13,6 +13,7 @@ function Busqueda(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [cardShelter, setCardShelter] = useState(null);
+  const [profilePictures, setProfilePictures] = useState({});
   const [searchFilters, setSearchFilters] = useState({
     age: '',
     sex: '',
@@ -20,19 +21,43 @@ function Busqueda(props) {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    
+  
     get('/getAll')
-        .then(response => {
-          console.log(response)
-          console.log("success")
-          setPosts(response);
-      
-        })
-        .catch(error => {
-          console.error(error)
-          setErrorMessage('Post retrieval failed. Please try again later.');
+      .then(response => {
+        console.log(response);
+        console.log("posts retrieved");
+        setPosts(response);
+  
+        response.forEach(post => {
+          const postId = post.id;
+          handleGetProfilePictures(postId);
         });
+      })
+      .catch(error => {
+        console.error(error);
+        setErrorMessage('Post retrieval failed. Please try again later.');
+      });
   };
+  
+
+  const handleGetProfilePictures = (id) => {
+    get(`/getProfilePicture/${id}`, { responseType: 'arraybuffer' })
+      .then(response => {
+        console.log('images retrieved')
+        const blob = new Blob([response], { type: 'image/jpeg' }); // Adjust the 'type' accordingly
+        const blobUrl = URL.createObjectURL(blob);
+        setProfilePictures((prevState) => ({
+        ...prevState,
+        [id]: blobUrl,
+     }));
+        
+      })
+      .catch(error => {
+        console.error(error);
+        setErrorMessage('Failed to retrieve images');
+      });
+  };
+  
 
   const handleSelectedPost = (post) => {
     console.log(post.user.id)
@@ -46,7 +71,6 @@ function Busqueda(props) {
       console.log(error);
     });
   }
-
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -99,6 +123,7 @@ function Busqueda(props) {
               {posts.length > 0 &&
               posts.map(post => (
                 <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
+               <Card.Img className='card-img'variant="top" src={profilePictures[post.id]} alt={post.petName} />
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>
