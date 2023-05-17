@@ -125,9 +125,9 @@ public class PostService {
         Boolean sex = null;
         String race = null;
 
-        if(data.getAgeType().toString().equals("CACHORRO")){
+        if(data.getAgeType().toString().equals("PUPPY")){
             maxAge = 2;
-        }else if(data.getAgeType().toString().equals("ADULTO")){
+        }else if(data.getAgeType().toString().equals("ADULT")){
             minAge = 3;
         }
 
