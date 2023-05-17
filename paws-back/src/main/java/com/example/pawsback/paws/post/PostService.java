@@ -43,7 +43,30 @@ public class PostService {
             post.setAdopted(status);
             postRepository.save(post);
         }else throw new NoAuthorizationException("Invalid id");
+    }
 
+    public void modifyAge(int postId, int newAge, String token) throws NoAuthorizationException {
+        Post post = postRepository.findPostById(postId);
+        if (post == null){
+            throw new EntityNotFoundException("Post does not exist");
+        }
+        User user = userService.getByToken(token);
+        if (post.getUser().getId() == user.getId()){
+            post.setAge(newAge);
+            postRepository.save(post);
+        }else throw new NoAuthorizationException("Invalid id");
+    }
+
+    public void modifyPostDescription(int postId, String description, String token) throws NoAuthorizationException {
+        Post post = postRepository.findPostById(postId);
+        if (post==null){
+            throw new EntityNotFoundException("Post does not exist");
+        }
+        User user = userService.getByToken(token);
+        if(post.getUser().getId() == user.getId()){
+            post.setDescription(description);
+            postRepository.save(post);
+        }else throw new NoAuthorizationException("Invalid Id");
     }
 
     public PostDTO toDto(Post post, String token) {
@@ -124,7 +147,6 @@ public class PostService {
     private List<Post> getFilteredPostsQuery(@RequestParam(value = "minAge", required = false) Integer minAge, @RequestParam(value = "maxAge", required = false) Integer maxAge, @RequestParam(value = "sex", required = false) Boolean sex, @RequestParam(value = "race",required = false) String race){
         return postRepository.filteredPostSearch(minAge,maxAge,sex,race);
     }
-}
 
     public byte[] getProfilePictureByteArray(int id) {
         Post post = postRepository.findPostById(id);
