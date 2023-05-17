@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from '../images/logo.jpg'
-//import { useNavigate } from "react-router-dom";
 import { post } from "../utils/http";
+
 
 
 
@@ -121,5 +121,6 @@ export const Register = (props) => {
         Already have an account? Login here.
       </button>
     </div>
+    
   );
 };

@@ -12,6 +12,12 @@
   text-transform: uppercase;
 }
 
+.post-title{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
 
 .post-info , .shelter-info {
   font-size: 20px;
@@ -19,8 +25,22 @@
   width: 45%;
   background-color: rgb(252, 243, 243);
   border-radius: 10px;
+  align-items: center;
 }
 
+.pic-info{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}
 .post-actions button {
   margin-right: 10px;
+}
+
+.dog-pic{
+  border-radius: 10px;
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 200px;
 }

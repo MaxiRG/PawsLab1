@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { FaPencilAlt } from 'react-icons/fa';
 import '../styles/ProfileCard.css';
 import { put } from "../utils/http";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProfileCard = ({ name, number, description, email }) => {
   const [showEditDescription, setShowEditDescription] = useState(false);
@@ -13,8 +15,6 @@ const ProfileCard = ({ name, number, description, email }) => {
   const [editedName, setEditedName] = useState(name);
   const MAX_DESCRIPTION_LENGTH = 250;
   const [rows, setRows] = useState(1);
-
-
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
     const config = {
@@ -60,7 +60,7 @@ const ProfileCard = ({ name, number, description, email }) => {
         console.log(data);
         setShowEditDescription(false);
         setDescription(editedDescription)
-        navigate('/')   
+        toast.success("Description modified successfully!")   
       })
       .catch((error) => {
         console.log(error);
@@ -163,7 +163,7 @@ const ProfileCard = ({ name, number, description, email }) => {
           </div>
         )}
       </div>
-
+      <ToastContainer position='top-center'/>
     </div>
   );
 };
