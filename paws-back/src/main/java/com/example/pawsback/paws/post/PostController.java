@@ -140,7 +140,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/getFilteredList")
+    @PostMapping(value = "/getFilteredList", consumes = "application/json")
     public ResponseEntity<?> getFilteredList(@RequestBody FilteredListDataDTO data){
         try {
             return new ResponseEntity<>(postService.getFilteredPosts(data), HttpStatus.OK);
