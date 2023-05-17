@@ -13,6 +13,7 @@ function Busqueda(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [cardShelter, setCardShelter] = useState(null);
+  const [cardPicture, setCardPicture] = useState([]);
   const [profilePictures, setProfilePictures] = useState({});
   const [searchFilters, setSearchFilters] = useState({
     age: '',
@@ -70,6 +71,16 @@ function Busqueda(props) {
     .catch((error) => {
       console.log(error);
     });
+    get("/getProfilePicture/" + post.id)
+        .then((picture) => {
+          console.log("image retrieved")
+          const blob = new Blob([picture], { type: 'image/jpeg' }); 
+          const blobUrl = URL.createObjectURL(blob);
+          setCardPicture(blobUrl)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }
 
   const handleFilterChange = (event) => {
@@ -106,14 +117,14 @@ function Busqueda(props) {
             <option value="macho">Male</option>
             <option value="hembra">Female</option>
           </select>
-          <button className='submit' type="submit">Buscar</button>
+          <button className='submit' type="submit">Search</button>
         </form>     
         )}
         {errorMessage && <div id="error-message">{errorMessage}</div>}
 
         {selectedPost ? (
           <div>
-            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter}/>
+            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>
             <div className='expanded-buttons'>
                 <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
             </div>   

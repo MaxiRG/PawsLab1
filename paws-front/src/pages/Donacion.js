@@ -7,9 +7,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Form } from 'react-bootstrap';
 import { post, get, del, put } from '../utils/http';
-import axios from 'axios';
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
   function Donacion(props) {
@@ -21,12 +20,13 @@ import axios from 'axios';
     const [petAge, setPetAge] = useState('');
     const [petRace, setPetRace] = useState('');
     const [petDescription, setPetDescription] = useState('')
-    const [profilePictures, setProfilePictures] = useState({});
+    const [pictures, setPictures] = useState({});
     const [errorMessage, setErrorMessage] = useState("");
     const [myPosts, setMyPosts] = useState([]);
     const [postImage, setPostImage] = useState([])
     const [selectedPost, setSelectedPost] = useState(null);
     const [cardShelter, setCardShelter] = useState(null);
+    const [cardPicture, setCardPicture] = useState([]);
     const token = localStorage.getItem('token');
           const config = {
             headers: {
@@ -45,10 +45,23 @@ import axios from 'axios';
                 setMyPosts(response);
                 setErrorMessage('')
 
-                myPosts.forEach(post => {
-                const postId = post.id;
-                handleGetProfilePictures(postId);
-              });
+                response.forEach((post) => {
+                  const postId = post.id;
+                  get(`/getProfilePicture/${postId}`, { responseType: 'arraybuffer' })
+                    .then((imageResponse) => {
+                      console.log('image retrieved');
+                      const blob = new Blob([imageResponse], { type: 'image/jpeg' });
+                      const blobUrl = URL.createObjectURL(blob);
+                      setPictures((prevState) => ({
+                        ...prevState,
+                        [postId]: blobUrl,
+                      }));
+                    })
+                    .catch((error) => {
+                      console.error(error);
+                      setErrorMessage('Failed to retrieve images');
+                    });
+                });
                 
               })
               .catch(error => {
@@ -57,25 +70,6 @@ import axios from 'axios';
               });
        };
       
-       const handleGetProfilePictures = (id) => {
-        get(`/getProfilePicture/${id}`, { responseType: 'arraybuffer' })
-          .then(response => {
-            console.log('images retrieved')
-            const blob = new Blob([response], { type: 'image/jpeg' }); // Adjust the 'type' accordingly
-            const blobUrl = URL.createObjectURL(blob);
-            setProfilePictures((prevState) => ({
-            ...prevState,
-            [id]: blobUrl,
-         }));
-            
-          })
-          .catch(error => {
-            console.error(error);
-            setErrorMessage('Failed to retrieve images');
-          });
-      };
-      
-
       const handleFormSubmit = (e) => {
         e.preventDefault();
       
@@ -101,38 +95,42 @@ import axios from 'axios';
             setPetAge("");
             setPetRace("");
             setPetDescription("");
+            setPostImage([])
             setIsFormExpanded(false);
             setErrorMessage("");
   
             const formData = new FormData();
             formData.append("file", postImage);
 
-            console.log([...formData]); // Convert FormData to an array and log it
+            console.log([...formData]);
 
-            const uploadConfig = {
+            fetch(`http://localhost:8080/uploadProfilePicture/${response.id}`, {
+              method: "POST",
+              body: formData,
               headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'multipart/form-data',
-                  
-              }
-            }
-            post(`/uploadProfilePicture/${response.id}`, formData, uploadConfig)
+                Authorization: `Bearer ${token}`,
+              },
+            })
               .then((uploadResponse) => {
-                console.log("Profile picture uploaded successfully:", uploadResponse);
-                
-                handleMyPosts();
+                if (uploadResponse.ok) {
+                  console.log("Profile picture uploaded successfully:", uploadResponse);
+                  toast.success("Post created successfully!");
+                } else {
+                  throw new Error("Profile picture upload failed");
+                }
               })
               .catch((uploadError) => {
                 console.error("Profile picture upload failed:", uploadError);
                 setErrorMessage("Failed to upload profile picture. Please try again later.");
               });
+
           })
           .catch((error) => {
             console.error(error);
             setErrorMessage("Post creation failed. Please try again later.");
           });
       };
-      
+
       const handleDeletePost = (postId) => {
         console.log(postId)
         
@@ -148,7 +146,8 @@ import axios from 'axios';
           del("/deletePost/" + postId  , config)
             .then((data) => {
             console.log(data)
-            console.log("success")
+            console.log("post deleted")
+            toast.success("Post deleted successfully!");
             setErrorMessage('')
             const updatedPosts = myPosts.filter(post => post.id !== postId);
             setMyPosts(updatedPosts);
@@ -180,6 +179,16 @@ import axios from 'axios';
           console.log(data);
           setCardShelter(data)
           setSelectedPost(post);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        get("/getProfilePicture/" + post.id)
+        .then((picture) => {
+          console.log("image retrieved")
+          const blob = new Blob([picture], { type: 'image/jpeg' }); 
+          const blobUrl = URL.createObjectURL(blob);
+          setCardPicture(blobUrl)
         })
         .catch((error) => {
           console.log(error);
@@ -268,7 +277,7 @@ import axios from 'axios';
         )}
            {selectedPost ? (
             <div>
-              <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter}/>   
+              <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>   
               <div className='expanded-buttons'>
                   <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
                   <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
@@ -281,7 +290,7 @@ import axios from 'axios';
               {myPosts.length > 0 &&
               myPosts.map(post => (
                 <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
-                  <Card.Img className='card-img'variant="top" src={profilePictures[post.id]} alt={post.petName} />
+                  <Card.Img className='card-img'variant="top" src={pictures[post.id]} alt={post.petName} />
                   <Card.Body>
                     <Card.Title className='card-title'>{post.petName}</Card.Title>
                     <Card.Text>
@@ -305,8 +314,8 @@ import axios from 'axios';
           </div>
             )}             
         </div>
-
         <Footer/>
+        <ToastContainer position='top-center' />
       </div>
     );
   }
