@@ -1,13 +1,19 @@
 package com.example.pawsback.paws.post;
 
 
+import com.example.pawsback.paws.post.model.AgeType;
 import com.example.pawsback.paws.post.model.Post;
+import com.example.pawsback.paws.post.model.Races;
+import com.example.pawsback.paws.post.model.Sex;
+import com.example.pawsback.paws.post.model.dto.FilteredListDataDTO;
 import com.example.pawsback.paws.post.model.dto.PostDTO;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,5 +94,34 @@ public class PostService {
 
     public List<Post> getAllNotAdopted(){
         return postRepository.findAllNonAdoptedPosts();
+    }
+
+    public List<Post> getFilteredPosts(FilteredListDataDTO data){
+        Integer minAge = null;
+        Integer maxAge = null;
+        Boolean sex = null;
+        String race = null;
+
+        if(data.getAgeType().toString().equals("CACHORRO")){
+            maxAge = 2;
+        }else if(data.getAgeType().toString().equals("ADULTO")){
+            minAge = 3;
+        }
+
+        if(data.getSex().toString().equals("MALE")){
+            sex = true;
+        }else if(data.getSex().toString().equals("FEMALE")){
+            sex = false;
+        }
+
+        if(!data.getRace().toString().equals("UNDEFINED")){
+            race = data.getRace().toString();
+        }
+
+        return getFilteredPostsQuery(minAge,maxAge,sex,race);
+    }
+
+    private List<Post> getFilteredPostsQuery(@RequestParam(value = "minAge", required = false) Integer minAge, @RequestParam(value = "maxAge", required = false) Integer maxAge, @RequestParam(value = "sex", required = false) Boolean sex, @RequestParam(value = "race",required = false) String race){
+        return postRepository.filteredPostSearch(minAge,maxAge,sex,race);
     }
 }

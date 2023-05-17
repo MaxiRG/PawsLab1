@@ -2,6 +2,7 @@ package com.example.pawsback.paws.post;
 
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.dto.ChangeAdoptedStatusDTO;
+import com.example.pawsback.paws.post.model.dto.FilteredListDataDTO;
 import com.example.pawsback.paws.post.model.dto.PostDTO;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import jakarta.persistence.EntityNotFoundException;
@@ -102,6 +103,15 @@ public class PostController {
     public ResponseEntity<?> getAllNotAdopted(){
         try {
             return new ResponseEntity<>(postService.getAllNotAdopted(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve posts", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getFilteredList")
+    public ResponseEntity<?> getFilteredList(@RequestBody FilteredListDataDTO data){
+        try {
+            return new ResponseEntity<>(postService.getFilteredPosts(data), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to retrieve posts", HttpStatus.INTERNAL_SERVER_ERROR);
         }
