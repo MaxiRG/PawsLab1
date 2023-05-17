@@ -26,7 +26,7 @@ public class ImageController {
         this.postService = postService;
     }
 
-    @PostMapping("/uploadProfilePicture/{id}")
+    @PostMapping(value = "/uploadProfilePicture/{id}", consumes = "multipart/form-data")
     public ResponseEntity<?> uploadProfilePicture(@PathVariable int id, @RequestHeader("Authorization") String token, @RequestParam("file") MultipartFile imageData){
         try{
             imageService.upload(id, token, imageData);
