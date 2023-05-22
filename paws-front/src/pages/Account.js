@@ -1,12 +1,13 @@
   import React, { useState, useEffect } from "react";
   import { useNavigate } from "react-router-dom";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-  import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+  import { faSignOutAlt, faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
   import Button from 'react-bootstrap/Button';
   import "../styles/Account.css";
   import Navbar from "../components/Navbar";
   import Footer from "../components/Footer";
   import ProfileCard from "../components/ProfileCard";
+  import PostCard from "../components/PostCard";
   import { del, get } from "../utils/http";
   import jwt_decode from "jwt-decode";
 
@@ -14,8 +15,17 @@
   const Account = (props) => {
     const { isLoggedIn, isShelter } = props;
     const [profile, setProfile] = useState(null);
+    const [myPosts, setMyPosts] = useState([]);
+    const [pictures, setPictures] = useState({});
+    const [errorMessage, setErrorMessage] = useState("");
+    const [showDonationHistory, setShowDonationHistory] = useState(false);
     const navigate = useNavigate();
-
+    const token = localStorage.getItem('token');
+    const config = {
+              headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json', 
+          }}
 
 
     useEffect(() => {
@@ -36,8 +46,51 @@
         });
     }, []);
 
-   
+    const handleDonationHistory = (e) => {
+      if (e) {
+        e.preventDefault();
+      }
+  
+      if (showDonationHistory) {
+        // Hide donation history
+        setShowDonationHistory(false);
+      } else {
+        // Show donation history
+        get('/getMyPosts', config)
+          .then(response => {
+            console.log(response)
+            console.log("posts retrieved")
+            setMyPosts(response);
+            setErrorMessage('');
+  
+            response.forEach((post) => {
+              const postId = post.id;
+              get(`/getProfilePicture/${postId}`, { responseType: 'arraybuffer' })
+                .then((imageResponse) => {
+                  console.log('image retrieved');
+                  const blob = new Blob([imageResponse], { type: 'image/jpeg' });
+                  const blobUrl = URL.createObjectURL(blob);
+                  setPictures((prevState) => ({
+                    ...prevState,
+                    [postId]: blobUrl,
+                  }));
+                })
+                .catch((error) => {
+                  console.error(error);
+                  setErrorMessage('Failed to retrieve images');
+                });
+            });
+          })
+          .catch(error => {
+            console.error(error)
+            setErrorMessage('Post retrieval failed. Please try again later.');
+          });
+          
+        setShowDonationHistory(true);
+      }
+    };;
 
+  
     const handleLogout = () => {
       localStorage.removeItem("token"); // Remove the token from localStorage
       props.setIsLoggedIn(false); // Update the state to indicate that the user is logged out
@@ -72,17 +125,16 @@
     
 
     const handleMyPosts = () => {
-      // Navigate to /donacion when My Posts is clicked
       navigate("/donacion");
     };
 
   
-
     return (
       <div className="all">
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
         <div className="body">
           <div className="account-container">
+          {errorMessage && <div id="error-message">{errorMessage}</div>}
             <div className="profile">
               {profile ? (     
                  <ProfileCard
@@ -93,14 +145,46 @@
                   isLoggedIn={isLoggedIn}/>
                 ) : <p>Failed to fetch user info</p>}
             </div>
-            
+            <div className="donation-history">
+              {showDonationHistory && myPosts.length > 0 ? (
+              myPosts.filter(post => post.adopted).map((post) => (
+                <PostCard 
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  clickable={false}
+                />
+                  ))
+                ) : (
+                  <></>
+                )}
+            </div>
             <ul className="account-actions">
              
               <li className="account-action"><Button className="action-button">Change password</Button></li>
               <li className="account-action">
-                {isShelter ? <Button className="action-button"onClick={handleMyPosts}>My posts </Button> : <Button className="action-button">Favourites</Button>}
+                {isShelter ? 
+                <Button className="action-button"onClick={handleMyPosts}>
+                  My posts 
+                </Button> 
+                :
+                <Button className="action-button">
+                  Favourites
+                </Button>}
               </li>
-              {isShelter ? <li className="account-action"><Button className="action-button">Donation history</Button></li> : null}
+              {isShelter ? <li className="account-action">
+                <Button className="action-button" onClick={handleDonationHistory}>
+                  {showDonationHistory ? (
+                    <>
+                      <FontAwesomeIcon icon={faAngleUp} /> Hide Donation History
+                    </>
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faAngleDown} /> Show Donation History
+                    </>
+                  )}
+                </Button>
+              </li> : null}
               <li className="account-action"><Button className="action-button">Notifications</Button></li>
               <li className="account-logout">
                 <button className="logout-button" onClick={handleLogout}>
