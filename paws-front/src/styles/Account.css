@@ -4,8 +4,25 @@
 .profile{
   width: 80%;
   float: right;
-  margin: 10px;
+  margin: 20px;
 }
+
+.donation-history {
+  width: 80%;
+  float: right;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.donation-history .custom-card {
+  flex-basis: calc(33.33% - 60px); 
+  margin: 30px;
+}
+
 .account-actions {
   list-style: none;
   margin: 20px;

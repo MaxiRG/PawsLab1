@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import PostCard from '../components/PostCard';
 import SelectedPost from '../components/SelectedPost';
-import { get } from "../utils/http";
+import { get , post} from "../utils/http";
 import '../styles/Busqueda.css'
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
+
 
 function Busqueda(props) {
   const { isLoggedIn, isShelter } = props;
@@ -14,25 +17,46 @@ function Busqueda(props) {
   const [selectedPost, setSelectedPost] = useState(null);
   const [cardShelter, setCardShelter] = useState(null);
   const [cardPicture, setCardPicture] = useState([]);
-  const [profilePictures, setProfilePictures] = useState({});
+  const [pictures, setPictures] = useState({});
   const [searchFilters, setSearchFilters] = useState({
     age: '',
     sex: '',
+    race: ''
   });
 
   const handleSearch = (event) => {
     event.preventDefault();
+    
+    let ageType = "UNDEFINED";
+    
+
+    if (searchFilters.age === "puppy") {
+      ageType = "PUPPY";
+    } else if (searchFilters.age === "adult") {
+      ageType = "ADULT";
+    }
+
+    const race = searchFilters.race || "UNDEFINED";
+    const sex = searchFilters.sex || "UNDEFINED";
+
   
-    get('/getAll')
+    const body = {
+      race: race,
+      sex: sex,
+      ageType: ageType
+    };
+
+    post('/getFilteredList', body)
       .then(response => {
         console.log(response);
         console.log("posts retrieved");
         setPosts(response);
-  
+        setErrorMessage('')
+    
         response.forEach(post => {
           const postId = post.id;
           handleGetProfilePictures(postId);
-        });
+          });
       })
       .catch(error => {
         console.error(error);
@@ -40,14 +64,13 @@ function Busqueda(props) {
       });
   };
   
-
   const handleGetProfilePictures = (id) => {
     get(`/getProfilePicture/${id}`, { responseType: 'arraybuffer' })
       .then(response => {
         console.log('images retrieved')
         const blob = new Blob([response], { type: 'image/jpeg' }); // Adjust the 'type' accordingly
         const blobUrl = URL.createObjectURL(blob);
-        setProfilePictures((prevState) => ({
+        setPictures((prevState) => ({
         ...prevState,
         [id]: blobUrl,
      }));
@@ -85,15 +108,19 @@ function Busqueda(props) {
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
-    setSearchFilters({ ...searchFilters, [name]: value });
+    setSearchFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value
+    }));
   };
+  
 
   return (
     <div className='all'>
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
       <div className='body'>
       {!selectedPost && (
-          <form onSubmit={handleSearch}>
+          <form className="search-form"onSubmit={handleSearch}>
           <label htmlFor="age-filter">Age: </label>
           <select
             id="age-filter"
@@ -114,8 +141,38 @@ function Busqueda(props) {
             onChange={handleFilterChange}
           >
             <option value="">Any sex</option>
-            <option value="macho">Male</option>
-            <option value="hembra">Female</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+          </select>
+          <label htmlFor="race-filter"> Race: </label>
+          <select
+          id="race-filter"
+          name="race"
+          value={searchFilters.race}
+          onChange={handleFilterChange}
+          >
+            <option value="">Any race</option>
+            <option value="LabradorRetriever">Labrador Retriever</option>
+            <option value="GermanShepherd">German Shepherd</option>
+            <option value="GoldenRetriever">Golden Retriever</option>
+            <option value="FrenchBulldog">French Bulldog</option>
+            <option value="EnglishBulldog">English Bulldog</option>
+            <option value="Poodle">Poodle</option>
+            <option value="Beagle">Beagle</option>
+            <option value="Boxer">Boxer</option>
+            <option value="Chihuahua">Chihuahua</option>
+            <option value="Rottweiler">Rottweiler</option>
+            <option value="YorkshireTerrier">Yorkshire Terrier</option>
+            <option value="Dachshund">Dachshund</option>
+            <option value="SiberianHusky">Siberian Husky</option>
+            <option value="CockerSpaniel">Cocker Spaniel</option>
+            <option value="Pomeranian">Pomeranian</option>
+            <option value="ShihTzu">Shih Tzu</option>
+            <option value="BichonFrise">Bichon Frise</option>
+            <option value="BorderCollie">Border Collie</option>
+            <option value="Doberman">Doberman</option>
+            <option value="Schnauzer">Schnauzer</option>
+
           </select>
           <button className='submit' type="submit">Search</button>
         </form>     
@@ -126,25 +183,22 @@ function Busqueda(props) {
           <div>
             <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>
             <div className='expanded-buttons'>
-                <Button className='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
+             <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}> 
+               <FontAwesomeIcon icon={faTimes} className="button-icon" />Close
+             </Button>
             </div>   
         </div> 
         ):(
           <div className='card-container'>
               {posts.length > 0 &&
               posts.map(post => (
-                <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
-               <Card.Img className='card-img'variant="top" src={profilePictures[post.id]} alt={post.petName} />
-                  <Card.Body>
-                    <Card.Title className='card-title'>{post.petName}</Card.Title>
-                    <Card.Text>
-                      Sex: {post.sex ? 'Male' : 'Female'}<br />
-                      Age: {post.age}<br />
-                      Race: {post.race}<br />
-                      Description: {post.description}<br />
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
+                <PostCard
+                key={post.id}
+                post={post}
+                picture={pictures[post.id]}
+                handleSelectedPost={handleSelectedPost}
+                clickable={true}
+              />
               ))
             }
           </div>

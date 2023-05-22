@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import SelectedPost from '../components/SelectedPost';
+import PostCard from '../components/PostCard'
 import '../styles/Donacion.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Form } from 'react-bootstrap';
 import { post, get, del, put } from '../utils/http';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 
   function Donacion(props) {
@@ -28,15 +31,17 @@ import 'react-toastify/dist/ReactToastify.css';
     const [cardShelter, setCardShelter] = useState(null);
     const [cardPicture, setCardPicture] = useState([]);
     const token = localStorage.getItem('token');
-          const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json', 
-            }
-          }
-   
+    const config = {
+              headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json', 
+          }}
+
+  
       const handleMyPosts = (e) => {
+        if (e){
             e.preventDefault();
+          }
           
             get('/getMyPosts', config)
               .then(response => {
@@ -115,6 +120,7 @@ import 'react-toastify/dist/ReactToastify.css';
                 if (uploadResponse.ok) {
                   console.log("Profile picture uploaded successfully:", uploadResponse);
                   toast.success("Post created successfully!");
+                  handleMyPosts()
                 } else {
                   throw new Error("Profile picture upload failed");
                 }
@@ -221,19 +227,32 @@ import 'react-toastify/dist/ReactToastify.css';
           });
       }
       
-    return (
-      <div className='donacion'>
-        <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
-        <div className='body'>
-        {!selectedPost && (
-          <>
-            <Button className='button' variant="light" onClick={() => setIsFormExpanded(true)}>Add post</Button>
-          
-            {errorMessage && <div id="error-message">{errorMessage}</div>}
-          </>
-        )}
-
-          {isFormExpanded && (
+      return (
+        <div className='donacion'>
+          <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
+          <div className='body'>
+            {!selectedPost && !isFormExpanded && (
+              <div className="button-container">
+                <Card className="custom-card" onClick={() => setIsFormExpanded(true)}>
+                  <Card.Body className="add-post-card">
+                    <Card.Text className="add-post-text">
+                      <FontAwesomeIcon icon={faPlus} className="add-post-icon" />
+                      Add post
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+                <Card className="custom-card" onClick={() => handleMyPosts()}>
+                  <Card.Body className="see-post-card">
+                    <Card.Text className="see-post-text">
+                      <FontAwesomeIcon icon={faList} className="see-post-icon" />
+                      My posts
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </div>
+            )}
+          {errorMessage && <div id="error-message">{errorMessage}</div>}
+          {!selectedPost && isFormExpanded && (
             <form className='form' onSubmit={handleFormSubmit}>
               <label>
                 Pet name<br/>
@@ -248,13 +267,32 @@ import 'react-toastify/dist/ReactToastify.css';
                 </select>
               </label>
               <label>
-                Age<br/>
-                <input type="number" name="petAge" value={petAge} onChange={(event) => setPetAge(event.target.value)} required/>
-              </label>
-              <label>
                 Race<br/>
-                <input type="text" name="petRace" value={petRace} onChange={(event) => setPetRace(event.target.value)}  required/>
-              </label>
+                <select name='petRace' value={petRace} onChange={(event) => setPetRace(event.target.value)} required>
+                  <option value="">Select Race</option>
+                  <option value="Undefined">Undefined</option>
+                  <option value="LabradorRetriever">Labrador Retriever</option>
+                  <option value="GermanShepherd">German Shepherd</option>
+                  <option value="GoldenRetriever">Golden Retriever</option>
+                  <option value="FrenchBulldog">French Bulldog</option>
+                  <option value="EnglishBulldog">English Bulldog</option>
+                  <option value="Poodle">Poodle</option>
+                  <option value="Beagle">Beagle</option>
+                  <option value="Boxer">Boxer</option>
+                  <option value="Chihuahua">Chihuahua</option>
+                  <option value="Rottweiler">Rottweiler</option>
+                  <option value="YorkshireTerrier">Yorkshire Terrier</option>
+                  <option value="Dachshund">Dachshund</option>
+                  <option value="SiberianHusky">Siberian Husky</option>
+                  <option value="CockerSpaniel">Cocker Spaniel</option>
+                  <option value="Pomeranian">Pomeranian</option>
+                  <option value="ShihTzu">Shih Tzu</option>
+                  <option value="BichonFrise">Bichon Frise</option>
+                  <option value="BorderCollie">Border Collie</option>
+                  <option value="Doberman">Doberman</option>
+                  <option value="Schnauzer">Schnauzer</option>        
+                </select>
+              </label>             
               <label>
                 Description <br/>
                 <input type='text'  name="petDescription" value={petDescription} onChange={(event) => setPetDescription(event.target.value)}  required/>
@@ -270,48 +308,40 @@ import 'react-toastify/dist/ReactToastify.css';
               </div>
             </form>
           )}
-          {!selectedPost && (
-          <>
-            <Button className='button' variant="light" onClick={handleMyPosts}> My posts </Button>
-          </>
-        )}
            {selectedPost ? (
             <div>
               <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>   
               <div className='expanded-buttons'>
-                  <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>Edit</Button>
-                  <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}>Close</Button>
-                  <Button className='deleteButton' id='expanded-button' variant="outline-danger" onClick={() => handleDeletePost(selectedPost.id)}>Delete</Button> {}
+                  <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>
+                    <FontAwesomeIcon icon={faPencilAlt} className="button-icon" />Edit
+                  </Button>
+                  <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}> 
+                    <FontAwesomeIcon icon={faTimes} className="button-icon" />Close
+                  </Button>
+                  <Button className='deleteButton' id='expanded-button' variant="outline-danger" onClick={() => handleDeletePost(selectedPost.id)}>
+                    <FontAwesomeIcon icon={faTrash} className="button-icon" />Delete
+                  </Button>
               </div>
               
             </div>  
             ):(
+              !isFormExpanded && (
               <div className='card-container'>
               {myPosts.length > 0 &&
               myPosts.map(post => (
-                <Card key={post.id} className="custom-card" onClick={() => handleSelectedPost(post)} >
-                  <Card.Img className='card-img'variant="top" src={pictures[post.id]} alt={post.petName} />
-                  <Card.Body>
-                    <Card.Title className='card-title'>{post.petName}</Card.Title>
-                    <Card.Text>
-                      Sex: {post.sex ? 'Male' : 'Female'}<br />
-                      Age: {post.age}<br />
-                      Race: {post.race}<br />
-                      Description: {post.description}<br />
-                    </Card.Text>
-                    <Form.Check
-                      type="checkbox"
-                      label="Adopted"
-                      className="check"
-                      checked={post.adopted} 
-                      onChange={(e) => handleMarkAsAdopted(post.id, e.target.checked)}
-                      onClick={(e) => e.stopPropagation()} 
-                    />
-                  </Card.Body>
-                </Card>
+                <PostCard
+                    key={post.id}
+                    post={post}
+                    picture={pictures[post.id]}
+                    handleSelectedPost={handleSelectedPost}
+                    handleMarkAsAdopted={handleMarkAsAdopted}
+                    showAdoptedCheckbox={true}
+                    clickable={true}
+                  />
               ))
             }
           </div>
+              )
             )}             
         </div>
         <Footer/>
