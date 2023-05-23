@@ -176,6 +176,22 @@ public class UserController {
             return new ResponseEntity<>("Failed to get user", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/getInfoById/{id}")
+    public ResponseEntity<?> getInfo(@PathVariable Long id) {
+        try {
+            InfoDTO infoDTO = service.toInfoDTO(service.getById(id));
+            if (infoDTO != null) {
+                return new ResponseEntity<>(infoDTO, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Shelter not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to get user", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/test")
     public String test(){
