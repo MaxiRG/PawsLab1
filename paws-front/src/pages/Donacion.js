@@ -25,7 +25,10 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
     const [petDescription, setPetDescription] = useState('')
     const [pictures, setPictures] = useState({});
     const [errorMessage, setErrorMessage] = useState("");
-    const [myPosts, setMyPosts] = useState([]);
+    const [myPosts, setMyPosts] = useState({
+      activePosts: [],
+      adoptedPosts: []
+    });    
     const [postImage, setPostImage] = useState([])
     const [selectedPost, setSelectedPost] = useState(null);
     const [cardShelter, setCardShelter] = useState(null);
@@ -47,7 +50,15 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
               .then(response => {
                 console.log(response)
                 console.log("posts retrieved")
-                setMyPosts(response);
+
+                const activePosts = response.filter(post => !post.adopted);
+                const adoptedPosts = response.filter(post => post.adopted);
+
+                setMyPosts({
+                  activePosts: activePosts,
+                  adoptedPosts: adoptedPosts
+                });
+                
                 setErrorMessage('')
 
                 response.forEach((post) => {
@@ -80,6 +91,11 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
       
         if (petAge < 0) {
           setErrorMessage("Age cannot be negative.");
+          return;
+        }
+
+        if (petDescription.length > 150){
+          setErrorMessage("Description too long");
           return;
         }
       
@@ -209,23 +225,22 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
         put("/modifyAdoptedStatus", body, config)
           .then((data) => {
             console.log(data);
-            // update the state of the post with the new adopted status
-            const updatedPosts = myPosts.map(post => {
-              if (post.id === postId) {
-                return {
-                  ...post,
-                  adopted: checked
-                }
-              } else {
-                return post
-              }
-            })
+            // Update the state of the post with the new adopted status
+            const updatedPosts = {
+              activePosts: myPosts.activePosts.map(post =>
+                post.id === postId ? { ...post, adopted: checked } : post
+              ),
+              adoptedPosts: myPosts.adoptedPosts.map(post =>
+                post.id === postId ? { ...post, adopted: checked } : post
+              )
+            };
             setMyPosts(updatedPosts);
           })
           .catch((error) => {
             console.log(error);
           });
-      }
+      };
+      
       
       return (
         <div className='donacion'>
@@ -266,6 +281,20 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
                   <option value="female">Female</option>
                 </select>
               </label>
+              <label>
+                Age<br/>
+                <input
+                  type="number"
+                  name="petAge"
+                  value={petAge}
+                  onChange={(event) => setPetAge(event.target.value)}
+                  min="0"
+                  max="100"
+                  step="1"
+                  required
+                />
+              </label>
+
               <label>
                 Race<br/>
                 <select name='petRace' value={petRace} onChange={(event) => setPetRace(event.target.value)} required>
@@ -326,21 +355,35 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
             </div>  
             ):(
               !isFormExpanded && (
-              <div className='card-container'>
-              {myPosts.length > 0 &&
-              myPosts.map(post => (
+            <div className='card-container'>
+              {myPosts.activePosts.length > 0 &&
+              myPosts.activePosts.map(post => (
                 <PostCard
-                    key={post.id}
-                    post={post}
-                    picture={pictures[post.id]}
-                    handleSelectedPost={handleSelectedPost}
-                    handleMarkAsAdopted={handleMarkAsAdopted}
-                    showAdoptedCheckbox={true}
-                    clickable={true}
-                  />
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  handleSelectedPost={handleSelectedPost}
+                  handleMarkAsAdopted={handleMarkAsAdopted}
+                  showAdoptedCheckbox={true}
+                  clickable={true}
+                />
               ))
             }
-          </div>
+            {myPosts.adoptedPosts.length > 0 &&
+              myPosts.adoptedPosts.map(post => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  handleSelectedPost={handleSelectedPost}
+                  handleMarkAsAdopted={handleMarkAsAdopted}
+                  showAdoptedCheckbox={true}
+                  clickable={true}
+                />
+              ))
+            }
+
+             </div>
               )
             )}             
         </div>

@@ -29,8 +29,7 @@ export const Login = (props) => {
           email: email,
           password: password
         };
-    
-        try {
+        
           const response = await post("/api/login", user);
           console.log(response);
           
@@ -40,13 +39,9 @@ export const Login = (props) => {
             navigate("/");
             window.location.reload()
           } else {
-            // Registration failed, display an error message
-            setErrorMessage(response.message);
+            setErrorMessage('Registration failed. Please try again later.');
           }
-        } catch (error) {
-          console.error(error);
-          setErrorMessage('Registration failed. Please try again later.');
-        }
+        
       };
 
     return (

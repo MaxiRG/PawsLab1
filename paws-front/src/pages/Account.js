@@ -146,7 +146,7 @@
                 ) : <p>Failed to fetch user info</p>}
             </div>
             <div className="donation-history">
-              {showDonationHistory && myPosts.length > 0 ? (
+              {showDonationHistory && myPosts.filter(post => post.adopted).length > 0 ? (
               myPosts.filter(post => post.adopted).map((post) => (
                 <PostCard 
                   key={post.id}
@@ -156,7 +156,7 @@
                 />
                   ))
                 ) : (
-                  <></>
+                  showDonationHistory && <p>No history found...</p>
                 )}
             </div>
             <ul className="account-actions">
