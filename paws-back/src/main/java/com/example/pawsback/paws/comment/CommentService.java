@@ -1,10 +1,13 @@
 package com.example.pawsback.paws.comment;
 
 import com.example.pawsback.paws.comment.model.Comment;
+import com.example.pawsback.paws.comment.model.Type;
 import com.example.pawsback.paws.comment.model.dto.CommentDTO;
 import com.example.pawsback.paws.comment.model.dto.CreateCommentDTO;
 import com.example.pawsback.paws.user.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CommentService {
@@ -35,5 +38,9 @@ public class CommentService {
         comment.setSubjectId(createCommentDTO.getSubjectId());
         comment.setAuthor(userService.getByToken(token));
         return commentRepository.save(comment);
+    }
+
+    public List<Comment> getCommentsOfSubject(Type type, int subjectId){
+        return commentRepository.findCommentByTypeAndSubjectId(type, subjectId);
     }
 }
