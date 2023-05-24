@@ -22,10 +22,10 @@ function PostCard(props) {
       <Card.Img className='card-img' variant="top" src={picture} alt={post.petName} />
       <Card.Body>
         <Card.Title className='card-title'>{post.petName}</Card.Title>
-        <Card.Text>
-          Sex: {post.sex ? 'Male' : 'Female'}<br />
-          Age: {post.age}<br />
-          Race: {post.race.replace(/([a-z])([A-Z])/g, '$1 $2')}<br />
+        <Card.Text className='card-text'>
+          SEX: {post.sex ? 'Male' : 'Female'}<br />
+          AGE: {post.age}<br />
+          RACE: {post.race.replace(/([a-z])([A-Z])/g, '$1 $2')}<br />
         </Card.Text>
         {showAdoptedCheckbox && handleMarkAsAdopted && (
           <Form.Check

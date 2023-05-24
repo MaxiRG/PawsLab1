@@ -19,11 +19,11 @@
 }
 
 .donation-history .custom-card {
-  flex-basis: calc(33.33% - 60px); 
-  margin: 30px;
+  flex-basis: calc(33.33% - 80px); 
+  margin: 40px;
 }
 
-.donation-history p{
+.donation-history .no-history{
   margin: 1rem;
 }
 
@@ -75,8 +75,9 @@
   flex-direction: column;
 }
 
-@media (max-width: 900px){
+@media (max-width: 1200px){
  .profile{
+  width: 80%;
   float: none;
   margin: 10px auto ;
  }
@@ -86,6 +87,11 @@
 }
 .account-action{
   width: 100%;
+}
+.donation-history{
+  float: none;
+  width: 80%;
+  margin: auto;
 }
 
   

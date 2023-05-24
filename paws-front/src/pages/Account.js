@@ -156,7 +156,7 @@
                 />
                   ))
                 ) : (
-                  showDonationHistory && <p>No history found...</p>
+                  showDonationHistory && <p className="no-history">No history found...</p>
                 )}
             </div>
             <ul className="account-actions">
