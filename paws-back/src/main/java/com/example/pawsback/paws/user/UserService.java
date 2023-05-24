@@ -153,6 +153,7 @@ public class UserService {
 
     public InfoDTO toInfoDTO(User user){
         InfoDTO infoDTO = new InfoDTO();
+        infoDTO.setId((int) user.getId());
         infoDTO.setEmail(user.getEmail());
         infoDTO.setRole(user.getRole());
         infoDTO.setPhoneNumber(user.getPhoneNumber());
