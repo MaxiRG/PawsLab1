@@ -19,6 +19,7 @@ const App = () => {
     const [isShelter, setIsShelter] = useState(false);
 
     useEffect(() => {
+      setIsLoggedIn(false);
       const token = localStorage.getItem("token");
       if (token) {
         setIsLoggedIn(true);

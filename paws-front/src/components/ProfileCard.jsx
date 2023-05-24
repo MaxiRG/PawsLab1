@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import { FaPencilAlt } from 'react-icons/fa';
 import '../styles/ProfileCard.css';
 import { put } from "../utils/http";
@@ -15,31 +14,35 @@ const ProfileCard = ({ name, number, description, email }) => {
   const [editedName, setEditedName] = useState(name);
   const MAX_DESCRIPTION_LENGTH = 250;
   const [rows, setRows] = useState(1);
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
 
   const handleEditDescription = () => {
     setEditedDescription(description);
     setShowEditDescription(true);
   };
+
   const handleEditNumber = () => {
     setShowEditNumber(true);
   };
+
   const handleEditName = () => {
-    setShowEditName(true)
-  }
+    setShowEditName(true);
+  };
+
   const setName = (newName) => {
     setEditedName(newName);
-  }
+  };
+
   const setDescription = (newDescription) => {
     setEditedDescription(newDescription);
   };
+
   const setNumber = (newNumber) => {
     setEditedNumber(newNumber);
   };
@@ -55,52 +58,53 @@ const ProfileCard = ({ name, number, description, email }) => {
       description: truncatedDescription
     };
 
-    put("/api/modifyDescription",body, config)
+    put("/api/modifyDescription", body, config)
       .then((data) => {
         console.log(data);
         setShowEditDescription(false);
-        setDescription(editedDescription)
-        toast.success("Description modified successfully!")   
+        setDescription(editedDescription);
+        toast.success("Description modified successfully!");
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   const handleSaveNumber = () => {
     const body = {
       phoneNumber: editedNumber
-    }
+    };
 
-    put(`/api/modifyPhoneNumber`,body, config) 
-        .then((data) => {
-            console.log(data);
-            setShowEditNumber(false);
-            setNumber(editedNumber)
-            navigate('/')
-        })
-        .catch((error) => {
-            console.log(error);
-            // handle error
-        });
+    put(`/api/modifyPhoneNumber`, body, config)
+      .then((data) => {
+        console.log(data);
+        setShowEditNumber(false);
+        setNumber(editedNumber);
+        toast.success("Phone number modified successfully!");
+      })
+      .catch((error) => {
+        console.log(error);
+        // handle error
+      });
   };
+
   const handleSaveName = () => {
     const body = {
       name: editedName
-    }
+    };
 
-    put(`/api/modifyName`,body, config) 
-        .then((data) => {
-            console.log(data);
-            setShowEditName(false);
-            setName(editedName)
-            navigate('/')
-        })
-        .catch((error) => {
-            console.log(error);
-            // handle error
-        });
-  }
- 
+    put(`/api/modifyName`, body, config)
+      .then((data) => {
+        console.log(data);
+        setShowEditName(false);
+        setName(editedName);
+        toast.success("Name modified successfully!");
+      })
+      .catch((error) => {
+        console.log(error);
+        // handle error
+      });
+  };
 
   return (
     <div className="profile-card">
@@ -114,16 +118,17 @@ const ProfileCard = ({ name, number, description, email }) => {
             />
             <button onClick={handleSaveName}>Save Name</button>
           </div>
-          ) : (
-          <div>  
+        ) : (
+          <div>
             <h2 className="profile-card-name">
-              Name: {name} 
-              <FaPencilAlt className='pencil' onClick={handleEditName} /></h2>  
+              Name: {editedName}
+              <FaPencilAlt className='pencil' onClick={handleEditName} />
+            </h2>
           </div>
-          )}
-          <p className="profile-card-email">
-            Email: {email}
-          </p> 
+        )}
+        <p className="profile-card-email">
+          Email: {email}
+        </p>
         {showEditDescription ? (
           <div>
             <input
@@ -140,7 +145,7 @@ const ProfileCard = ({ name, number, description, email }) => {
         ) : (
           <div>
             <p className="profile-card-description">
-              Description: {description}
+              Description: {editedDescription}
               <FaPencilAlt className='pencil' onClick={handleEditDescription} />
             </p>
           </div>
@@ -157,13 +162,13 @@ const ProfileCard = ({ name, number, description, email }) => {
         ) : (
           <div>
             <p className="profile-card-number">
-              Number: {number}
+              Number: {editedNumber}
               <FaPencilAlt className='pencil' onClick={handleEditNumber} />
             </p>
           </div>
         )}
       </div>
-      <ToastContainer position='top-center'/>
+      <ToastContainer position='top-center' />
     </div>
   );
 };

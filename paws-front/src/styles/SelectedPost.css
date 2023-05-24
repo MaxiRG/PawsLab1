@@ -2,7 +2,7 @@
 .post-expanded {
   display: flex;
   justify-content: space-around;
-  margin-top: 20px;
+  margin: 3rem;
 }
 
 .post-expanded h1 {
