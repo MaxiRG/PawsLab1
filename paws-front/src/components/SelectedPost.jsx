@@ -19,7 +19,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
             <div className='info'>
               <p className='info'><b>Sex:</b> {selectedPost.sex ? 'Male' : 'Female'}</p>
               <p className='info'><b>Age:</b> {selectedPost.age}</p>
-              <p className='info'><b>Race:</b> {selectedPost.race}</p>
+              <p className='info'><b>Race:</b> {selectedPost.race.replace(/([a-z])([A-Z])/g, '$1 $2')}</p>
               <p className='description'><b>Description:</b> {selectedPost.description}</p>
             </div>
             <div className='pic'>
@@ -31,11 +31,9 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           <h1 className='shelter-title'>{cardShelter.name}</h1>
           <p className='description'><b>Description:</b> {cardShelter.description}</p>
           <p className='info'><b>Number:</b> {cardShelter.phoneNumber}</p>
-          <div>
           <Button className="see-shelter-btn" onClick={handleNavigateToShelter}>
             See Shelter
           </Button>
-        </div>
         </div>
         
       </div>     

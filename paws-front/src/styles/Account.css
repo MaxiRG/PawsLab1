@@ -23,6 +23,10 @@
   margin: 30px;
 }
 
+.donation-history p{
+  margin: 1rem;
+}
+
 .account-actions {
   list-style: none;
   margin: 20px;

@@ -25,8 +25,7 @@ function PostCard(props) {
         <Card.Text>
           Sex: {post.sex ? 'Male' : 'Female'}<br />
           Age: {post.age}<br />
-          Race: {post.race}<br />
-          Description: {post.description}<br />
+          Race: {post.race.replace(/([a-z])([A-Z])/g, '$1 $2')}<br />
         </Card.Text>
         {showAdoptedCheckbox && handleMarkAsAdopted && (
           <Form.Check

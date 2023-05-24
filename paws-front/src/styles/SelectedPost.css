@@ -26,21 +26,37 @@
   background-color: rgb(252, 243, 243);
   border-radius: 10px;
   align-items: center;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .pic-info{
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   margin-top: 20px;
 }
-.post-actions button {
-  margin-right: 10px;
+
+.pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
 }
 
-.dog-pic{
+.dog-pic {
   border-radius: 10px;
   object-fit: cover;
   max-width: 100%;
   max-height: 200px;
+}
+
+.post-actions button {
+  margin-right: 10px;
+}
+
+.see-shelter-btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 1rem;
 }

@@ -31,31 +31,35 @@
   margin-bottom: 1.5rem;
 }
 
-.shelter-posts,.donated-posts {
+.donated-posts {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  width: 47%;
-  max-width: 800px;
+  width: 45%;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   margin: 2rem;
+  justify-content: flex-start;
+  
 }
 
 
-
-
-.shelter-posts .custom-card , .donated-posts .custom-card {
-  flex: 0 0 calc(40% - 10px);
+.donated-posts .custom-card {
+  flex: 0 0 calc(42% - 10px);
   margin: auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   margin-top: 1rem;
+  align-self: flex-start;
 }
 
-.shelter-posts .active-posts-title, .donated-posts .donated-posts-title {
+.donated-posts .donated-posts-title {
   flex-basis: 100%;
   font-size: 1.8rem;
   margin-left: 1.5rem;
   margin-top: 1rem;
   text-align: center;
 }
+
+.donated-posts p {
+  margin: 1rem;
+}
+

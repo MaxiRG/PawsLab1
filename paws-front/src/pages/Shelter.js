@@ -82,37 +82,22 @@ const Shelter = (props) => {
           )}
         </div>
         {errorMessage && <div id="error-message">{errorMessage}</div>}
-        <div className="shelter-posts">
-          <h2 className="active-posts-title">Active Posts</h2>
-          {posts.length > 0 ? (
-            posts.filter(post => !post.adopted).map((post) => (
-              <PostCard 
-                key={post.id}
-                post={post}
-                picture={pictures[post.id]}
-                clickable={false}
-              />
-            ))
-          ) : (
-            <p>No active posts found.</p>
-          )}
-        </div>
-
-        <div className="donated-posts">
-          <h2 className="donated-posts-title">Donation History</h2>
-          {posts.length > 0 ? (
-            posts.filter(post => post.adopted).map((post) => (
-              <PostCard 
-                key={post.id}
-                post={post}
-                picture={pictures[post.id]}
-                clickable={false}
-              />
-            ))
-          ) : (
-            <p>No history found.</p>
-          )}
-        </div>
+          <div className="donated-posts">
+            <h2 className="donated-posts-title">Donation History</h2>
+            {posts.filter(post => post.adopted).length > 0 ? (
+              posts.filter(post => post.adopted).map((post) => (
+                <PostCard 
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  clickable={false}
+                />
+              ))
+            ) : (
+              <p>No history found...</p>
+            )}
+          </div>
+        
       </div>
       <Footer />
     </div>
