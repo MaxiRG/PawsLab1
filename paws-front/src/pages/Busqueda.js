@@ -198,6 +198,7 @@ function Busqueda(props) {
                 picture={pictures[post.id]}
                 handleSelectedPost={handleSelectedPost}
                 clickable={true}
+                handleFavourite={true}
               />
               ))
             }

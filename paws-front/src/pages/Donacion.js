@@ -380,7 +380,6 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
                   picture={pictures[post.id]}
                   handleSelectedPost={handleSelectedPost}
                   handleMarkAsAdopted={handleMarkAsAdopted}
-                  showAdoptedCheckbox={true}
                   clickable={true}
                 />
               ))
@@ -393,7 +392,6 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
                   picture={pictures[post.id]}
                   handleSelectedPost={handleSelectedPost}
                   handleMarkAsAdopted={handleMarkAsAdopted}
-                  showAdoptedCheckbox={true}
                   clickable={true}
                 />
               ))
