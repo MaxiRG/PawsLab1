@@ -45,7 +45,7 @@ public class User {
     private List<Post> posts;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     public User(String email, String password){

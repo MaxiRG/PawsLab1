@@ -29,7 +29,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/getCommentsOfSubject{type}{subjectId}")
+    @GetMapping("/getCommentsOfType{type}andId{subjectId}")
     public ResponseEntity<?> getComments(@PathVariable Type type, @PathVariable int subjectId){
         try{
             return new ResponseEntity<>(commentService.getCommentsOfSubject(type, subjectId), HttpStatus.OK);
