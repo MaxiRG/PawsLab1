@@ -84,7 +84,9 @@
   margin: 30px;
 }
 .foto-history{
-  width: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  height: 150px;
 }
 
 .box {

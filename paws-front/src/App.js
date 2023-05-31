@@ -6,6 +6,8 @@ import Login from "./pages/Login"
 import Busqueda from "./pages/Busqueda"
 import Donacion from "./pages/Donacion";
 import Account from "./pages/Account"
+import Shelter from "./pages/Shelter";
+import NotFound from "./pages/NotFound"
 import LogProtected from "./components/LogProtected";
 import RoleProtected from "./components/RoleProtected";
 import jwt_decode from "jwt-decode";
@@ -36,6 +38,8 @@ const App = () => {
             <Route path={'/busqueda'} element={<Busqueda isLoggedIn={isLoggedIn} isShelter={isShelter}/>}/>
             <Route path={'/donacion'} element={<RoleProtected isLoggedIn={isLoggedIn} isShelter={isShelter}><Donacion isLoggedIn={isLoggedIn} isShelter={isShelter}/></RoleProtected>}/>
             <Route path={'/account'} element={<LogProtected isLoggedIn={isLoggedIn}><Account setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} isShelter={isShelter}/></LogProtected>}/>
+            <Route path={'/shelter/:shelterId'} element={<Shelter isLoggedIn={isLoggedIn} isShelter={isShelter}/>} />
+            <Route path={'/404'}element={<NotFound />}/>
         </Routes>
     </BrowserRouter>
 );
