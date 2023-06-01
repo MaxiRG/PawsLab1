@@ -10,7 +10,7 @@ import { post, get, del, put } from '../utils/http';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -33,6 +33,7 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
     const [selectedPost, setSelectedPost] = useState(null);
     const [cardShelter, setCardShelter] = useState(null);
     const [cardPicture, setCardPicture] = useState([]);
+    const [showMyPosts, setShowMyPosts] = useState(false);
     const token = localStorage.getItem('token');
     const config = {
               headers: {
@@ -45,8 +46,13 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
         if (e){
             e.preventDefault();
           }
-          
-            get('/getMyPosts', config)
+        
+          if (showMyPosts) {
+            setShowMyPosts(false);
+            return
+          }
+            else{
+              get('/getMyPosts', config)
               .then(response => {
                 console.log(response)
                 console.log("posts retrieved")
@@ -84,6 +90,8 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
                 console.error(error)
                 setErrorMessage('Post retrieval failed. Please try again later.');
               });
+            }
+            setShowMyPosts(true)
        };
       
       const handleFormSubmit = (e) => {
@@ -250,8 +258,8 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
               <div className="button-container">
                 <Card className="custom-card" onClick={() => setIsFormExpanded(true)}>
                   <Card.Body className="add-post-card">
-                    <Card.Text className="add-post-text">
-                      <FontAwesomeIcon icon={faPlus} className="add-post-icon" />
+                    <Card.Text className="add-post-text"> 
+                    <FontAwesomeIcon icon={faPlus} className="add-post-icon" />
                       Add post
                     </Card.Text>
                   </Card.Body>
@@ -259,8 +267,15 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
                 <Card className="custom-card" onClick={() => handleMyPosts()}>
                   <Card.Body className="see-post-card">
                     <Card.Text className="see-post-text">
-                      <FontAwesomeIcon icon={faList} className="see-post-icon" />
-                      My posts
+                    {showMyPosts ? (
+                    <>
+                       <FontAwesomeIcon icon={faAngleUp} className="see-post-icon" /> My posts
+                    </>
+                  ) : (
+                    <>
+                      <FontAwesomeIcon icon={faAngleDown} className="see-post-icon" /> My posts
+                    </>
+                  )}  
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -356,7 +371,7 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
             ):(
               !isFormExpanded && (
             <div className='card-container'>
-              {myPosts.activePosts.length > 0 &&
+              {showMyPosts && myPosts.activePosts.length > 0 &&
               myPosts.activePosts.map(post => (
                 <PostCard
                   key={post.id}
@@ -364,12 +379,11 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
                   picture={pictures[post.id]}
                   handleSelectedPost={handleSelectedPost}
                   handleMarkAsAdopted={handleMarkAsAdopted}
-                  showAdoptedCheckbox={true}
                   clickable={true}
                 />
               ))
             }
-            {myPosts.adoptedPosts.length > 0 &&
+            {showMyPosts && myPosts.adoptedPosts.length > 0 &&
               myPosts.adoptedPosts.map(post => (
                 <PostCard
                   key={post.id}
@@ -377,7 +391,6 @@ import { faPlus, faList, faPencilAlt, faTimes, faTrash } from '@fortawesome/free
                   picture={pictures[post.id]}
                   handleSelectedPost={handleSelectedPost}
                   handleMarkAsAdopted={handleMarkAsAdopted}
-                  showAdoptedCheckbox={true}
                   clickable={true}
                 />
               ))

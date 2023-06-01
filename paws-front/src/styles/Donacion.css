@@ -24,8 +24,8 @@
   min-height: 85vh;
   display: flex;
   flex-direction: column;
+  
 }
-
 
 .form {
   display: flex;
@@ -34,12 +34,12 @@
   justify-content: center;
   align-items: center;
   border-radius: 50px;
-  border: 1px solid black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
   width: 50%;
   margin: auto;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
-
 
 .form-buttons{
   display: flex;
@@ -52,41 +52,6 @@
 .button-container{
   display: flex;
   cursor: pointer;
-}
-
-.custom-card {
-  margin: 2rem;
-  width: calc(25% - 4rem);
-  background-color: #f0f0f0;
-  max-height: 510px;
-  display: flex;
-  flex-direction: column;
-}
-
-.custom-card:hover {
-  background-color: #e2e6ea; 
-}
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.card-title {
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.card-img {
-  object-fit: cover;
-  width: 100%;
-  height: 200px;
-}
-
-
-.check label {
-  font-size: 19px;
 }
 
 

@@ -39,11 +39,9 @@ function Home(props) {
             <div className="linea" id="adopciones">
                         <div class="parrafo">
                             <div className="adoption-boxes">
-                                A lo largo de los 2 años trabajando junto con ustedes pudimos encontrar un hogar para: <br/>
-                                <div className='history-boxes'>
-                                  <div className="box">172 perros</div>
-                                  <div className="box">53 gatos</div>
-                                </div>
+                                A lo largo de los 2 años trabajando junto
+                                 con ustedes pudimos encontrar un hogar para 170 perros <br/>
+                                
                             </div>
                             <div className='adoption-images'>
                               <img className='foto-history' src={Perro2} alt='perro'/>

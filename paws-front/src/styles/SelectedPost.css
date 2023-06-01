@@ -2,7 +2,7 @@
 .post-expanded {
   display: flex;
   justify-content: space-around;
-  margin-top: 20px;
+  margin: 2rem;
 }
 
 .post-expanded h1 {
@@ -17,7 +17,6 @@
   align-items: center;
   display: flex;
 }
-
 
 .post-info , .shelter-info {
   font-size: 20px;
@@ -59,4 +58,47 @@
   bottom: 0;
   left: 0;
   margin: 1rem;
+}
+
+.comments-area{
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem;
+}
+
+.textBox, .comments{
+  width: 45%;
+  margin: 2rem;
+}
+
+.textBox .textArea{
+  width: 100%;
+  margin-bottom: 1rem;
+  resize: none;
+  background-color: rgb(252, 243, 243);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.comments .comment-box{
+  margin: 10px;
+  margin-top: 0;
+  border-radius: 10px;
+  padding: .5rem;
+  background-color: rgb(252, 243, 243);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.comments {
+  height: 300px;
+  overflow-y: auto;
+}
+
+.comments-container{
+  padding: 2px;
+  border-radius: 10px;
+}
+
+.user-icon{
+  margin-right: 5px;
+  margin-bottom: 3px;
 }
