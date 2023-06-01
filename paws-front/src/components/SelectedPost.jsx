@@ -13,6 +13,8 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setComments] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [commentsPerPage] = useState(4);
   const token = localStorage.getItem('token')
   const config = {
     headers: {
@@ -51,7 +53,6 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
     navigate(`/shelter/${cardShelter.id}`);
   };
 
-
   const handleCommentSubmit = (comment) => {
     if (!token){
       toast.warn("Log in to add a comment")
@@ -76,6 +77,14 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
         setErrorMessage("Could not post comment. Please try again later!");
       })
     
+  };
+
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   
@@ -113,14 +122,29 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
         </div>
         <div className='comments'>
           <div className='comments-container'>
-              {comments.map((comment) => (
-                <div className='comment-box' key={comment.id}>
-                  <FaUser className='user-icon'/>{comment.author.email}<br/>{comment.text}
-                </div>
-              ))}
+            {currentComments.map((comment) => (
+              <div className='comment-box' key={comment.id}>
+                <FaUser className='user-icon'/>{comment.author.email}<br/>{comment.text}
+              </div>
+            ))}
+          </div>
+          <div className='pagination'>
+            {comments.length > commentsPerPage && (
+              Array.from({ length: Math.ceil(comments.length / commentsPerPage) }).map((_, index) => (
+                <Button
+                  key={index}
+                  variant="primary"
+                  onClick={() => paginate(index + 1)}
+                  className={`page-link ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  {index + 1}
+                </Button>
+              ))
+            )}
           </div>
         </div>
       </div>
+      
 
       <ToastContainer position='top-center' />
     </div> 

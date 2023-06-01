@@ -88,10 +88,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.comments {
-  height: 300px;
-  overflow-y: auto;
-}
 
 .comments-container{
   padding: 2px;
@@ -101,4 +97,18 @@
 .user-icon{
   margin-right: 5px;
   margin-bottom: 3px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination .page-link {
+  margin: 0 5px;
+}
+
+.pagination .page-link.active {
+  font-weight: bold;
 }
