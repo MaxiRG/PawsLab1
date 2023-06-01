@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/SelectedPost.css';
 import Button from 'react-bootstrap/Button';
 import CommentBox from '../components/CommentBox';
+import { FaUser } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post, get } from '../utils/http'
@@ -32,9 +33,19 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
       })
     } 
     handleGetComments();
-  }, [selectedPost.id, comments]);
+  }, [selectedPost.id]);
 
-
+  const handleGetComments = () => {
+    get('/getCommentsOfTypePOSTandId' + selectedPost.id)
+    .then((response) => {
+      console.log(response);
+      setComments(response);
+    })
+    .catch((error) => {
+      console.error(error);
+      setErrorMessage("Could not load comments. Please try again later!");
+    })
+  } 
 
   const handleNavigateToShelter = () => {
     navigate(`/shelter/${cardShelter.id}`);
@@ -57,6 +68,8 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
       .then((response) => {
         console.log(response)
         comments.push(response)
+        handleGetComments();
+        toast.success('Comment added successfully!')
       })
       .catch((error) => {
         console.error(error);
@@ -99,9 +112,13 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           {errorMessage && <div id="error-message">{errorMessage}</div>}
         </div>
         <div className='comments'>
-          {comments.map((comment) => (
-          <div key={comment.id}>{comment.text}</div>
-          ))}
+          <div className='comments-container'>
+              {comments.map((comment) => (
+                <div className='comment-box' key={comment.id}>
+                  <FaUser className='user-icon'/>{comment.author.email}<br/>{comment.text}
+                </div>
+              ))}
+          </div>
         </div>
       </div>
 
