@@ -1,14 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SelectedPost.css';
 import Button from 'react-bootstrap/Button';
+import CommentBox from '../components/CommentBox';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { post, get } from '../utils/http'
+
 
 export default function SelectedPost({ selectedPost, cardShelter, cardPicture }) {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+  const [comments, setComments] = useState([]);
+  const token = localStorage.getItem('token')
+  const config = {
+    headers: {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json', 
+}}
+
+  useEffect(() => {
+    const handleGetComments = () => {
+      get('/getCommentsOfTypePOSTandId' + selectedPost.id)
+      .then((response) => {
+        console.log(response);
+        setComments(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage("Could not load comments. Please try again later!");
+      })
+    } 
+    handleGetComments();
+  }, [selectedPost.id, comments]);
+
+
 
   const handleNavigateToShelter = () => {
     navigate(`/shelter/${cardShelter.id}`);
   };
+
+
+  const handleCommentSubmit = (comment) => {
+    if (!token){
+      toast.warn("Log in to add a comment")
+      return
+    }
+    console.log('Comment:', comment);
+    const body = {
+      text : comment,
+      type : "POST",
+      subjectId : selectedPost.id
+    }
+    
+    post('/createComment', body, config)
+      .then((response) => {
+        console.log(response)
+        comments.push(response)
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage("Could not post comment. Please try again later!");
+      })
+    
+  };
+
+  
 
   return (
     <div>
@@ -35,8 +92,20 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
             See Shelter
           </Button>
         </div>
-        
-      </div>     
+      </div>   
+      <div className='comments-area'> 
+        <div className='textBox'>
+          <CommentBox onSubmit={handleCommentSubmit} />
+          {errorMessage && <div id="error-message">{errorMessage}</div>}
+        </div>
+        <div className='comments'>
+          {comments.map((comment) => (
+          <div key={comment.id}>{comment.text}</div>
+          ))}
+        </div>
+      </div>
+
+      <ToastContainer position='top-center' />
     </div> 
   );
 }

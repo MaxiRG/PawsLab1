@@ -34,7 +34,6 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
     const [cardShelter, setCardShelter] = useState(null);
     const [cardPicture, setCardPicture] = useState([]);
     const [showMyPosts, setShowMyPosts] = useState(false);
-
     const token = localStorage.getItem('token');
     const config = {
               headers: {

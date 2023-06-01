@@ -4,6 +4,7 @@ import { get } from "../utils/http";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PostCard from "../components/PostCard";
+import { FaPhone } from 'react-icons/fa';
 import "../styles/Shelter.css";
 
 const Shelter = (props) => {
@@ -68,7 +69,7 @@ const Shelter = (props) => {
             <div>
               <h1>{profile.name}</h1>
               <div className="shelter-description">{profile.description}</div>
-              <div className="shelter-number">Phone Number:{profile.phoneNumber}</div>
+              <div className="shelter-number"><FaPhone className="phone-icon"/>{profile.phoneNumber}</div>
             </div>
           )}
         </div>

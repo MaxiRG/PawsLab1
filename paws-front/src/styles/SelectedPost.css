@@ -1,8 +1,11 @@
-
+/*{
+  outline: red dashed 1px;
+}
+*/
 .post-expanded {
   display: flex;
   justify-content: space-around;
-  margin: 3rem;
+  margin: 2rem;
 }
 
 .post-expanded h1 {
@@ -59,4 +62,25 @@
   bottom: 0;
   left: 0;
   margin: 1rem;
+}
+
+.comments-area{
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem;
+}
+
+.textBox, .comments{
+  width: 45%;
+  margin: 2rem;
+}
+
+.textBox .textArea{
+  width: 100%;
+  margin-bottom: 1rem;
+  resize: none;
+}
+
+.textBox .comment-submit-btn{
+  
 }
