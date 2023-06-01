@@ -147,7 +147,7 @@ public class PostService {
     private List<Post> getFilteredPostsQuery(@RequestParam(value = "minAge", required = false) Integer minAge, @RequestParam(value = "maxAge", required = false) Integer maxAge, @RequestParam(value = "sex", required = false) Boolean sex, @RequestParam(value = "race",required = false) String race){
         return postRepository.filteredPostSearch(minAge,maxAge,sex,race);
     }
-
+  
     public byte[] getProfilePictureByteArray(int id) {
         Post post = postRepository.findPostById(id);
         Optional<Post> optional = Optional.ofNullable(post);
