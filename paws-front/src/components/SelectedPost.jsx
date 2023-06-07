@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/SelectedPost.css';
 import Button from 'react-bootstrap/Button';
 import CommentBox from '../components/CommentBox';
-import { FaUser } from 'react-icons/fa';
+import CommentsContainer from './CommentsContainer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post, get } from '../utils/http'
@@ -13,6 +13,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentResponses, setCommentResponses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [commentsPerPage] = useState(4);
   const token = localStorage.getItem('token')
@@ -28,12 +29,38 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
       .then((response) => {
         console.log(response);
         setComments(response);
+        fetchCommentResponses(response)
       })
       .catch((error) => {
         console.error(error);
         setErrorMessage("Could not load comments. Please try again later!");
       })
     } 
+
+    const fetchCommentResponses = (comments) => {
+      const commentIds = comments.map((comment) => comment.id);
+      const requests = commentIds.map((commentId) =>
+        get('/getCommentsOfTypeCOMMENTandId' + commentId)
+      );
+    
+      Promise.all(requests)
+        .then((responses) => {
+          const commentResponsesMap = {};
+    
+          responses.forEach((response, index) => {
+            const commentId = commentIds[index];
+            commentResponsesMap[commentId] = response;
+          });
+    
+          setCommentResponses(commentResponsesMap);
+        })
+        .catch((error) => {
+          console.error(error);
+          setErrorMessage(
+            "Could not load comment responses. Please try again later!"
+          );
+        });
+    };
     handleGetComments();
   }, [selectedPost.id]);
 
@@ -57,6 +84,11 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
     if (!token){
       toast.warn("Log in to add a comment")
       return
+    }
+
+    if (comment.trim() === "") {
+      toast.warn("Please enter a valid response");
+      return;
     }
     console.log('Comment:', comment);
     const body = {
@@ -121,13 +153,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           {errorMessage && <div id="error-message">{errorMessage}</div>}
         </div>
         <div className='comments'>
-          <div className='comments-container'>
-            {currentComments.map((comment) => (
-              <div className='comment-box' key={comment.id}>
-                <FaUser className='user-icon'/>{comment.author.email}<br/>{comment.text}
-              </div>
-            ))}
-          </div>
+          <CommentsContainer comments={currentComments} commentResponses={commentResponses}/>
           <div className='pagination'>
             {comments.length > commentsPerPage && (
               Array.from({ length: Math.ceil(comments.length / commentsPerPage) }).map((_, index) => (
