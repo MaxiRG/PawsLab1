@@ -85,6 +85,11 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
       toast.warn("Log in to add a comment")
       return
     }
+
+    if (comment.trim() === "") {
+      toast.warn("Please enter a valid response");
+      return;
+    }
     console.log('Comment:', comment);
     const body = {
       text : comment,
