@@ -1,0 +1,17 @@
+.user-icon{
+  margin-right: 5px;
+  margin-bottom: 3px;
+}
+
+.arrow-icon{
+  margin-left: 1rem;
+  margin-right: 5px;
+}
+
+.comments-container .comment-box{
+  margin: 10px;
+  border-radius: 10px;
+  padding: .5rem;
+  background-color: rgb(252, 243, 243);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

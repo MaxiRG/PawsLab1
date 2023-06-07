@@ -94,11 +94,6 @@
   border-radius: 10px;
 }
 
-.user-icon{
-  margin-right: 5px;
-  margin-bottom: 3px;
-}
-
 .pagination {
   display: flex;
   justify-content: center;
