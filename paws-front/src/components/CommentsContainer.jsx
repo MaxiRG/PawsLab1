@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import '../styles/CommentsContainer.css'
 import { FaUser, FaArrowRight, FaReply } from 'react-icons/fa';
+import Button from 'react-bootstrap/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post } from '../utils/http'
@@ -39,8 +40,9 @@ useEffect(() => {
       console.log(response);
         // Update commentResponses state with the new response
         const newResponse = {
-          id: response.id, // Assuming the API returns the ID of the new response
+          id: response.id, 
           text: response.text,
+          author: response.author,
         };
         const updatedResponses = {
           ...responses,
@@ -50,7 +52,7 @@ useEffect(() => {
         setActiveCommentId(null); // Reset active comment
         // Update the commentResponses state
         setResponses(updatedResponses);
-        toast.success("Response added successfully!");
+        toast.success("Replied successfully!");
     })
     .catch((error) => {
       console.error(error);
@@ -62,11 +64,15 @@ useEffect(() => {
       {comments.map((comment) => (
         <div className='comment-box' key={comment.id}>
           <FaUser className='user-icon'/>
+          <b>{comment.author?.name || comment.author?.email}</b>
+          :&nbsp;
           {comment.text}
           <FaReply className="reply-icon"  onClick={() => handleReplyClick(comment.id)} />
           {responses[comment.id] && responses[comment.id].map((response) => (
             <div className='response-box' key={response.id}>
               <FaArrowRight className="arrow-icon"/>
+              {response.author?.name || response.author?.email}
+              :&nbsp;
               {response.text}
             </div>
           ))}
@@ -74,13 +80,13 @@ useEffect(() => {
             <div className="response-input">
               <input
                 type="text"
-                placeholder="Enter your response..."
+                placeholder="Enter your reply..."
                 value={response}
                 onChange={(e) => setResponse(e.target.value)}
               />
-              <button onClick={() => handleResponseSubmit(comment.id)}>
+              <Button className='submit-reply' onClick={() => handleResponseSubmit(comment.id)}>
                 Submit
-              </button>
+              </Button>
             </div>
           )}
         </div>

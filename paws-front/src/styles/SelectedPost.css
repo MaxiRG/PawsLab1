@@ -12,15 +12,9 @@
   text-transform: uppercase;
 }
 
-.post-title{
-  justify-content: center;
-  align-items: center;
-  display: flex;
-}
-
 .post-info , .shelter-info {
   font-size: 20px;
-  padding: 1rem;
+  padding: 1.2rem;
   width: 45%;
   background-color: rgb(252, 243, 243);
   border-radius: 10px;
@@ -37,8 +31,6 @@
 
 .pic {
   display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 1rem;
 }
 
@@ -87,7 +79,6 @@
   background-color: rgb(252, 243, 243);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
 
 .comments-container{
   padding: 2px;
