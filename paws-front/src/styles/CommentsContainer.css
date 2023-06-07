@@ -8,6 +8,10 @@
   margin-right: 5px;
 }
 
+.reply-icon{
+  float: right;
+}
+
 .comments-container .comment-box{
   margin: 10px;
   border-radius: 10px;
