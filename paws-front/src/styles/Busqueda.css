@@ -58,3 +58,14 @@ button[type="submit"]:hover {
   border-radius: 10%;
 }
 
+.fav-button{
+  width: 180px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.eye-icon{
+  margin-right: 5px;
+}
+
+

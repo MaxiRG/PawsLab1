@@ -30,7 +30,6 @@ function PostCard(props) {
       toast.warn("Log in to add favourites")
       return
     }
-    
     setIsFavorite(!isFavorite);
   };
 
