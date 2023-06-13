@@ -1,13 +1,14 @@
 package com.example.pawsback.paws.user.model;
 
 import com.example.pawsback.paws.comment.model.Comment;
+import com.example.pawsback.paws.favourite.model.Favourite;
 import com.example.pawsback.paws.post.model.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -47,6 +48,14 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+//    @ManyToMany
+//    @JoinTable(name = "favourite", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+//    private Set<Post> likedPosts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Favourite> favourites;
 
     public User(String email, String password){
         this.email = email;

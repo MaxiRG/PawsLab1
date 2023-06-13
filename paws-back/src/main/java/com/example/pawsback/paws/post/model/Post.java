@@ -1,10 +1,14 @@
 package com.example.pawsback.paws.post.model;
 
+import com.example.pawsback.paws.favourite.model.Favourite;
 import com.example.pawsback.paws.image.model.Image;
 import com.example.pawsback.paws.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,6 +45,12 @@ public class Post {
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Image profilePicture;
+
+//    @ManyToMany(mappedBy = "likedPosts")
+//    private Set<User> favourites;
+    @JsonIgnore
+    @OneToMany(mappedBy = "post")
+    private List<Favourite> favourites;
 
     public void setId(Long id) {
         this.id = id;
