@@ -2,6 +2,7 @@ package com.example.pawsback.paws.user.model;
 
 import com.example.pawsback.paws.comment.model.Comment;
 import com.example.pawsback.paws.post.model.Post;
+import com.example.pawsback.paws.review.model.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -47,6 +48,10 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
     public User(String email, String password){
         this.email = email;
