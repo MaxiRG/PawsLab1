@@ -354,7 +354,7 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
           )}
            {selectedPost ? (
             <div>
-              <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>   
+              <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture} isShelter={isShelter}/>   
               <div className='expanded-buttons'>
                   <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>
                     <FontAwesomeIcon icon={faPencilAlt} className="button-icon" />Edit

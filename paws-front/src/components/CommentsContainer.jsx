@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import '../styles/CommentsContainer.css'
-import { FaUser, FaArrowRight, FaReply } from 'react-icons/fa';
+import { FaUser, FaReply } from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post } from '../utils/http'
 
-const CommentsContainer = ({ comments, commentResponses }) => {
+const CommentsContainer = ({ comments, commentResponses, isShelter }) => {
   const [activeCommentId, setActiveCommentId] = useState(null);
   const [response, setResponse] = useState("");
   const [responses, setResponses] = useState(commentResponses);
@@ -27,9 +27,14 @@ useEffect(() => {
 
   const handleResponseSubmit = (commentId) => {
     if (!token){
-      toast.warn("Log in to add a comment")
+      toast.warn("Log in to add reply")
       return
     }
+    if (response.trim() === "") {
+      toast.warn("Please enter a valid reply");
+      return;
+    }
+
     const body = {
       text : response,
       type : "COMMENT",
@@ -67,10 +72,12 @@ useEffect(() => {
           <b>{comment.author?.name || comment.author?.email}</b>
           :&nbsp;
           {comment.text}
-          <FaReply className="reply-icon"  onClick={() => handleReplyClick(comment.id)} />
+          {isShelter && (
+              <FaReply className="reply-icon" onClick={() => handleReplyClick(comment.id)} />
+            )}
           {responses[comment.id] && responses[comment.id].map((response) => (
             <div className='response-box' key={response.id}>
-              <FaArrowRight className="arrow-icon"/>
+              <div className="custom-icon"></div>
               {response.author?.name || response.author?.email}
               :&nbsp;
               {response.text}

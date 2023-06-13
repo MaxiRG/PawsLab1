@@ -188,7 +188,7 @@ function Busqueda(props) {
 
         {selectedPost ? (
           <div>
-            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>
+            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture} isShelter={isShelter}/>
             <div className='expanded-buttons'>
              <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}> 
                <FontAwesomeIcon icon={faTimes} className="button-icon" />Close

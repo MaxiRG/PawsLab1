@@ -8,7 +8,7 @@
 
 .shelter-body {
   margin: 2rem;
-  padding: 2rem;
+  padding: 1rem;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -69,6 +69,8 @@
 
 .no-history{
   margin:1rem;
+  font-size: 70px;
+  text-align: center;
 }
 
 .postsAndComments{
@@ -86,10 +88,12 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.shelter-comments{
+.rating-comments{
   width: 45%;
   margin: 2rem;
 }
 
-
+.shelter-comments, .rating{
+  width: 100%;
+}
 

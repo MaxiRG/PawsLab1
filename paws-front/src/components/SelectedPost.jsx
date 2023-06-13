@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { post, get } from '../utils/http'
 
 
-export default function SelectedPost({ selectedPost, cardShelter, cardPicture }) {
+export default function SelectedPost({ selectedPost, cardShelter, cardPicture, isShelter }) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setComments] = useState([]);
@@ -87,7 +87,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
     }
 
     if (comment.trim() === "") {
-      toast.warn("Please enter a valid response");
+      toast.warn("Please enter a valid comment");
       return;
     }
     console.log('Comment:', comment);
@@ -153,7 +153,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           {errorMessage && <div id="error-message">{errorMessage}</div>}
         </div>
         <div className='comments'>
-          <CommentsContainer comments={currentComments} commentResponses={commentResponses}/>
+          <CommentsContainer comments={currentComments} commentResponses={commentResponses} isShelter={isShelter}/>
           <div className='pagination'>
             {comments.length > commentsPerPage && (
               Array.from({ length: Math.ceil(comments.length / commentsPerPage) }).map((_, index) => (

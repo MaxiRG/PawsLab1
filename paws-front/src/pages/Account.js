@@ -128,6 +128,10 @@
       navigate("/donacion");
     };
 
+    const handleSendToShelter = () => {
+      navigate(`/shelter/${profile.id}`);
+    }
+
   
     return (
       <div className="all">
@@ -161,7 +165,7 @@
             </div>
             <ul className="account-actions">
              
-              <li className="account-action"><Button className="action-button">Change password</Button></li>
+              <li className="account-action"><Button className="action-button" onClick={handleSendToShelter}>My Shelter</Button></li>
               <li className="account-action">
                 {isShelter ? 
                 <Button className="action-button"onClick={handleMyPosts}>
