@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import PostCard from '../components/PostCard';
@@ -8,21 +8,44 @@ import '../styles/Busqueda.css'
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import { FaEye } from 'react-icons/fa';
 
 
 function Busqueda(props) {
   const { isLoggedIn, isShelter } = props;
   const [posts, setPosts] = useState([]);
+  const [favPosts, setFavPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [cardShelter, setCardShelter] = useState(null);
   const [cardPicture, setCardPicture] = useState([]);
   const [pictures, setPictures] = useState({});
+  const [showFavorites, setShowFavorites] = useState(false);
   const [searchFilters, setSearchFilters] = useState({
     age: '',
     sex: '',
     race: ''
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const config = {
+      headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', 
+  }}
+    if (token && !selectedPost) {
+      get(`/getUserFavourites`, config)
+        .then((data) => {
+          console.log(data);
+          setFavPosts(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [selectedPost, showFavorites]);
+  
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -82,7 +105,6 @@ function Busqueda(props) {
       });
   };
   
-
   const handleSelectedPost = (post) => {
     console.log(post.user.id)
     get("/api/getInfo/" + post.user.email)
@@ -113,75 +135,82 @@ function Busqueda(props) {
       [name]: value
     }));
   };
+
   
 
   return (
     <div className='all'>
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
       <div className='body'>
-      {!selectedPost && (
-          <form className="search-form"onSubmit={handleSearch}>
-          <label htmlFor="age-filter">Age: </label>
-          <select
-            id="age-filter"
-            name="age"
-            value={searchFilters.age}
-            onChange={handleFilterChange}
-          >
-            <option value="">Any age</option>
-            <option value="puppy">Puppy</option>
-            <option value="adult">Adult</option>
-            
-          </select>
-          <label htmlFor="sex-filter"> Sex: </label>
-          <select
-            id="sex-filter"
-            name="sex"
-            value={searchFilters.sex}
-            onChange={handleFilterChange}
-          >
-            <option value="">Any sex</option>
-            <option value="MALE">Male</option>
-            <option value="FEMALE">Female</option>
-          </select>
-          <label htmlFor="race-filter"> Race: </label>
-          <select
-          id="race-filter"
-          name="race"
-          value={searchFilters.race}
-          onChange={handleFilterChange}
-          >
-            <option value="">Any race</option>
-            <option value="LabradorRetriever">Labrador Retriever</option>
-            <option value="GermanShepherd">German Shepherd</option>
-            <option value="GoldenRetriever">Golden Retriever</option>
-            <option value="FrenchBulldog">French Bulldog</option>
-            <option value="EnglishBulldog">English Bulldog</option>
-            <option value="Poodle">Poodle</option>
-            <option value="Beagle">Beagle</option>
-            <option value="Boxer">Boxer</option>
-            <option value="Chihuahua">Chihuahua</option>
-            <option value="Rottweiler">Rottweiler</option>
-            <option value="YorkshireTerrier">Yorkshire Terrier</option>
-            <option value="Dachshund">Dachshund</option>
-            <option value="SiberianHusky">Siberian Husky</option>
-            <option value="CockerSpaniel">Cocker Spaniel</option>
-            <option value="Pomeranian">Pomeranian</option>
-            <option value="ShihTzu">Shih Tzu</option>
-            <option value="BichonFrise">Bichon Frise</option>
-            <option value="BorderCollie">Border Collie</option>
-            <option value="Doberman">Doberman</option>
-            <option value="Schnauzer">Schnauzer</option>
 
-          </select>
-          <button className='submit' type="submit">Search</button>
-        </form>     
-        )}
+          {!selectedPost && (
+            <form className="search-form"onSubmit={handleSearch}>
+            <label htmlFor="age-filter">Age: </label>
+            <select
+              id="age-filter"
+              name="age"
+              value={searchFilters.age}
+              onChange={handleFilterChange}
+            >
+              <option value="">Any age</option>
+              <option value="puppy">Puppy</option>
+              <option value="adult">Adult</option>
+              
+            </select>
+            <label htmlFor="sex-filter"> Sex: </label>
+            <select
+              id="sex-filter"
+              name="sex"
+              value={searchFilters.sex}
+              onChange={handleFilterChange}
+            >
+              <option value="">Any sex</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+            </select>
+            <label htmlFor="race-filter"> Race: </label>
+            <select
+            id="race-filter"
+            name="race"
+            value={searchFilters.race}
+            onChange={handleFilterChange}
+            >
+              <option value="">Any race</option>
+              <option value="LabradorRetriever">Labrador Retriever</option>
+              <option value="GermanShepherd">German Shepherd</option>
+              <option value="GoldenRetriever">Golden Retriever</option>
+              <option value="FrenchBulldog">French Bulldog</option>
+              <option value="EnglishBulldog">English Bulldog</option>
+              <option value="Poodle">Poodle</option>
+              <option value="Beagle">Beagle</option>
+              <option value="Boxer">Boxer</option>
+              <option value="Chihuahua">Chihuahua</option>
+              <option value="Rottweiler">Rottweiler</option>
+              <option value="YorkshireTerrier">Yorkshire Terrier</option>
+              <option value="Dachshund">Dachshund</option>
+              <option value="SiberianHusky">Siberian Husky</option>
+              <option value="CockerSpaniel">Cocker Spaniel</option>
+              <option value="Pomeranian">Pomeranian</option>
+              <option value="ShihTzu">Shih Tzu</option>
+              <option value="BichonFrise">Bichon Frise</option>
+              <option value="BorderCollie">Border Collie</option>
+              <option value="Doberman">Doberman</option>
+              <option value="Schnauzer">Schnauzer</option>
+
+            </select>
+            <button className='submit' type="submit">Search</button>
+            <Button className="fav-button btn btn-light" onClick={() => setShowFavorites(!showFavorites)}>
+              <FaEye className='eye-icon' />
+              {showFavorites ? "Show All" : "Show Favorites"}
+            </Button>
+            </form>   
+          )}
+
         {errorMessage && <div id="error-message">{errorMessage}</div>}
 
         {selectedPost ? (
           <div>
-            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture}/>
+            <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture} isShelter={isShelter}/>
             <div className='expanded-buttons'>
              <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}> 
                <FontAwesomeIcon icon={faTimes} className="button-icon" />Close
@@ -190,18 +219,38 @@ function Busqueda(props) {
         </div> 
         ):(
           <div className='card-container'>
-              {posts.length > 0 &&
-              posts.map(post => (
+             {showFavorites
+              ? favPosts.length > 0 &&
+              posts
+              .filter(post => favPosts.some(favPost => favPost.post.id === post.id))
+              .map(post => (
                 <PostCard
-                key={post.id}
-                post={post}
-                picture={pictures[post.id]}
-                handleSelectedPost={handleSelectedPost}
-                clickable={true}
-                handleFavourite={true}
-              />
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  handleSelectedPost={handleSelectedPost}
+                  clickable={true}
+                  handleFavourite={true}
+                  favPosts={favPosts}
+                />
               ))
+              : posts.length > 0 &&
+                posts.map(post => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    picture={pictures[post.id]}
+                    handleSelectedPost={handleSelectedPost}
+                    clickable={true}
+                    handleFavourite={true}
+                    favPosts={favPosts}
+                  />
+                ))
             }
+
+
+
+
           </div>
         )}
         </div>

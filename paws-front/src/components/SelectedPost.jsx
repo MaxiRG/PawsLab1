@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { post, get } from '../utils/http'
 
 
-export default function SelectedPost({ selectedPost, cardShelter, cardPicture }) {
+export default function SelectedPost({ selectedPost, cardShelter, cardPicture, isShelter }) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setComments] = useState([]);
@@ -87,7 +87,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
     }
 
     if (comment.trim() === "") {
-      toast.warn("Please enter a valid response");
+      toast.warn("Please enter a valid comment");
       return;
     }
     console.log('Comment:', comment);
@@ -125,7 +125,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
     <div>
       <div className="post-expanded">
         <div className='post-info'>
-          <h1 className='post-title'>{selectedPost.petName}</h1>
+          <h1 className='post-title'  style={{ textAlign: 'center' }}>{selectedPost.petName}</h1>
           <div className='pic-info'>
             <div className='info'>
               <p className='info'><b>Sex:</b> {selectedPost.sex ? 'Male' : 'Female'}</p>
@@ -139,7 +139,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           </div>
         </div>  
         <div className='shelter-info'>
-          <h1 className='shelter-title'>{cardShelter.name}</h1>
+          <h1 className='shelter-title'  style={{ textAlign: 'center' }}>{cardShelter.name}</h1>
           <p className='description'><b>Description:</b> {cardShelter.description}</p>
           <p className='info'><b>Number:</b> {cardShelter.phoneNumber}</p>
           <Button className="see-shelter-btn" onClick={handleNavigateToShelter}>
@@ -153,7 +153,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           {errorMessage && <div id="error-message">{errorMessage}</div>}
         </div>
         <div className='comments'>
-          <CommentsContainer comments={currentComments} commentResponses={commentResponses}/>
+          <CommentsContainer comments={currentComments} commentResponses={commentResponses} isShelter={isShelter}/>
           <div className='pagination'>
             {comments.length > commentsPerPage && (
               Array.from({ length: Math.ceil(comments.length / commentsPerPage) }).map((_, index) => (
@@ -170,8 +170,6 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture })
           </div>
         </div>
       </div>
-      
-
       <ToastContainer position='top-center' />
     </div> 
   );

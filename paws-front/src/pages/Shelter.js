@@ -4,6 +4,7 @@ import { get, post } from "../utils/http";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PostCard from "../components/PostCard";
+import StarRating from "../components/StarRating";
 import { FaPhone } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +22,7 @@ const Shelter = (props) => {
   const [pictures, setPictures] = useState({});
   const [comments, setComments] = useState([]);
   const [commentResponses, setCommentResponses] = useState([]);
+
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const config = {
@@ -119,6 +121,10 @@ const Shelter = (props) => {
       toast.warn("Log in to add a comment")
       return
     }
+    if (comment.trim() === "") {
+      toast.warn("Please enter a valid comment");
+      return;
+    }
     console.log('Comment:', comment);
     const body = {
       text : comment,
@@ -151,7 +157,6 @@ const Shelter = (props) => {
       setErrorMessage("Could not load comments. Please try again later!");
     })
   } 
-
     
 
   return (
@@ -164,6 +169,9 @@ const Shelter = (props) => {
               <h1>{profile.name}</h1>
               <div className="shelter-description">{profile.description}</div>
               <div className="shelter-number"><FaPhone className="phone-icon"/>{profile.phoneNumber}</div>
+              <div className="stars">
+                <StarRating  value={1}/>
+              </div>
             </div>
           )}
         </div>
@@ -184,10 +192,15 @@ const Shelter = (props) => {
               <p className="no-history">No history found...</p>
             )}
           </div>
-          <div className="shelter-comments">
-            <CommentsContainer comments={comments} commentResponses={commentResponses} />
-            <CommentBox onSubmit={handleCommentSubmit} />
-            {errorMessage && <div id="error-message">{errorMessage}</div>}
+          <div className="rating-comments">
+            <div className="rating">
+              
+            </div>
+            <div className="shelter-comments">
+              <CommentsContainer comments={comments} commentResponses={commentResponses} isShelter={isShelter}/>
+              <CommentBox onSubmit={handleCommentSubmit} />
+              {errorMessage && <div id="error-message">{errorMessage}</div>}
+            </div>
           </div>
         </div>
       </div>

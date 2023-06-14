@@ -23,6 +23,11 @@
   margin: 40px;
 }
 
+.donation-history .custom-card:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+
 .donation-history .no-history{
   margin: 1rem;
 }

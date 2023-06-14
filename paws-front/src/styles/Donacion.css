@@ -54,9 +54,9 @@
   cursor: pointer;
 }
 
-
 .expanded-buttons {
-  margin-top: 2rem;
+  margin-top: .5rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -70,6 +70,7 @@
   width: 32%;
   height: 3rem;
 }
+
 .button-icon{
   margin-right: .5rem;
 }

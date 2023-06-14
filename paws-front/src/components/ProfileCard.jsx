@@ -121,7 +121,7 @@ const ProfileCard = ({ name, number, description, email }) => {
         ) : (
           <div>
             <h2 className="profile-card-name">
-              Name: {editedName}
+              Username: {editedName}
               <FaPencilAlt className='pencil' onClick={handleEditName} />
             </h2>
           </div>

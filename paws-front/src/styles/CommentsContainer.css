@@ -3,11 +3,6 @@
   margin-bottom: 3px;
 }
 
-.arrow-icon{
-  margin-left: 1rem;
-  margin-right: 5px;
-}
-
 .reply-icon{
   float: right;
 }
@@ -18,4 +13,37 @@
   padding: .5rem;
   background-color: rgb(252, 243, 243);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.response-input {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.response-input input[type="text"] {
+  width: 200px;
+  height: 30px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.response-input .submit-reply {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.custom-icon {
+  margin-left: 1rem;
+  margin-right: 5px;
+  margin-top: 5px;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.response-box{
+  display: flex;
 }
