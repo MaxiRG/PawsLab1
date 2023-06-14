@@ -231,8 +231,8 @@ const Shelter = (props) => {
           <div className="rating-comments">
             <div className="rating" onClick={handleIsRated}>
               
-              {!isRated ? <p>Rate the shelter </p> : null}
-              {!isRated ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
+              {!isRated && token ? <p>Rate the shelter </p> : null}
+              {!isRated && token ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
              
             </div>
             <div className="shelter-comments">
