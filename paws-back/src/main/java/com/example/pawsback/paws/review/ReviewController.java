@@ -1,5 +1,6 @@
 package com.example.pawsback.paws.review;
 
+import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.review.model.dto.CreateReviewDTO;
 import com.example.pawsback.paws.review.model.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class ReviewController {
         try{
             ReviewDTO reviewDTO = reviewService.toDto(reviewService.save(createReviewDTO, token));
             return new ResponseEntity<>(reviewDTO, HttpStatus.OK);
+        }
+        catch(NoAuthorizationException e){
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
         }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
