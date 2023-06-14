@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import PostCard from '../components/PostCard';
@@ -14,6 +14,7 @@ import { FaEye } from 'react-icons/fa';
 function Busqueda(props) {
   const { isLoggedIn, isShelter } = props;
   const [posts, setPosts] = useState([]);
+  const [favPosts, setFavPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [cardShelter, setCardShelter] = useState(null);
@@ -25,6 +26,26 @@ function Busqueda(props) {
     sex: '',
     race: ''
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const config = {
+      headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', 
+  }}
+    if (token && !selectedPost) {
+      get(`/getUserFavourites`, config)
+        .then((data) => {
+          console.log(data);
+          setFavPosts(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [selectedPost, showFavorites]);
+  
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -114,6 +135,7 @@ function Busqueda(props) {
       [name]: value
     }));
   };
+
   
 
   return (
@@ -197,19 +219,38 @@ function Busqueda(props) {
         </div> 
         ):(
           <div className='card-container'>
-              {posts.length > 0 &&
-              posts.filter(post => !showFavorites || post.isFav)
+             {showFavorites
+              ? favPosts.length > 0 &&
+              posts
+              .filter(post => favPosts.some(favPost => favPost.post.id === post.id))
               .map(post => (
                 <PostCard
-                key={post.id}
-                post={post}
-                picture={pictures[post.id]}
-                handleSelectedPost={handleSelectedPost}
-                clickable={true}
-                handleFavourite={true}
-              />
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  handleSelectedPost={handleSelectedPost}
+                  clickable={true}
+                  handleFavourite={true}
+                  favPosts={favPosts}
+                />
               ))
+              : posts.length > 0 &&
+                posts.map(post => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    picture={pictures[post.id]}
+                    handleSelectedPost={handleSelectedPost}
+                    clickable={true}
+                    handleFavourite={true}
+                    favPosts={favPosts}
+                  />
+                ))
             }
+
+
+
+
           </div>
         )}
         </div>

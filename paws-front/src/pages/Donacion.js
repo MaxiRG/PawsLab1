@@ -170,16 +170,19 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
           const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json', 
+                 
             }
           }
-          del("/deletePost/" + postId  , config)
+          del("/deletePost/" + postId, null, config)
             .then((data) => {
             console.log(data)
             console.log("post deleted")
             toast.success("Post deleted successfully!");
             setErrorMessage('')
-            const updatedPosts = myPosts.filter(post => post.id !== postId);
+            const updatedPosts = {
+              activePosts: myPosts.activePosts.filter((post) => post.id !== postId),
+              adoptedPosts: myPosts.adoptedPosts.filter((post) => post.id !== postId),
+            };
             setMyPosts(updatedPosts);
             setSelectedPost(null)
             
