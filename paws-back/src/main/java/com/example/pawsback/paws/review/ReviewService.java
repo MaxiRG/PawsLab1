@@ -1,9 +1,11 @@
 package com.example.pawsback.paws.review;
 
+import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.review.model.Review;
 import com.example.pawsback.paws.review.model.dto.CreateReviewDTO;
 import com.example.pawsback.paws.review.model.dto.ReviewDTO;
 import com.example.pawsback.paws.user.UserService;
+import com.example.pawsback.paws.user.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +28,13 @@ public class ReviewService {
         return reviewDTO;
     }
 
-    public Review save(CreateReviewDTO createReviewDTO, String token) {
+    public Review save(CreateReviewDTO createReviewDTO, String token) throws NoAuthorizationException {
+        User author = userService.getByToken(token);
+        if(reviewRepository.findReviewBySubjectIdAndAuthorId(author.getId(), createReviewDTO.getSubjectId()) == null){
+            throw new NoAuthorizationException("Already reviewed this shelter");
+        }
         Review review = new Review();
-        review.setAuthor(userService.getByToken(token));
+        review.setAuthor(author);
         review.setValue(createReviewDTO.getValue());
         review.setSubjectId(createReviewDTO.getSubjectId());
         return reviewRepository.save(review);
