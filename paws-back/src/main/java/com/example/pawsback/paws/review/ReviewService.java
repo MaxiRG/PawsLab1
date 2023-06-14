@@ -31,7 +31,8 @@ public class ReviewService {
         review.setAuthor(userService.getByToken(token));
         review.setValue(createReviewDTO.getValue());
         review.setSubjectId(createReviewDTO.getSubjectId());
-        return review;
+        return reviewRepository.save(review);
+
     }
 
     public float getRating(int subjectId) {

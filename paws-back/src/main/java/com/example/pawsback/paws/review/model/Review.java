@@ -12,7 +12,7 @@ public class Review {
     private Long id;
 
     @Column
-    private Integer value;
+    private int value;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
