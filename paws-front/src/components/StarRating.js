@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../styles/StarRating.css";
+import { post } from "../utils/http"
 
 
-const StarRating = ({ value, rate }) => {
+const StarRating = ({ value, rate, shelterId, config}) => {
   const [hoverValue, setHoverValue] = useState(0);
 
   const handleStarHover = (hoveredValue) => {
@@ -14,6 +15,18 @@ const StarRating = ({ value, rate }) => {
   const handleStarClick = (clickedValue) => {
     if (rate) {
       console.log(`Submitted rating: ${clickedValue}`);
+      const body = {
+        value : clickedValue,
+        subjectId : shelterId
+      }
+      post('/createReview', body, config)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        
+      });
     }
   };
 
