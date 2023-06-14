@@ -24,7 +24,7 @@ public class FavouriteController {
         this.favouriteService= service;
     }
 
-    @PostMapping(value = "/addFavourite", consumes = {"application/json"})
+    @PostMapping(value = "/addFavourite")
     public ResponseEntity<?> addFavourite(@RequestBody PostIDFavouriteDTO DTO, @RequestHeader("Authorization") String token){
         try{
             FavouriteDTO favouriteDTO =  favouriteService.toDTO(favouriteService.save(DTO, token), token);
@@ -43,7 +43,7 @@ public class FavouriteController {
         }
     }
 
-    @DeleteMapping(value = "/deleteUserFavourite")
+    @DeleteMapping(value = "/deleteUserFavourite" )
     public ResponseEntity<?> deleteUserFavourite(@RequestBody PostIDFavouriteDTO DTO,@RequestHeader("Authorization") String token){
         try{
             favouriteService.deleteFavourite(DTO,token);
