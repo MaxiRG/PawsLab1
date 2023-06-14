@@ -1,7 +1,27 @@
+import React, { useState } from "react";
 import "../styles/StarRating.css";
-import React from "react";
 
-const StarRating = ({ value }) => {
+
+const StarRating = ({ value, rate }) => {
+  const [hoverValue, setHoverValue] = useState(0);
+
+  const handleStarHover = (hoveredValue) => {
+    if (rate) {
+      setHoverValue(hoveredValue);
+    }
+  };
+
+  const handleStarClick = (clickedValue) => {
+    if (rate) {
+      console.log(`Submitted rating: ${clickedValue}`);
+    }
+  };
+
+  const handleStarLeave = () => {
+    if (rate && hoverValue === 0) {
+      setHoverValue(0);
+    }
+  };
 
   return (
     <div className="star-rating">
@@ -10,14 +30,18 @@ const StarRating = ({ value }) => {
         return (
           <span
             key={index}
-            className={index <= value ? "on" : "off"}
+            className={index <= (hoverValue || value) ? "on" : "off"}
+            onMouseEnter={() => handleStarHover(index)}
+            onMouseLeave={handleStarLeave}
+            onClick={() => handleStarClick(index)}
           >
             &#9733;
           </span>
         );
       })}
     </div>
+    
   );
 };
 
-export default StarRating
+export default StarRating;

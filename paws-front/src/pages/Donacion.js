@@ -404,7 +404,7 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
             )}             
         </div>
         <Footer/>
-        <ToastContainer position='top-center' />
+        <ToastContainer position='top-center' autoClose={2000}/>
       </div>
     );
   }
