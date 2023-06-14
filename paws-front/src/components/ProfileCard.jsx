@@ -168,7 +168,7 @@ const ProfileCard = ({ name, number, description, email }) => {
           </div>
         )}
       </div>
-      <ToastContainer position='top-center' />
+      <ToastContainer position='top-center' autoClose={2000} />
     </div>
   );
 };

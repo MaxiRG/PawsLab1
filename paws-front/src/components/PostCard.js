@@ -108,7 +108,7 @@ function PostCard(props) {
         )}
         
       </Card.Body>
-      <ToastContainer position='top-center'  />
+      <ToastContainer position='top-center' autoClose={2000} />
     </Card>
     
   );

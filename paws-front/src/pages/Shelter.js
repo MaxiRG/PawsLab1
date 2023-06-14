@@ -13,6 +13,7 @@ import CommentsContainer from "../components/CommentsContainer";
 import "../styles/Shelter.css";
 
 
+
 const Shelter = (props) => {
   const { isLoggedIn, isShelter } = props;
   const { shelterId } = useParams();
@@ -22,7 +23,7 @@ const Shelter = (props) => {
   const [pictures, setPictures] = useState({});
   const [comments, setComments] = useState([]);
   const [commentResponses, setCommentResponses] = useState([]);
-
+  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const config = {
@@ -157,7 +158,17 @@ const Shelter = (props) => {
       setErrorMessage("Could not load comments. Please try again later!");
     })
   } 
-    
+
+  const handleRatingSubmit = () => {
+    if (!isRatingSubmitted) {
+      setIsRatingSubmitted(true);
+      console.log("Rating submitted");
+      toast.success("Rating submitted");
+    }
+  };
+
+  
+  
 
   return (
     <div className="all">
@@ -169,9 +180,14 @@ const Shelter = (props) => {
               <h1>{profile.name}</h1>
               <div className="shelter-description">{profile.description}</div>
               <div className="shelter-number"><FaPhone className="phone-icon"/>{profile.phoneNumber}</div>
-              <div className="stars">
-                <StarRating  value={1}/>
-              </div>
+                <div className="stars" >
+                  {isRatingSubmitted ? 
+                  <StarRating rate={false} value={2}/>
+                  : 
+                  <StarRating  onClick={handleRatingSubmit} value={2} rate={true}/>
+                  }
+                </div>
+
             </div>
           )}
         </div>
@@ -205,7 +221,7 @@ const Shelter = (props) => {
         </div>
       </div>
       <Footer />
-      <ToastContainer position='top-center' />
+      <ToastContainer position='top-center' autoClose={1500} />
 
     </div>
   );
