@@ -30,7 +30,7 @@ public class ReviewService {
 
     public Review save(CreateReviewDTO createReviewDTO, String token) throws NoAuthorizationException {
         User author = userService.getByToken(token);
-        if(reviewRepository.findReviewBySubjectIdAndAuthorId(author.getId(), createReviewDTO.getSubjectId()) == null){
+        if(reviewRepository.findReviewBySubjectIdAndAuthorId(author.getId(), createReviewDTO.getSubjectId()) != null){
             throw new NoAuthorizationException("Already reviewed this shelter");
         }
         Review review = new Review();
