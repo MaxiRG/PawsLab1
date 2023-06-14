@@ -98,6 +98,27 @@ const Shelter = (props) => {
 
   
   }, [shelterId, numberOfReviews]);
+
+  useEffect(() => {
+    get(`/getRating${shelterId}`)
+      .then((data) => {
+        console.log(data);
+        setRating(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      get(`/getNumberOfReviews${shelterId}`)
+      .then((data) => {
+        console.log(data);
+        setNumberOfReviews(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  
+  }, [shelterId, numberOfReviews]);
   
 
   useEffect(() => {
@@ -184,9 +205,14 @@ const Shelter = (props) => {
   } 
 
   const handleIsRated = () => {
-    setIsRated(true)
-    toast.success("Rated shelter successfully")
-    setNumberOfReviews(numberOfReviews + 1)
+    setIsRated(true);
+    const previousNumberOfReviews = numberOfReviews;
+    setNumberOfReviews(previousNumberOfReviews + 1);
+    if (numberOfReviews === previousNumberOfReviews) {
+      toast.warning("You have already rated this shelter");
+    } else {
+      toast.success("Rated shelter successfully");
+    }
   }
   
   
