@@ -9,7 +9,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
 }
-
 .custom-card:hover {
   background-color: #e2e6ea; 
 }
@@ -32,7 +31,6 @@
   height: 200px;
 }
 
-
 .check label {
   font-size: 19px;
 }
@@ -48,7 +46,6 @@
 .favorite {
   color: rgb(255, 0, 0);
 }
-
 
 .card-title-container {
   display: flex;

@@ -1,0 +1,22 @@
+.star-rating {
+  display: inline-block;
+}
+
+.star-rating button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.star-rating .on {
+  color: gold;
+  font-size: 32px;
+  margin: 2px;
+}
+
+.star-rating .off {
+  color: #080808;
+  font-size: 32px;
+  margin: 2px; 
+}

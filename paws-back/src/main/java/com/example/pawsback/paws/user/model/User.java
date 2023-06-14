@@ -1,14 +1,15 @@
 package com.example.pawsback.paws.user.model;
 
 import com.example.pawsback.paws.comment.model.Comment;
+import com.example.pawsback.paws.favourite.model.Favourite;
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.review.model.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -52,6 +53,11 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Favourite> favourites;
+
 
     public User(String email, String password){
         this.email = email;

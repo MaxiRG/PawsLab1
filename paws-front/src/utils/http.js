@@ -42,4 +42,4 @@ export const get = (url, config = {}) => request(url, "GET", null, config);
 export const getWithBody = (url, body, config = {}) => request(url, "GET", body, config);
 export const post = (url, body, config = {}) => request(url, "POST", body, config);
 export const put = (url, body, config = {}) => request(url, "PUT", body, config);
-export const del = (url, config = {}) => request(url, "DELETE", null, config);
+export const del = (url, body = null, config = {}) => request(url, "DELETE", body, config);

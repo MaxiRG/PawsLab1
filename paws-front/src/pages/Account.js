@@ -128,6 +128,14 @@
       navigate("/donacion");
     };
 
+    const handleSendToShelter = () => {
+      navigate(`/shelter/${profile.id}`);
+    }
+
+    const handleSendToFavs = () => {
+      navigate('/busqueda')
+    }
+
   
     return (
       <div className="all">
@@ -161,14 +169,14 @@
             </div>
             <ul className="account-actions">
              
-              <li className="account-action"><Button className="action-button">Change password</Button></li>
+              <li className="account-action">{isShelter ? <Button className="action-button" onClick={handleSendToShelter}>My Shelter</Button> : null}</li>
               <li className="account-action">
                 {isShelter ? 
                 <Button className="action-button"onClick={handleMyPosts}>
                   My posts 
                 </Button> 
                 :
-                <Button className="action-button">
+                <Button className="action-button" onClick={handleSendToFavs}>
                   Favourites
                 </Button>}
               </li>

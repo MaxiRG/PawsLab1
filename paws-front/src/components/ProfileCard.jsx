@@ -121,7 +121,7 @@ const ProfileCard = ({ name, number, description, email }) => {
         ) : (
           <div>
             <h2 className="profile-card-name">
-              Name: {editedName}
+              Username: {editedName}
               <FaPencilAlt className='pencil' onClick={handleEditName} />
             </h2>
           </div>
@@ -168,7 +168,7 @@ const ProfileCard = ({ name, number, description, email }) => {
           </div>
         )}
       </div>
-      <ToastContainer position='top-center' />
+      <ToastContainer position='top-center' autoClose={2000} />
     </div>
   );
 };

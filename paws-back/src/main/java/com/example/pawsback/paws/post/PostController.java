@@ -92,7 +92,7 @@ public class PostController {
         }
     }
 
-    @DeleteMapping(value = "/deletePost/{postId}", consumes = {"application/json"})
+    @DeleteMapping(value = "/deletePost/{postId}")
     public ResponseEntity<?> deletePost(@PathVariable int postId, @RequestHeader("Authorization") String token) {
         try {
             postService.delete(postId, token);
