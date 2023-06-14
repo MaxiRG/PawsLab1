@@ -23,7 +23,9 @@ const Shelter = (props) => {
   const [pictures, setPictures] = useState({});
   const [comments, setComments] = useState([]);
   const [commentResponses, setCommentResponses] = useState([]);
-  const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
+  const [rating, setRating] = useState(0)
+  const [numberOfReviews, setNumberOfReviews] = useState(0)
+  const [isRated, setIsRated] = useState(null)
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const config = {
@@ -75,6 +77,28 @@ const Shelter = (props) => {
         setErrorMessage('Post retrieval failed. Please try again later.');
       });
   }, []);
+
+  useEffect(() => {
+    get(`/getRating${shelterId}`)
+      .then((data) => {
+        console.log(data);
+        setRating(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      get(`/getNumberOfReviews${shelterId}`)
+      .then((data) => {
+        console.log(data);
+        setNumberOfReviews(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  
+  }, [shelterId, numberOfReviews]);
+  
 
   useEffect(() => {
     const handleGetComments = () => {
@@ -159,14 +183,11 @@ const Shelter = (props) => {
     })
   } 
 
-  const handleRatingSubmit = () => {
-    if (!isRatingSubmitted) {
-      setIsRatingSubmitted(true);
-      console.log("Rating submitted");
-      toast.success("Rating submitted");
-    }
-  };
-
+  const handleIsRated = () => {
+    setIsRated(true)
+    toast.success("Rated shelter successfully")
+    setNumberOfReviews(numberOfReviews + 1)
+  }
   
   
 
@@ -181,11 +202,10 @@ const Shelter = (props) => {
               <div className="shelter-description">{profile.description}</div>
               <div className="shelter-number"><FaPhone className="phone-icon"/>{profile.phoneNumber}</div>
                 <div className="stars" >
-                  {isRatingSubmitted ? 
-                  <StarRating rate={false} value={2}/>
-                  : 
-                  <StarRating  onClick={handleRatingSubmit} value={2} rate={true}/>
-                  }
+                   
+                  <StarRating rate={false} value={rating}/>
+                  <div className="n-reviews">({numberOfReviews})</div>
+                  
                 </div>
 
             </div>
@@ -209,8 +229,11 @@ const Shelter = (props) => {
             )}
           </div>
           <div className="rating-comments">
-            <div className="rating">
+            <div className="rating" onClick={handleIsRated}>
               
+              {!isRated ? <p>Rate the shelter </p> : null}
+              {!isRated ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
+             
             </div>
             <div className="shelter-comments">
               <CommentsContainer comments={comments} commentResponses={commentResponses} isShelter={isShelter}/>
@@ -221,7 +244,7 @@ const Shelter = (props) => {
         </div>
       </div>
       <Footer />
-      <ToastContainer position='top-center' autoClose={1500} />
+      {isRated && <ToastContainer position='top-center' autoClose={1500} />}
 
     </div>
   );
