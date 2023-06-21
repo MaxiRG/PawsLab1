@@ -7,10 +7,10 @@ import '../styles/Donacion.css';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { post, get, del, put } from '../utils/http';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus , faTimes, faTrash, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -359,9 +359,7 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
             <div>
               <SelectedPost selectedPost={selectedPost} cardShelter={cardShelter} cardPicture={cardPicture} isShelter={isShelter}/>   
               <div className='expanded-buttons'>
-                  <Button className='expanded-button' id='expanded-button' variant="outline-primary" onClick={() => setSelectedPost(null)}>
-                    <FontAwesomeIcon icon={faPencilAlt} className="button-icon" />Edit
-                  </Button>
+                 
                   <Button className='expanded-button' id='expanded-button' variant="outline-danger" onClick={() => setSelectedPost(null)}> 
                     <FontAwesomeIcon icon={faTimes} className="button-icon" />Close
                   </Button>
@@ -373,38 +371,40 @@ import { faPlus , faPencilAlt, faTimes, faTrash, faAngleUp, faAngleDown } from '
             </div>  
             ):(
               !isFormExpanded && (
-            <div className='card-container'>
+            <div className='card-containers'>
+              <div className='card-container'>
               {showMyPosts && myPosts.activePosts.length > 0 &&
-              myPosts.activePosts.map(post => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  picture={pictures[post.id]}
-                  handleSelectedPost={handleSelectedPost}
-                  handleMarkAsAdopted={handleMarkAsAdopted}
-                  clickable={true}
-                />
-              ))
-            }
-            {showMyPosts && myPosts.adoptedPosts.length > 0 &&
-              myPosts.adoptedPosts.map(post => (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  picture={pictures[post.id]}
-                  handleSelectedPost={handleSelectedPost}
-                  handleMarkAsAdopted={handleMarkAsAdopted}
-                  clickable={true}
-                />
-              ))
-            }
-
-             </div>
+                myPosts.activePosts.map(post => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    picture={pictures[post.id]}
+                    handleSelectedPost={handleSelectedPost}
+                    handleMarkAsAdopted={handleMarkAsAdopted}
+                    clickable={true}
+                  />
+                ))
+              }
+              </div>
+              <div className='card-container'>
+              {showMyPosts && myPosts.adoptedPosts.length > 0 &&
+                myPosts.adoptedPosts.map(post => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    picture={pictures[post.id]}
+                    handleSelectedPost={handleSelectedPost}
+                    handleMarkAsAdopted={handleMarkAsAdopted}
+                    clickable={true}
+                  />
+                ))
+              }
+              </div>
+            </div>
               )
             )}             
         </div>
         <Footer/>
-        <ToastContainer position='top-center' autoClose={2000}/>
       </div>
     );
   }

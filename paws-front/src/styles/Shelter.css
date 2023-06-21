@@ -31,17 +31,17 @@
   margin-bottom: 1.5rem;
 }
 
-.donated-posts {
+.donated-posts, .active-posts {
   display: flex;
   flex-wrap: wrap;
-  width: 45%;
+  flex: 0 0 calc(45% - 10px);
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   margin: 2rem;
   justify-content: flex-start;
 }
 
-.donated-posts .custom-card {
+.donated-posts .custom-card , .active-posts .custom-card{
   flex: 0 0 calc(45% - 10px);
   margin: auto;
   margin-bottom: 1rem;
@@ -49,12 +49,11 @@
   align-self: flex-start;
 }
 
-.donated-posts .custom-card:hover {
+.donated-posts .custom-card:hover , .active-posts .custom-card:hover{
   background-color: rgb(255, 255, 255);
 }
 
-
-.donated-posts .donated-posts-title {
+.donated-posts .donated-posts-title , .active-posts .active-posts-title {
   flex-basis: 100%;
   font-size: 1.8rem;
   margin-left: 1.5rem;
@@ -75,6 +74,7 @@
 
 .postsAndComments{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin: 2rem;
   width: 95%;
@@ -89,7 +89,7 @@
 }
 
 .rating-comments{
-  width: 45%;
+  flex: 0 0 calc(45% - 10px);
   margin: 2rem;
 }
 
@@ -111,7 +111,7 @@
 .rating{
   border-radius: 10px;
   width: 100%;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,3 +125,4 @@
   margin-top: 1rem;
   margin-right: 10px;
 }
+

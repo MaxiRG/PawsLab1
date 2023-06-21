@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaPencilAlt } from 'react-icons/fa';
 import '../styles/ProfileCard.css';
 import { put } from "../utils/http";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ProfileCard = ({ name, number, description, email }) => {
@@ -168,7 +168,6 @@ const ProfileCard = ({ name, number, description, email }) => {
           </div>
         )}
       </div>
-      <ToastContainer position='top-center' autoClose={2000} />
     </div>
   );
 };

@@ -267,6 +267,21 @@ const Shelter = (props) => {
               {errorMessage && <div id="error-message">{errorMessage}</div>}
             </div>
           </div>
+          <div className="active-posts">
+            <h2 className="active-posts-title">Active Posts</h2>
+            {posts.filter(post => post.user.id === parseInt(shelterId) && !post.adopted).length > 0 ? (
+              posts.filter(post => post.user.id === parseInt(shelterId) && !post.adopted).map((post) => (
+                <PostCard 
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  clickable={false}
+                />
+              ))
+            ) : (
+              <p className="no-history">No active posts...</p>
+            )}
+          </div>
         </div>
       </div>
       <Footer />

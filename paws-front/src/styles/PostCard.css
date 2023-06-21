@@ -13,12 +13,6 @@
   background-color: #e2e6ea; 
 }
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
 .card-title {
   text-transform: uppercase;
   color: var(--color-accent);
