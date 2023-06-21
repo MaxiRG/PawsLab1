@@ -4,7 +4,7 @@ import '../styles/SelectedPost.css';
 import Button from 'react-bootstrap/Button';
 import CommentBox from '../components/CommentBox';
 import CommentsContainer from './CommentsContainer';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post, get } from '../utils/http'
 
@@ -170,7 +170,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
           </div>
         </div>
       </div>
-      <ToastContainer position='top-center' />
+      
     </div> 
   );
 }

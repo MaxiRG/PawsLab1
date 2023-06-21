@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import '../styles/CommentsContainer.css'
 import { FaUser, FaReply } from 'react-icons/fa';
 import Button from 'react-bootstrap/Button';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post } from '../utils/http'
 
@@ -99,7 +99,6 @@ useEffect(() => {
         </div>
       ))}
       
-      <ToastContainer position='top-center' />
     </div>
   );
 };

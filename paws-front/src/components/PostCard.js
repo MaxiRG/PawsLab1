@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { Form } from 'react-bootstrap';
 import { FaHeart } from 'react-icons/fa';
 import '../styles/PostCard.css'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { post, del } from "../utils/http";
 
@@ -108,7 +108,6 @@ function PostCard(props) {
         )}
         
       </Card.Body>
-      <ToastContainer position='top-center' autoClose={2000} />
     </Card>
     
   );
