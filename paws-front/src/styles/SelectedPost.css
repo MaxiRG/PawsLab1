@@ -58,12 +58,12 @@
   margin: 2rem;
 }
 
-.textBox, .comments{
+.textBox-share, .comments{
   width: 45%;
   margin: 2rem;
 }
 
-.textBox .textArea{
+.textBox-share .textArea{
   width: 100%;
   margin-bottom: 1rem;
   resize: none;
@@ -97,4 +97,39 @@
 
 .pagination .page-link.active {
   font-weight: bold;
+}
+
+.adoption-request-icon {
+  margin-right: 5px;
+  margin-bottom: 3px;
+  font-size: 20px;
+}
+
+.adoption-request-icon-sent {
+  margin-right: 5px;
+  margin-bottom: 3px;
+  font-size: 20px;
+  color: rgb(21, 255, 0);
+}
+
+#adoption-request-button {
+  margin-top: 1rem;
+  background-color: #007bff;
+}
+
+#adoption-request-button-sent {
+  margin-top: 1rem;
+  background-color: green;
+  border: none;
+  pointer-events: none;
+  opacity: 95%;
+}
+
+.facebook-share, .ig-share{
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+.share-icon{
+  font-size: 20px;
 }
