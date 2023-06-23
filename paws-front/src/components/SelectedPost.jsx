@@ -7,8 +7,8 @@ import CommentsContainer from './CommentsContainer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoMdCheckmarkCircle } from "react-icons/io";
-import { FaShareAlt } from "react-icons/fa";
-import { FacebookShareButton, FacebookIcon, TwitterIcon, TwitterShareButton } from 'react-share';
+import { FaShareAlt  } from "react-icons/fa";
+import {  WhatsappShareButton, WhatsappIcon, TwitterIcon, TwitterShareButton } from 'react-share';
 import { post, get } from '../utils/http'
 
 
@@ -180,17 +180,17 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
 
           <div className='share'>
             <FaShareAlt className='share-icon'/>
-            <FacebookShareButton
-                url={'https://www.example.com'}
-                quote={'Dummy text!'}
-                hashtag="#paws"
-                className='facebook-share'
-              >
-                <FacebookIcon size={48} round />
-            </FacebookShareButton>
+            <WhatsappShareButton
+              url={'http://localhost:3000/busqueda'}
+              title={'Take a look at ' + selectedPost.petName + '!'}
+              separator=" - "
+              className='whatsapp-share'
+            >
+              <WhatsappIcon size={48} round />
+            </WhatsappShareButton>
             <TwitterShareButton
-                url={'https://www.example.com'}
-                quote={'Dummy text!'}
+                url={'http://localhost:3000/busqueda'}
+                title={`Take a look at ${selectedPost.petName}! on `}
                 className='ig-share'
               >
                 <TwitterIcon size={48} round />
