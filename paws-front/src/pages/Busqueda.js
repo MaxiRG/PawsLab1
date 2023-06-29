@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import PostCard from '../components/PostCard';
@@ -15,12 +16,14 @@ function Busqueda(props) {
   const { isLoggedIn, isShelter } = props;
   const [posts, setPosts] = useState([]);
   const [favPosts, setFavPosts] = useState([]);
+  const [shelters, setShelters] = useState([])
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [cardShelter, setCardShelter] = useState(null);
   const [cardPicture, setCardPicture] = useState([]);
   const [pictures, setPictures] = useState({});
   const [showFavorites, setShowFavorites] = useState(false);
+  const navigate = useNavigate()
   const [searchFilters, setSearchFilters] = useState({
     age: '',
     sex: '',
@@ -46,6 +49,17 @@ function Busqueda(props) {
     }
   }, [selectedPost, showFavorites]);
   
+  useEffect(() => {
+    get('/api/getShelters')
+    .then((response) => {
+      console.log(response)
+      setShelters(response)
+    })
+    .catch((e)=> {
+      console.error(e)
+    })
+  }
+  ,[])
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -139,7 +153,7 @@ function Busqueda(props) {
   
 
   return (
-    <div className='all'>
+    <div className=''>
       <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
       <div className='body'>
 
@@ -253,7 +267,24 @@ function Busqueda(props) {
 
           </div>
         )}
+
+          <div className='shelter-list'>
+            {shelters.length > 0 &&
+              shelters.map((shelter) => (
+                <div
+                  className='shelter-link' 
+                  key={shelter.id} 
+                  onClick={() => navigate(`/shelter/${shelter.id}`)}>
+
+                  {shelter.name}
+
+                </div>
+              ))}
+          </div>
         </div>
+
+       
+
       <Footer />
     </div>
   );
