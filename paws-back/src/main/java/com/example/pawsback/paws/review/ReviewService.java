@@ -30,7 +30,7 @@ public class ReviewService {
 
     public Review save(CreateReviewDTO createReviewDTO, String token) throws NoAuthorizationException {
         User author = userService.getByToken(token);
-        if(reviewRepository.findReviewBySubjectIdAndAuthorId(author.getId(), createReviewDTO.getSubjectId()) != null){
+        if(reviewRepository.findReviewBySubjectIdAndAuthorId((long) createReviewDTO.getSubjectId(), author.getId()) != null){
             throw new NoAuthorizationException("Already reviewed this shelter");
         }
         Review review = new Review();
@@ -55,4 +55,10 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findReviewsBySubjectId(subjectId);
         return reviews.size();
     }
+
+    public boolean hasUserRatedShelter(int subjectId, String token) throws NoAuthorizationException {
+        User author = userService.getByToken(token);
+        return reviewRepository.existsBySubjectIdAndAuthorId(subjectId, author.getId());
+    }
+
 }

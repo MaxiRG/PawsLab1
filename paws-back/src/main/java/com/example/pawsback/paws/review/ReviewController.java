@@ -54,4 +54,17 @@ public class ReviewController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/checkUserRating/{subjectId}")
+    public ResponseEntity<?> checkUserRating(@PathVariable int subjectId, @RequestHeader("Authorization") String token) {
+        try {
+            boolean hasRated = reviewService.hasUserRatedShelter(subjectId, token);
+            return new ResponseEntity<>(hasRated, HttpStatus.OK);
+        } catch (NoAuthorizationException e) {
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
