@@ -6,6 +6,9 @@ import CommentBox from '../components/CommentBox';
 import CommentsContainer from './CommentsContainer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { IoMdCheckmarkCircle } from "react-icons/io";
+import { FaShareAlt  } from "react-icons/fa";
+import {  WhatsappShareButton, WhatsappIcon, TwitterIcon, TwitterShareButton } from 'react-share';
 import { post, get } from '../utils/http'
 
 
@@ -14,6 +17,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setComments] = useState([]);
   const [commentResponses, setCommentResponses] = useState([]);
+  const [isRequestSent, setIsRequestSent] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [commentsPerPage] = useState(4);
   const token = localStorage.getItem('token')
@@ -111,6 +115,11 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
     
   };
 
+  const handleAdoptionRequest = () => {
+    setIsRequestSent(true);
+    
+  };
+
   const indexOfLastComment = currentPage * commentsPerPage;
   const indexOfFirstComment = indexOfLastComment - commentsPerPage;
   const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
@@ -137,6 +146,22 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
               <img src={cardPicture} alt='imagen' className='dog-pic'/>
             </div>
           </div>
+          <div className="adoption-request">
+            {!isShelter &&
+            <Button
+              id={isRequestSent ? 'adoption-request-button-sent' : 'adoption-request-button'}
+              onClick={handleAdoptionRequest}
+              
+            >
+              {isRequestSent ? (
+                <IoMdCheckmarkCircle className="adoption-request-icon-sent" />
+              ) : (
+                <IoMdCheckmarkCircle className="adoption-request-icon" />
+              )}
+              {isRequestSent ? 'Request Sent' : 'Request Adoption'}
+            </Button>
+            }
+          </div>
         </div>  
         <div className='shelter-info'>
           <h1 className='shelter-title'  style={{ textAlign: 'center' }}>{cardShelter.name}</h1>
@@ -148,9 +173,29 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
         </div>
       </div>   
       <div className='comments-area'> 
-        <div className='textBox'>
+        <div className='textBox-share'>
+
           <CommentBox onSubmit={handleCommentSubmit} />
           {errorMessage && <div id="error-message">{errorMessage}</div>}
+
+          <div className='share'>
+            <FaShareAlt className='share-icon'/>
+            <WhatsappShareButton
+              url={'http://localhost:3000/busqueda'}
+              title={'Take a look at ' + selectedPost.petName + '!'}
+              separator=" - "
+              className='whatsapp-share'
+            >
+              <WhatsappIcon size={48} round />
+            </WhatsappShareButton>
+            <TwitterShareButton
+                url={'http://localhost:3000/busqueda'}
+                title={`Take a look at ${selectedPost.petName}! on `}
+                className='ig-share'
+              >
+                <TwitterIcon size={48} round />
+            </TwitterShareButton>
+          </div>
         </div>
         <div className='comments'>
           <CommentsContainer comments={currentComments} commentResponses={commentResponses} isShelter={isShelter}/>
@@ -170,6 +215,8 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
           </div>
         </div>
       </div>
+      
+     
       
     </div> 
   );
