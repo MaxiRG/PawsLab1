@@ -25,7 +25,7 @@ const Shelter = (props) => {
   const [commentResponses, setCommentResponses] = useState([]);
   const [rating, setRating] = useState(0)
   const [numberOfReviews, setNumberOfReviews] = useState(0)
-  const [isRated, setIsRated] = useState(null)
+  const [isRated, setIsRated] = useState(true)
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const config = {
@@ -34,8 +34,10 @@ const Shelter = (props) => {
     'Content-Type': 'application/json', 
 }}
 
+
   useEffect(() => {
-    get(`/api/getInfoById/${shelterId}`)
+    const getShelterInfo = () => {
+      get(`/api/getInfoById/${shelterId}`)
       .then((data) => {
         console.log(data);
         setProfile(data);
@@ -44,84 +46,7 @@ const Shelter = (props) => {
         console.log(error);
         navigate("/404");
       });
-  }, [shelterId, navigate]);
-
-  useEffect(() => {
-    get('/getAll')
-      .then((response) => {
-        console.log(response);
-        console.log("posts retrieved");
-        setPosts(response);
-        setErrorMessage('');
-
-        response.forEach((post) => {
-          const postId = post.id;
-          get(`/getProfilePicture/${postId}`, { responseType: 'arraybuffer' })
-            .then((imageResponse) => {
-              console.log('image retrieved');
-              const blob = new Blob([imageResponse], { type: 'image/jpeg' });
-              const blobUrl = URL.createObjectURL(blob);
-              setPictures((prevState) => ({
-                ...prevState,
-                [postId]: blobUrl,
-              }));
-            })
-            .catch((error) => {
-              console.error(error);
-              setErrorMessage('Failed to retrieve images');
-            });
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        setErrorMessage('Post retrieval failed. Please try again later.');
-      });
-  }, []);
-
-  useEffect(() => {
-    get(`/getRating${shelterId}`)
-      .then((data) => {
-        console.log(data);
-        setRating(data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      get(`/getNumberOfReviews${shelterId}`)
-      .then((data) => {
-        console.log(data);
-        setNumberOfReviews(data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-  
-  }, [shelterId, numberOfReviews]);
-
-  useEffect(() => {
-    get(`/getRating${shelterId}`)
-      .then((data) => {
-        console.log(data);
-        setRating(data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-      get(`/getNumberOfReviews${shelterId}`)
-      .then((data) => {
-        console.log(data);
-        setNumberOfReviews(data)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-  
-  }, [shelterId, numberOfReviews]);
-  
-
-  useEffect(() => {
+    }
     const handleGetComments = () => {
       get('/getCommentsOfTypeSHELTERandId' + shelterId)
       .then((response) => {
@@ -160,8 +85,91 @@ const Shelter = (props) => {
     };
     
     handleGetComments();
-  }, [shelterId]);
+    getShelterInfo()
 
+  }, [shelterId, navigate]);
+
+  useEffect(() => {
+    const getAllPosts = () => {
+      get('/getAll')
+      .then((response) => {
+        console.log(response);
+        console.log("posts retrieved");
+        setPosts(response);
+        setErrorMessage('');
+
+        response.forEach((post) => {
+          const postId = post.id;
+          get(`/getProfilePicture/${postId}`, { responseType: 'arraybuffer' })
+            .then((imageResponse) => {
+              console.log('image retrieved');
+              const blob = new Blob([imageResponse], { type: 'image/jpeg' });
+              const blobUrl = URL.createObjectURL(blob);
+              setPictures((prevState) => ({
+                ...prevState,
+                [postId]: blobUrl,
+              }));
+            })
+            .catch((error) => {
+              console.error(error);
+              setErrorMessage('Failed to retrieve images');
+            });
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage('Post retrieval failed. Please try again later.');
+      });
+    }    
+    getAllPosts()
+  },[]);
+
+  useEffect(() => {
+    const getRating = () => {
+      get(`/getRating${shelterId}`)
+      .then((data) => {
+        console.log(data);
+        setRating(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+    const getNumberOfReviews = () => {
+      get(`/getNumberOfReviews${shelterId}`)
+      .then((data) => {
+        console.log(data);
+        setNumberOfReviews(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+    
+    getRating();
+    getNumberOfReviews();
+  
+  }, [shelterId, numberOfReviews]);
+
+  useEffect(()=> {
+      const getReviewStatus = () => {
+        if (!token) return;
+        
+        get(`/checkUserRating/${shelterId}`, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'} })
+          .then((response) => {
+            setIsRated(response);
+          })
+          .catch((error) => {
+            console.error(error);
+            console.error("failed to get review status")
+          });
+      };
+    
+      getReviewStatus();
+    
+  })
+    
+ 
   const handleCommentSubmit = (comment) => {
     if (!token){
       toast.warn("Log in to add a comment")
@@ -204,17 +212,11 @@ const Shelter = (props) => {
     })
   } 
 
-  const handleIsRated = () => {
-    setIsRated(true);
-    const previousNumberOfReviews = numberOfReviews;
-    setNumberOfReviews(previousNumberOfReviews + 1);
-    if (numberOfReviews === previousNumberOfReviews) {
-      toast.warning("You have already rated this shelter");
-    } else {
-      toast.success("Rated shelter successfully");
-    }
+  const handleRating = () => {
+    toast.success("Shelter rated successfully")
+    setIsRated(true)
+    setNumberOfReviews(numberOfReviews+1)
   }
-  
   
 
   return (
@@ -227,7 +229,7 @@ const Shelter = (props) => {
               <h1>{profile.name}</h1>
               <div className="shelter-description">{profile.description}</div>
               <div className="shelter-number"><FaPhone className="phone-icon"/>{profile.phoneNumber}</div>
-                <div className="stars" >
+                <div className="stars"  >
                    
                   <StarRating rate={false} value={rating}/>
                   <div className="n-reviews">({numberOfReviews})</div>
@@ -255,11 +257,12 @@ const Shelter = (props) => {
             )}
           </div>
           <div className="rating-comments">
-            <div className="rating" onClick={handleIsRated}>
+            <div className="rating">
               
               {!isRated && token ? <p>Rate the shelter </p> : null}
-              {!isRated && token ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
-             
+              <div onClick={handleRating}>
+                {!isRated && token ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
+              </div>
             </div>
             <div className="shelter-comments">
               <CommentsContainer comments={comments} commentResponses={commentResponses} isShelter={isShelter}/>

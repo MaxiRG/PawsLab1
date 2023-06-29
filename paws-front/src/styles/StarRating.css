@@ -13,10 +13,12 @@
   color: gold;
   font-size: 32px;
   margin: 2px;
+  cursor: pointer;
 }
 
 .star-rating .off {
   color: #080808;
   font-size: 32px;
   margin: 2px; 
+  cursor: pointer;
 }

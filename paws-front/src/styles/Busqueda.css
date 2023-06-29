@@ -79,6 +79,8 @@ button[type="submit"]:hover {
   margin: 10px;
   flex-basis: calc(25% - 20px);
   text-align: center;
+  text-transform: capitalize;
+  font-weight: 600;
 }
 
 .shelter-link:hover{
