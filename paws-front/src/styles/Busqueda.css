@@ -1,6 +1,3 @@
-.all{
-  background: linear-gradient(to bottom, rgba(255, 207, 118, 1) 0%, rgba(255, 207, 118, 0.5) 50%, rgba(255, 207, 118, 1) 100%);
-}
 
 form {
   display: flex;
@@ -66,6 +63,27 @@ button[type="submit"]:hover {
 
 .eye-icon{
   margin-right: 5px;
+}
+
+.shelter-list{
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  margin: 2rem;
+  padding: .25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.shelter-link{
+  margin: 10px;
+  flex-basis: calc(25% - 20px);
+  text-align: center;
+}
+
+.shelter-link:hover{
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 
