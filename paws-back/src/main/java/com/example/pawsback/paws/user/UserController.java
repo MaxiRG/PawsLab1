@@ -192,6 +192,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getShelters")
+    public ResponseEntity<?> getShelters(){
+        try {
+            return new ResponseEntity<>(service.getShelters(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Failed to get shelters", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/test")
     public String test(){

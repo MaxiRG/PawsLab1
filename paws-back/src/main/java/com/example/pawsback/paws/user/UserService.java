@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -163,4 +164,7 @@ public class UserService {
         return infoDTO;
     }
 
+    public List<User> getShelters() {
+        return userRepository.getShelters();
+    }
 }
