@@ -12,5 +12,7 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     public List<Review> findReviewsBySubjectId(int subjectId);
     @Query("SELECT u FROM Review u WHERE u.subjectId = :subjectId AND u.author.id = :authorId")
-    public Review findReviewBySubjectIdAndAuthorId(@Param("subjectId") Long subjectId,@Param("authorId")int authorId);
+    public Review findReviewBySubjectIdAndAuthorId(@Param("subjectId") Long subjectId,@Param("authorId")Long authorId);
+    boolean existsBySubjectIdAndAuthorId(int subjectId, Long authorId);
+
 }
