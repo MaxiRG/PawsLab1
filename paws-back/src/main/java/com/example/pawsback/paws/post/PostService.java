@@ -1,20 +1,14 @@
 package com.example.pawsback.paws.post;
 
-
-import com.example.pawsback.paws.post.model.AgeType;
 import com.example.pawsback.paws.post.model.Post;
-import com.example.pawsback.paws.post.model.Races;
-import com.example.pawsback.paws.post.model.Sex;
 import com.example.pawsback.paws.post.model.dto.FilteredListDataDTO;
 import com.example.pawsback.paws.post.model.dto.PostDTO;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.user.UserService;
 import com.example.pawsback.paws.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

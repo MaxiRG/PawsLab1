@@ -3,7 +3,9 @@ package com.example.pawsback.paws.request.model;
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.user.model.User;
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +21,5 @@ public class Request {
 
     @Column(name = "accepted")
     private boolean accepted;
-
 
 }
