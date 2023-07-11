@@ -268,23 +268,23 @@ function Busqueda(props) {
           </div>
         )}
 
-          <div className='shelter-list'>
-            {shelters.length > 0 &&
-              shelters.map((shelter) => (
-                <div
-                  className='shelter-link' 
-                  key={shelter.id} 
-                  onClick={() => navigate(`/shelter/${shelter.id}`)}>
+        {!selectedPost &&
+         <div className='shelter-list'>
+         {shelters.length > 0 &&
+           shelters.map((shelter) => (
+             <div
+               className='shelter-link' 
+               key={shelter.id} 
+               onClick={() => navigate(`/shelter/${shelter.id}`)}>
 
-                  {shelter.name}
+               {shelter.name}
 
-                </div>
-              ))}
-          </div>
-        </div>
-
-       
-
+             </div>
+           ))}
+         </div>
+         }
+        
+      </div>
       <Footer />
     </div>
   );

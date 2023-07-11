@@ -40,9 +40,6 @@ function Navbar(props) {
             )}
           </li>
           <li>
-            <a href="/#contacto">Contact us</a>
-          </li>
-          <li>
             {isLoggedIn ? (
               <Link to="/account">Account</Link>
             ) : (
