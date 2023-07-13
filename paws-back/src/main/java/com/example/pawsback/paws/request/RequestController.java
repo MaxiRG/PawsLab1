@@ -2,6 +2,7 @@ package com.example.pawsback.paws.request;
 
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.request.model.Request;
+import com.example.pawsback.paws.request.model.exceptions.NotAnsweredException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,45 @@ public class RequestController {
         }
         catch (NoAuthorizationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+        catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getMyRequests")
+    public ResponseEntity<?> getMyRequests(@RequestHeader("Authorization") String token){
+        try{
+            return new ResponseEntity<>(requestService.getMyRequests(token), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/isRequestAnswered/{request_id}")
+    public ResponseEntity<?> isRequestAnswered(@PathVariable int request_id){
+        try{
+            return new ResponseEntity<>(requestService.isRequestAnswered(request_id), HttpStatus.OK);
+        }
+        catch (EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getResponseToRequest/{request_id}")
+    public ResponseEntity<?> getResponseToRequest(@PathVariable int request_id) {
+        try{
+            return new ResponseEntity<>(requestService.getResponse(request_id), HttpStatus.OK);
+        } catch (NotAnsweredException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch(EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+
         }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
