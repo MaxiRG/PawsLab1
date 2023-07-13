@@ -3,6 +3,7 @@ package com.example.pawsback.paws.user.model;
 import com.example.pawsback.paws.comment.model.Comment;
 import com.example.pawsback.paws.favourite.model.Favourite;
 import com.example.pawsback.paws.post.model.Post;
+import com.example.pawsback.paws.request.model.Request;
 import com.example.pawsback.paws.review.model.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -58,6 +59,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Favourite> favourites;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "adopter")
+    private List<Request> requests;
 
     public User(String email, String password){
         this.email = email;
