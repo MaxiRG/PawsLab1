@@ -24,6 +24,9 @@ public class RequestController {
             Request request = requestService.save(post_id, token);
             return new ResponseEntity<>(request, HttpStatus.OK);
         }
+        catch(NotAnsweredException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -69,6 +72,7 @@ public class RequestController {
         }
     }
 
+    //Throws exception if the response is not answered, so it is recommended to check with isRequestAnswered method first.
     @GetMapping("/getResponseToRequest/{request_id}")
     public ResponseEntity<?> getResponseToRequest(@PathVariable int request_id) {
         try{

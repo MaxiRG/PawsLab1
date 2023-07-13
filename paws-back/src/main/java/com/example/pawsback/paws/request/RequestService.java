@@ -23,11 +23,26 @@ public class RequestService {
         this.requestRepository = requestRepository;
     }
 
-    public Request save(int post_id, String token) {
+    public Request save(int post_id, String token) throws NotAnsweredException {
+        if(isRequestIsValid(post_id, userService.getByToken(token).getId())){
         Request request = new Request();
         request.setAdopter(userService.getByToken(token));
         request.setPost(postRepository.findPostById(post_id));
         return requestRepository.save(request);
+        }
+        else{
+            throw new NotAnsweredException("You already have an unanswered request for post with id: " + post_id);
+        }
+    }
+
+    private boolean isRequestIsValid(int post_id, Long adopter_id) {
+        List<Request> requests = requestRepository.findAllByAdopterId(adopter_id);
+        for (Request request : requests) {
+            if (request.getPost().getId() == post_id && !request.isAnswered()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void answerRequest(int request_id, boolean answer, String token) throws NoAuthorizationException {
@@ -65,7 +80,7 @@ public class RequestService {
             }
         }
         else{
-            throw new EntityNotFoundException("Could not find request with id" + request_id);
+            throw new EntityNotFoundException("Could not find request with id " + request_id);
         }
     }
 
@@ -76,7 +91,7 @@ public class RequestService {
             return request.isAnswered();
         }
         else{
-            throw new EntityNotFoundException("Could not find request with id" + request_id);
+            throw new EntityNotFoundException("Could not find request with id " + request_id);
         }
     }
 }
