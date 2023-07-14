@@ -2,13 +2,16 @@ package com.example.pawsback.paws.request;
 
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.request.model.Request;
+import com.example.pawsback.paws.request.model.exceptions.PostIsAdoptedException;
 import com.example.pawsback.paws.request.model.exceptions.NotAnsweredException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Transactional
 @Controller
 public class RequestController {
     private final RequestService requestService;
@@ -24,8 +27,11 @@ public class RequestController {
             Request request = requestService.save(post_id, token);
             return new ResponseEntity<>(request, HttpStatus.OK);
         }
-        catch(NotAnsweredException e){
+        catch(NotAnsweredException | PostIsAdoptedException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (EntityNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -53,6 +59,32 @@ public class RequestController {
     public ResponseEntity<?> getMyRequests(@RequestHeader("Authorization") String token){
         try{
             return new ResponseEntity<>(requestService.getMyRequests(token), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getReceivedRequestsForShelter")
+    public ResponseEntity<?> getReceivedRequestsForShelter(@RequestHeader("Authorization") String token){
+        try{
+            return new ResponseEntity<>(requestService.getPendingReceivedRequestsForShelter(token), HttpStatus.OK);
+        }
+        catch(PostIsAdoptedException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getReceivedRequestsForPost/{post_id}")
+    public ResponseEntity<?> getReceivedRequestsForPost(@PathVariable Long post_id){
+        try{
+            return new ResponseEntity<>(requestService.getPendingReceivedRequestsForPost(post_id), HttpStatus.OK);
+        }
+        catch(PostIsAdoptedException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

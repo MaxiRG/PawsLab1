@@ -28,7 +28,7 @@ public class PostService {
     }
 
     public void modifyAdoptedStatus(boolean status, int postId, String token) throws NoAuthorizationException {
-        Post post = postRepository.findPostById(postId);
+        Post post = postRepository.findPostById((long) postId);
         if (post == null){
             throw new EntityNotFoundException("Post does not exist");
         }
@@ -40,7 +40,7 @@ public class PostService {
     }
 
     public void modifyAge(int postId, int newAge, String token) throws NoAuthorizationException {
-        Post post = postRepository.findPostById(postId);
+        Post post = postRepository.findPostById((long) postId);
         if (post == null){
             throw new EntityNotFoundException("Post does not exist");
         }
@@ -52,7 +52,7 @@ public class PostService {
     }
 
     public void modifyPostDescription(int postId, String description, String token) throws NoAuthorizationException {
-        Post post = postRepository.findPostById(postId);
+        Post post = postRepository.findPostById((long) postId);
         if (post==null){
             throw new EntityNotFoundException("Post does not exist");
         }
@@ -80,7 +80,7 @@ public class PostService {
     }
 
     public void delete(int postId, String token) throws NoAuthorizationException {
-        Post post = postRepository.findPostById(postId);
+        Post post = postRepository.findPostById((long) postId);
         User user = userService.getByToken(token);
         if(post != null && user != null){
             if(post.getUser().getId() == user.getId()){
@@ -143,7 +143,7 @@ public class PostService {
     }
   
     public byte[] getProfilePictureByteArray(int id) {
-        Post post = postRepository.findPostById(id);
+        Post post = postRepository.findPostById((long) id);
         Optional<Post> optional = Optional.ofNullable(post);
         if(optional.isPresent()){
             return optional.get().getProfilePicture().getImageData();
