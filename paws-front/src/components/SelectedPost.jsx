@@ -4,12 +4,14 @@ import '../styles/SelectedPost.css';
 import Button from 'react-bootstrap/Button';
 import CommentBox from '../components/CommentBox';
 import CommentsContainer from './CommentsContainer';
+import RequestCard from './RequestCard';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import { FaShareAlt  } from "react-icons/fa";
 import {  WhatsappShareButton, WhatsappIcon, TwitterIcon, TwitterShareButton } from 'react-share';
 import { post, get } from '../utils/http'
+import jwt_decode from "jwt-decode";
 
 
 export default function SelectedPost({ selectedPost, cardShelter, cardPicture, isShelter }) {
@@ -17,10 +19,12 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setComments] = useState([]);
   const [commentResponses, setCommentResponses] = useState([]);
+  const [request, setRequest] = useState(null)
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [commentsPerPage] = useState(4);
   const token = localStorage.getItem('token')
+  const decodedToken = jwt_decode(token);
   const config = {
     headers: {
     Authorization: `Bearer ${token}`,
@@ -67,6 +71,30 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
     };
     handleGetComments();
   }, [selectedPost.id]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', 
+  }}
+
+  const getRequest = () => {
+    get(`/getReceivedRequestsForPost/${selectedPost.id}`, config)
+    .then((resp)=> {
+      console.log(resp);
+      setRequest(resp);
+    })
+    .catch((e)=>{
+      console.error(e);
+    })
+  }
+
+  getRequest();
+    
+  }, [selectedPost.id]);
+
 
   const handleGetComments = () => {
     get('/getCommentsOfTypePOSTandId' + selectedPost.id)
@@ -116,7 +144,16 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
   };
 
   const handleAdoptionRequest = () => {
-    setIsRequestSent(true);
+    post("/createRequest/" + selectedPost.id, null, config)
+      .then((response)=>{
+        console.log(response);
+        setIsRequestSent(true);
+        toast.success("Adoption request sent!");
+      })
+      .catch((error)=>{
+        console.error(error);
+        toast.warn("Post has an active request");
+      })
     
   };
 
@@ -127,8 +164,6 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  
 
   return (
     <div>
@@ -171,13 +206,13 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
             See Shelter
           </Button>
         </div>
-      </div>   
+      </div>    
       <div className='comments-area'> 
         <div className='textBox-share'>
 
           <CommentBox onSubmit={handleCommentSubmit} />
           {errorMessage && <div id="error-message">{errorMessage}</div>}
-
+          
           <div className='share'>
             <FaShareAlt className='share-icon'/>
             <WhatsappShareButton
@@ -196,6 +231,11 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
                 <TwitterIcon size={48} round />
             </TwitterShareButton>
           </div>
+          <div className='request'>
+            { isShelter && request && request.length > 0 && decodedToken.id === request[0].post.user.id && (
+              <RequestCard request={request[0]} />
+            )}
+          </div> 
         </div>
         <div className='comments'>
           <CommentsContainer comments={currentComments} commentResponses={commentResponses} isShelter={isShelter}/>
@@ -215,9 +255,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
           </div>
         </div>
       </div>
-      
-     
-      
+
     </div> 
   );
 }

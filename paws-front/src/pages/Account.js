@@ -8,6 +8,7 @@
   import Footer from "../components/Footer";
   import ProfileCard from "../components/ProfileCard";
   import PostCard from "../components/PostCard";
+  import RequestCard from "../components/RequestCard";
   import { del, get } from "../utils/http";
   import jwt_decode from "jwt-decode";
 
@@ -17,6 +18,7 @@
     const [profile, setProfile] = useState(null);
     const [myPosts, setMyPosts] = useState([]);
     const [pictures, setPictures] = useState({});
+    const [requests, setRequests] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [showDonationHistory, setShowDonationHistory] = useState(false);
     const navigate = useNavigate();
@@ -32,18 +34,43 @@
       const token = localStorage.getItem("token");
       const decodedToken = jwt_decode(token);
       const email = decodedToken.sub; 
-
       
-      get("/api/getInfo/" + email)
+      const getInfo = () => {
+        get("/api/getInfo/" + email)
         .then((data) => {
           console.log(data);
           setProfile(data);
-          
         })
         .catch((error) => {
           console.log(error);
-         
         });
+      }
+
+      getInfo();
+      
+    }, []);
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json', 
+    }}
+
+    const getRequests = () => {
+      get("/getReceivedRequestsForShelter", config)
+      .then((resp)=> {
+        console.log(resp);
+        setRequests(resp);
+      })
+      .catch((e)=>{
+        console.error(e);
+      })
+    }
+
+    getRequests();
+      
     }, []);
 
     const handleDonationHistory = (e) => {
@@ -89,7 +116,6 @@
         setShowDonationHistory(true);
       }
     };;
-
   
     const handleLogout = () => {
       localStorage.removeItem("token"); // Remove the token from localStorage
@@ -152,6 +178,11 @@
                   description={profile.description}
                   isLoggedIn={isLoggedIn}/>
                 ) : <p>Failed to fetch user info</p>}
+            </div>
+            <div className="requests">
+              {requests.filter((request) => !request.answered).map((request) => (
+                <RequestCard key={request.id} request={request} />
+              ))}
             </div>
             <div className="donation-history">
               {showDonationHistory && myPosts.filter(post => post.adopted).length > 0 ? (
