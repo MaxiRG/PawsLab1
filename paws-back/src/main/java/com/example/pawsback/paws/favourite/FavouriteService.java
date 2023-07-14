@@ -30,7 +30,7 @@ public class FavouriteService {
     public Favourite save(PostIDFavouriteDTO DTO, String token) throws RepeatedFavouriteException {
         Favourite favourite = new Favourite();
         User user = userService.getByToken(token);
-        Post post = postRepository.findPostById(DTO.getPostId());
+        Post post = postRepository.findPostById((long) DTO.getPostId());
         if (favouriteRepository.findByUserIdAndPostId(user.getId(),post.getId()) != null){
             throw new RepeatedFavouriteException("User already has this post in favourites");
         }

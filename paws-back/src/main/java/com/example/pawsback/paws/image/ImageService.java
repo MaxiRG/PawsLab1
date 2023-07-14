@@ -29,7 +29,7 @@ public class ImageService {
 
 
     public void upload(int id, String token, MultipartFile imageData) throws NoAuthorizationException, IOException {
-        Post post = postRepository.findPostById(id);
+        Post post = postRepository.findPostById((long) id);
         User user = userService.getByToken(token);
         if(post.getUser() != user){
             throw new NoAuthorizationException("You dont have authorization to do this");
