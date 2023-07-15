@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MercadoPagoSevice {
+public class MercadoPagoService {
 
     public Preference payment() throws MPException, MPApiException {
         MercadoPagoConfig.setAccessToken("TEST-342794310847942-071517-79740f198c547f268ed0005dc68e9cf8-286531013");

@@ -7,19 +7,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.example.pawsback.paws.mercadopago.MercadoPagoService;
+
 
 @Controller
 public class MercadoPagoController {
-    private final MercadoPagoSevice mercadoPagoSevice;
+    private final MercadoPagoService mercadoPagoService;
 
     @Autowired
-    public MercadoPagoController(MercadoPagoSevice mercadoPagoSevice) {
-        this.mercadoPagoSevice = mercadoPagoSevice;
+    public MercadoPagoController(MercadoPagoService mercadoPagoService) {
+        this.mercadoPagoService = mercadoPagoService;
     }
 
 
     @PostMapping("/payment")
     public ResponseEntity<?> payment() throws MPException, MPApiException {
-        return new ResponseEntity<>(mercadoPagoSevice.payment(), HttpStatus.OK);
+        return new ResponseEntity<>(mercadoPagoService.payment(), HttpStatus.OK);
     }
+    //meto esta anotacion para que me deje subirlo xd
 }
