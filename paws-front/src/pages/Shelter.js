@@ -5,13 +5,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PostCard from "../components/PostCard";
 import StarRating from "../components/StarRating";
+import MercadoPagoIntegration from "../components/MercadoPagoIntegration";
 import { FaPhone } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CommentBox from '../components/CommentBox';
 import CommentsContainer from "../components/CommentsContainer";
 import "../styles/Shelter.css";
-
 
 
 const Shelter = (props) => {
@@ -26,6 +26,7 @@ const Shelter = (props) => {
   const [rating, setRating] = useState(0)
   const [numberOfReviews, setNumberOfReviews] = useState(0)
   const [isRated, setIsRated] = useState(true)
+  const [preferenceId, setPreferenceId] = useState(null)
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const config = {
@@ -120,7 +121,8 @@ const Shelter = (props) => {
         console.error(error);
         setErrorMessage('Post retrieval failed. Please try again later.');
       });
-    }    
+    }   
+    setPreferenceId("MOCK_PREFERENCE_ID");
     getAllPosts()
   },[]);
 
@@ -152,6 +154,7 @@ const Shelter = (props) => {
   }, [shelterId, numberOfReviews]);
 
   useEffect(()=> {
+
       const getReviewStatus = () => {
         if (!token) return;
         
@@ -164,9 +167,8 @@ const Shelter = (props) => {
             console.error("failed to get review status")
           });
       };
-    
+
       getReviewStatus();
-    
   })
     
  
@@ -229,47 +231,23 @@ const Shelter = (props) => {
               <h1>{profile.name}</h1>
               <div className="shelter-description">{profile.description}</div>
               <div className="shelter-number"><FaPhone className="phone-icon"/>{profile.phoneNumber}</div>
-                <div className="stars"  >
+              <div className="stars"  >
                    
                   <StarRating rate={false} value={rating}/>
                   <div className="n-reviews">({numberOfReviews})</div>
                   
-                </div>
-
+              </div>
+              <div id="wallet_container">
+                {/* The MercadoPagoIntegration component is conditionally rendered here */}
+                {preferenceId !== null && <MercadoPagoIntegration preferenceId={preferenceId} />}
+              </div>
+              
             </div>
           )}
         </div>
         {errorMessage && <div id="error-message">{errorMessage}</div>}
         <div className="postsAndComments">
-          <div className="donated-posts">
-            <h2 className="donated-posts-title">Donation History</h2>
-            {posts.filter(post => post.user.id === parseInt(shelterId) && post.adopted).length > 0 ? (
-              posts.filter(post => post.user.id === parseInt(shelterId) && post.adopted).map((post) => (
-                <PostCard 
-                  key={post.id}
-                  post={post}
-                  picture={pictures[post.id]}
-                  clickable={false}
-                />
-              ))
-            ) : (
-              <p className="no-history">No history found...</p>
-            )}
-          </div>
-          <div className="rating-comments">
-            <div className="rating">
-              
-              {!isRated && token ? <p>Rate the shelter </p> : null}
-              <div onClick={handleRating}>
-                {!isRated && token ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
-              </div>
-            </div>
-            <div className="shelter-comments">
-              <CommentsContainer comments={comments} commentResponses={commentResponses} isShelter={isShelter}/>
-              <CommentBox onSubmit={handleCommentSubmit} />
-              {errorMessage && <div id="error-message">{errorMessage}</div>}
-            </div>
-          </div>
+
           <div className="active-posts">
             <h2 className="active-posts-title">Active Posts</h2>
             {posts.filter(post => post.user.id === parseInt(shelterId) && !post.adopted).length > 0 ? (
@@ -285,11 +263,45 @@ const Shelter = (props) => {
               <p className="no-history">No active posts...</p>
             )}
           </div>
+          
+          <div className="rating-comments">
+            <div className="rating">
+              
+              {!isRated && token ? <p>Rate the shelter </p> : null}
+              <div onClick={handleRating}>
+                {!isRated && token ? <StarRating rate={true} value={0} shelterId={shelterId} config={config}/> : null}
+              </div>
+            </div>
+            <div className="shelter-comments">
+              <CommentsContainer comments={comments} commentResponses={commentResponses} isShelter={isShelter}/>
+              <CommentBox onSubmit={handleCommentSubmit} />
+              {errorMessage && <div id="error-message">{errorMessage}</div>}
+            </div>
+          </div>
+
+          <div className="donated-posts">
+            <h2 className="donated-posts-title">Donation History</h2>
+            {posts.filter(post => post.user.id === parseInt(shelterId) && post.adopted).length > 0 ? (
+              posts.filter(post => post.user.id === parseInt(shelterId) && post.adopted).map((post) => (
+                <PostCard 
+                  key={post.id}
+                  post={post}
+                  picture={pictures[post.id]}
+                  clickable={false}
+                />
+              ))
+            ) : (
+              <p className="no-history">No history found...</p>
+            )}
+          </div>
+         
         </div>
       </div>
+      
+      
+
       <Footer />
       {isRated && <ToastContainer position='top-center' autoClose={1500} />}
-
     </div>
   );
 };

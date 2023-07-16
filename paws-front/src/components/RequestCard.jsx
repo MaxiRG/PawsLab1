@@ -5,7 +5,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-const RequestCard = ({ request }) => { 
+const RequestCard = ({ request, onRequestAnswered }) => { 
 
   const handleRequestResponse = (answer) => {
     const token = localStorage.getItem('token');
@@ -27,6 +27,11 @@ const RequestCard = ({ request }) => {
       .catch((error)=>{
         console.error(error);
       })
+    
+     
+      setTimeout(() => {
+        onRequestAnswered(); // Call the parent's callback function after the delay
+      }, 1000);
   }
 
   return (

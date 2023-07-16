@@ -21,6 +21,7 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
   const [commentResponses, setCommentResponses] = useState([]);
   const [request, setRequest] = useState(null)
   const [isRequestSent, setIsRequestSent] = useState(false);
+  const [isRequestAnswered, setIsRequestAnswered] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [commentsPerPage] = useState(4);
   const token = localStorage.getItem('token')
@@ -157,6 +158,10 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
     
   };
 
+  const handleRequestAnswered = () => {
+    setIsRequestAnswered(true);
+  };
+
   const indexOfLastComment = currentPage * commentsPerPage;
   const indexOfFirstComment = indexOfLastComment - commentsPerPage;
   const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
@@ -232,8 +237,8 @@ export default function SelectedPost({ selectedPost, cardShelter, cardPicture, i
             </TwitterShareButton>
           </div>
           <div className='request'>
-            { isShelter && request && request.length > 0 && decodedToken.id === request[0].post.user.id && (
-              <RequestCard request={request[0]} />
+            {isShelter && request && request.length > 0 && decodedToken.id === request[0].post.user.id && !isRequestAnswered && (
+              <RequestCard request={request[0]} onRequestAnswered={handleRequestAnswered}/>
             )}
           </div> 
         </div>
