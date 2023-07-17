@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 public class CreatePreferenceDTO {
-    private final int amount;
+    public CreatePreferenceDTO() {};
+    private int amount;
 }

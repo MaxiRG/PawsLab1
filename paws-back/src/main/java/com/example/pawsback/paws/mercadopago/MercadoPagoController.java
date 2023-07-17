@@ -23,7 +23,7 @@ public class MercadoPagoController {
 
 
     @PostMapping(value = "/create_preference", consumes = {"application/json"})
-    public ResponseEntity<?> payment(@RequestBody CreatePreferenceDTO createPreferenceDTO) throws MPException, MPApiException {
+    public ResponseEntity<?> payment(@RequestBody CreatePreferenceDTO createPreferenceDTO){
         try{
         return new ResponseEntity<>(mercadoPagoService.payment(createPreferenceDTO), HttpStatus.OK);
         }
