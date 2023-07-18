@@ -14,7 +14,7 @@ import CommentsContainer from "../components/CommentsContainer";
 import "../styles/Shelter.css";
 import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+import {faAlignCenter, faTimes} from "@fortawesome/free-solid-svg-icons";
 
 
 const Shelter = (props) => {
@@ -277,7 +277,7 @@ const Shelter = (props) => {
 
                 <form onSubmit={handleFormSubmit}>
               <label>
-                Amount<br/>
+                Enter donation amount:<br/>
                 <input
                     className="form-control"
                     type="number"
@@ -288,7 +288,7 @@ const Shelter = (props) => {
                     step="1"
                 />
               </label>
-                  <Button className='button text-white' id='expanded-button' variant="warning" color="white" onClick={handleFormSubmit}>
+                  <Button className='button text-white' id='expanded-button' variant="warning" color="white"  onClick={handleFormSubmit}>
                     Apply
                   </Button>
                 </form>
