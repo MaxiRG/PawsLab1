@@ -27,6 +27,7 @@ const Shelter = (props) => {
   const [numberOfReviews, setNumberOfReviews] = useState(0)
   const [isRated, setIsRated] = useState(true)
   const [preferenceId, setPreferenceId] = useState(null)
+  const [isPreferenceIdAvailable, setIsPreferenceIdAvailable] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
   const config = {
@@ -122,8 +123,28 @@ const Shelter = (props) => {
         setErrorMessage('Post retrieval failed. Please try again later.');
       });
     }   
-    setPreferenceId("MOCK_PREFERENCE_ID");
+
+    const getPreferenceId = () =>{
+
+      const amount = {
+        amount : 1
+      }
+      post("/create_preference", amount)
+        .then((response)=>{
+          console.log(response);
+          setPreferenceId(response.id);
+          setIsPreferenceIdAvailable(true);
+        })
+        .catch((error)=>{
+          console.error("Failed to get preference ID");
+          console.error(error);
+        })
+    }
+
+    getPreferenceId();
+    
     getAllPosts()
+    
   },[]);
 
   useEffect(() => {
@@ -219,6 +240,8 @@ const Shelter = (props) => {
     setIsRated(true)
     setNumberOfReviews(numberOfReviews+1)
   }
+
+  console.log("The Id is:" + preferenceId)
   
 
   return (
@@ -238,8 +261,7 @@ const Shelter = (props) => {
                   
               </div>
               <div id="wallet_container">
-                {/* The MercadoPagoIntegration component is conditionally rendered here */}
-                {preferenceId !== null && <MercadoPagoIntegration preferenceId={preferenceId} />}
+              {isPreferenceIdAvailable && <MercadoPagoIntegration preferenceId={preferenceId} />}
               </div>
               
             </div>
