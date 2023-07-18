@@ -68,7 +68,7 @@ public class RequestService {
                 request.setAccepted(answer);
                 request.setAnswered(true);
                 requestRepository.save(request);
-                post.setAdopted(true);
+                post.setAdopted(answer);
                 postRepository.save(post);
 
             }
