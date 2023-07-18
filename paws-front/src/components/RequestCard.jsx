@@ -27,11 +27,13 @@ const RequestCard = ({ request, onRequestAnswered }) => {
       .catch((error)=>{
         console.error(error);
       })
-    
-     
-      setTimeout(() => {
-        onRequestAnswered(); // Call the parent's callback function after the delay
-      }, 1000);
+      
+      if (onRequestAnswered){
+        setTimeout(() => {
+          onRequestAnswered(); // Call the parent's callback function after the delay
+        }, 1000);
+      }
+      
   }
 
   return (

@@ -1,21 +1,63 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar'
 import Perro from '../images/perro1.jpg'
 import Perro2 from '../images/perro2.jpg'
 import Perro3 from '../images/perro3.jpg'
 import Perro4 from '../images/perro4.jpg'
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { get } from "../utils/http"
 import '../styles/Home.css'
+import jwt_decode from "jwt-decode";
 
 function Home(props) {
   const {isLoggedIn} = props;
   const {isShelter} = props
   
+
+  const handleShowNotification = (notification) => {
+    toast.info(`You have a request for ${notification.post.petName} from ${notification.adopter.email} `, {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 10000, //closes after 10 seconds
+    });
+  };
+
+  useEffect(()=> {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json', 
+  }}
+    const getRequests = () =>{
+      if (token){
+        const user = jwt_decode(token);
+        if(user.role === "SHELTER"){
+          get("/getReceivedRequestsForShelter", config)
+            .then((response)=>{
+              console.log(response);
+              response
+                .filter((notification) => !notification.answered)
+                .forEach((notification) => handleShowNotification(notification));
+            })
+            .catch((error)=>{
+              console.error(error);
+            })
+        }
+      }
+    }
+    getRequests();
+  },[])
+
+
+ 
+  
   return (
     <div>
       <div className='body'>
         <Navbar isLoggedIn={isLoggedIn} isShelter={isShelter} />
+    
           <div className='content'>
             <div className='linea' id='quienes-somos'>
               <h2 className="pelota">¿Quienes somos?</h2> 
@@ -72,8 +114,11 @@ function Home(props) {
                </a>
                 </li>
               </ul>
-            </div>                
+          </div>   
+
+
         <Footer/>
+
       </div>
     </div>
   );
