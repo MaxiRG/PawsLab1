@@ -126,6 +126,10 @@
   margin-right: 10px;
 }
 
+.button{
+  margin-top: 24px;
+}
+
 /* Example styles to make the MercadoPago button smaller */
 #wallet_container  {
   width: 50%;
