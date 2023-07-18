@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 import logo from "../images/logo.jpg";
-import Notification from "./Notification";
-import { NavDropdown } from "react-bootstrap";
 
 function Navbar(props) {
   const { isLoggedIn } = props;
@@ -48,11 +46,7 @@ function Navbar(props) {
               <Link to="/login">Sign In</Link>
             )}
           </li>
-          <li>
-            <Link>
-            <Notification/>
-            </Link>
-          </li>
+          
         </ul>
       </div>
     </nav>

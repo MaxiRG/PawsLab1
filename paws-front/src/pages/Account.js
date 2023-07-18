@@ -21,6 +21,7 @@
     const [requests, setRequests] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [showDonationHistory, setShowDonationHistory] = useState(false);
+    const [clickedRequest, setClickedRequest] = useState(null);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const config = {
@@ -62,7 +63,7 @@
       get("/getReceivedRequestsForShelter", config)
       .then((resp)=> {
         console.log(resp);
-        setRequests(resp);
+        setRequests(resp.filter((request) => !request.answered));
       })
       .catch((e)=>{
         console.error(e);
@@ -71,7 +72,12 @@
 
     getRequests();
       
-    }, []);
+    }, [clickedRequest]);
+
+    const handleRequestClick = (requestId) => {
+      // Handle the click on the request card
+      setClickedRequest(requestId); // Update the state with the clicked request ID
+    };
 
     const handleDonationHistory = (e) => {
       if (e) {
@@ -180,8 +186,8 @@
                 ) : <p>Failed to fetch user info</p>}
             </div>
             <div className="requests">
-              {requests.filter((request) => !request.answered).map((request) => (
-                <RequestCard key={request.id} request={request} />
+              {requests.map((request) => (
+                <RequestCard key={request.id} request={request} onClick={() => handleRequestClick(request.id)}/>
               ))}
             </div>
             <div className="donation-history">
