@@ -21,7 +21,7 @@
     const [requests, setRequests] = useState([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [showDonationHistory, setShowDonationHistory] = useState(false);
-    const [clickedRequest, setClickedRequest] = useState(null);
+    const [n, setN] = useState(0);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const config = {
@@ -72,12 +72,15 @@
 
     getRequests();
       
-    }, [clickedRequest]);
+    }, [n]);
 
-    const handleRequestClick = (requestId) => {
-      // Handle the click on the request card
-      setClickedRequest(requestId); // Update the state with the clicked request ID
+    
+
+    const handleRequestClick = () => {
+      setN(n+1);
+      console.log(n)
     };
+  
 
     const handleDonationHistory = (e) => {
       if (e) {
@@ -185,10 +188,14 @@
                   isLoggedIn={isLoggedIn}/>
                 ) : <p>Failed to fetch user info</p>}
             </div>
-            <div className="requests">
-              {requests.map((request) => (
-                <RequestCard key={request.id} request={request} onClick={() => handleRequestClick(request.id)}/>
-              ))}
+            <div className="requests" onClick={() => handleRequestClick()}>
+            {requests.map((request) => (
+              <RequestCard
+                key={request.id}
+                request={request}
+                
+              />
+            ))}
             </div>
             <div className="donation-history">
               {showDonationHistory && myPosts.filter(post => post.adopted).length > 0 ? (
