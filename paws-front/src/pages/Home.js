@@ -33,12 +33,13 @@ function Home(props) {
                               para que ingrese otro y pueda ser recuperado en el refugio. 
                               Adoptar es un acto de amor y de responsabilidad, por eso es necesario estar completamente seguros de que
                               estamos capacitados y listos para tener un perro. Un animal de compañía dependerá toda su vida de nosotros.
-                              Recordá que un perro puede vivir entre 15 y 20 años y estás asumiendo un compromiso serio por todo ese tiempo.
               </div>
             </div>
             <div className="linea" id="adopciones">
                         <div class="parrafo">
                             <div className="adoption-boxes">
+                            Recordá que un perro puede vivir entre 15 y 20 años y estás 
+                            asumiendo un compromiso serio por todo ese tiempo.
                                 A lo largo de los 2 años trabajando junto
                                  con ustedes pudimos encontrar un hogar para 170 perros <br/>
                                 
@@ -52,23 +53,7 @@ function Home(props) {
                         <h2 className="pelota">Adopciones</h2>
                 </div>
           </div>
-          <div className='linea' id='contacto'>
-            <h2 class="pelota">Contactanos</h2>
-            <div className='parrafo'>
-              <div className='contact-form'>
-                <span class="heading">Contact Us</span>
-                <form>
-                  <label htmlFor='name'>Name: </label>
-                  <input type="text" required=""/>
-                  <label htmlFor='email'>Email: </label>
-                  <input type="email" id="email" name="email" required=""/>
-                  <label htmlFor="message">Message:</label>
-                  <textarea id="message" name="message" required=""/>
-                  <button type="submit">Submit</button>
-                </form>
-              </div>
-            </div>
-          </div>
+          
           <div class="social-media">
               <ul>
                <li class="tiktok">

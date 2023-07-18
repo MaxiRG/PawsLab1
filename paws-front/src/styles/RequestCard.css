@@ -1,0 +1,33 @@
+.request-card{
+  background-color: aliceblue;
+  border-radius: 10px;
+  width: fit-content;
+  padding: 1rem;
+  margin-right: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.petName{
+  text-transform: uppercase;
+}
+
+.request-actions{
+  display: flex;
+  justify-content: space-around;
+}
+
+.request-action{
+  width: 80px;
+}
+
+#accept-request{
+  background-color: rgb(4, 173, 4);
+  border: none;
+  border-radius: 30px;
+}
+
+#deny-request{
+  background-color: red;
+  border: none;
+  border-radius: 30px;
+}
