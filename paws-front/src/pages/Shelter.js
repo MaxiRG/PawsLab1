@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { get, post } from "../utils/http";
 import Navbar from "../components/Navbar";
@@ -12,6 +12,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import CommentBox from '../components/CommentBox';
 import CommentsContainer from "../components/CommentsContainer";
 import "../styles/Shelter.css";
+import Button from "react-bootstrap/Button";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
 
 const Shelter = (props) => {
@@ -30,6 +33,8 @@ const Shelter = (props) => {
   const [isPreferenceIdAvailable, setIsPreferenceIdAvailable] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('token')
+  const [petAge, setPetAge] = useState('');
+  const wrapper = useRef(null);
   const config = {
     headers: {
     Authorization: `Bearer ${token}`,
@@ -122,14 +127,22 @@ const Shelter = (props) => {
         console.error(error);
         setErrorMessage('Post retrieval failed. Please try again later.');
       });
-    }   
+    }
+    
+    getAllPosts()
+    
+  },[]);
 
-    const getPreferenceId = () =>{
+  const getPreferenceId = () =>{
 
-      const amount = {
-        amount : 1
-      }
-      post("/create_preference", amount)
+    if(wrapper.current){
+      wrapper.current.innerHTML = ""
+    }
+
+    const amount = {
+      amount : petAge
+    }
+    post("/create_preference", amount)
         .then((response)=>{
           console.log(response);
           setPreferenceId(response.id);
@@ -139,13 +152,7 @@ const Shelter = (props) => {
           console.error("Failed to get preference ID");
           console.error(error);
         })
-    }
-
-    getPreferenceId();
-    
-    getAllPosts()
-    
-  },[]);
+  }
 
   useEffect(() => {
     const getRating = () => {
@@ -191,8 +198,7 @@ const Shelter = (props) => {
 
       getReviewStatus();
   })
-    
- 
+
   const handleCommentSubmit = (comment) => {
     if (!token){
       toast.warn("Log in to add a comment")
@@ -241,6 +247,13 @@ const Shelter = (props) => {
     setNumberOfReviews(numberOfReviews+1)
   }
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    getPreferenceId()
+
+
+  }
+
   console.log("The Id is:" + preferenceId)
   
 
@@ -260,9 +273,30 @@ const Shelter = (props) => {
                   <div className="n-reviews">({numberOfReviews})</div>
                   
               </div>
-              <div id="wallet_container">
-              {isPreferenceIdAvailable && <MercadoPagoIntegration preferenceId={preferenceId} />}
+              <div>
+
+                <form onSubmit={handleFormSubmit}>
+              <label>
+                Amount<br/>
+                <input
+                    className="form-control"
+                    type="number"
+                    name="petAge"
+                    value={petAge}
+                    onChange={(event) => setPetAge(event.target.value)}
+                    min="0"
+                    step="1"
+                />
+              </label>
+                  <Button className='button text-white' id='expanded-button' variant="warning" color="white" onClick={handleFormSubmit}>
+                    Apply
+                  </Button>
+                </form>
               </div>
+              {isPreferenceIdAvailable &&
+              <div id="wallet_container" ref={wrapper}>
+              <MercadoPagoIntegration preferenceId={preferenceId} />
+              </div>}
               
             </div>
           )}
