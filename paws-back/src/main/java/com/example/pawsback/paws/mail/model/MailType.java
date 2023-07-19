@@ -1,0 +1,13 @@
+package com.example.pawsback.paws.mail.model;
+
+public enum MailType {
+    CREATEREQUEST,
+    ACCEPTEDREQUEST,
+    REJECTEDREQUEST,
+    CREATEREVIEW,
+    CREATECOMMENT,
+    CREATEANSWER,
+    CREATEPROFILECOMMENT,
+    FAVOURITERECIEVECOMMENT,
+    POSTNOTAVAILABLE
+}

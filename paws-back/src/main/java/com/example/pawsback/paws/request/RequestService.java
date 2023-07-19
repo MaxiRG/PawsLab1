@@ -1,5 +1,9 @@
 package com.example.pawsback.paws.request;
 
+import com.example.pawsback.paws.favourite.FavouriteRepository;
+import com.example.pawsback.paws.favourite.model.Favourite;
+import com.example.pawsback.paws.mail.MailSenderService;
+import com.example.pawsback.paws.mail.model.MailType;
 import com.example.pawsback.paws.post.PostRepository;
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
@@ -20,18 +24,24 @@ public class RequestService {
     private final UserService userService;
     private final PostRepository postRepository;
     private final RequestRepository requestRepository;
+    private final MailSenderService mailSenderService;
+    private final FavouriteRepository favouriteRepository;
 
-    public RequestService(UserService userService, PostRepository postRepository, RequestRepository requestRepository) {
+    public RequestService(UserService userService, PostRepository postRepository, RequestRepository requestRepository, MailSenderService mailSenderService, FavouriteRepository favouriteRepository) {
         this.userService = userService;
         this.postRepository = postRepository;
         this.requestRepository = requestRepository;
+        this.mailSenderService = mailSenderService;
+        this.favouriteRepository = favouriteRepository;
     }
 
-    public Request save(int post_id, String token) throws NotAnsweredException, PostIsAdoptedException {
+    public Request save(int post_id, String token) throws NotAnsweredException, PostIsAdoptedException, NoAuthorizationException {
         if(isRequestValid(post_id, userService.getByToken(token).getId())){
         Request request = new Request();
         request.setAdopter(userService.getByToken(token));
         request.setPost(postRepository.findPostById((long) post_id));
+        String email = request.getPost().getUser().getEmail();
+        mailSenderService.sendMail(MailType.CREATEREQUEST, email);
         return requestRepository.save(request);
         }
         else{
@@ -68,7 +78,20 @@ public class RequestService {
                 request.setAccepted(answer);
                 request.setAnswered(true);
                 requestRepository.save(request);
-                post.setAdopted(answer);
+                String email = request.getAdopter().getEmail();
+                if(answer){
+                    mailSenderService.sendMail(MailType.ACCEPTEDREQUEST, email);
+                    List<Favourite> favourites = post.getFavourites();
+                    favourites.remove(favouriteRepository.findByUserIdAndPostId(request.getAdopter().getId(),post.getId()));
+                    for(Favourite favourite:favourites){
+                        User favouriteUser = favourite.getUser();
+                        String favouriteEmail = favouriteUser.getEmail();
+                        mailSenderService.sendMail(MailType.POSTNOTAVAILABLE, favouriteEmail);
+                    }
+                    post.setAdopted(true);
+                }else{
+                    mailSenderService.sendMail(MailType.REJECTEDREQUEST, email);
+                }
                 postRepository.save(post);
 
             }

@@ -1,5 +1,8 @@
 package com.example.pawsback.paws.post;
 
+import com.example.pawsback.paws.favourite.model.Favourite;
+import com.example.pawsback.paws.mail.MailSenderService;
+import com.example.pawsback.paws.mail.model.MailType;
 import com.example.pawsback.paws.post.model.Post;
 import com.example.pawsback.paws.post.model.dto.FilteredListDataDTO;
 import com.example.pawsback.paws.post.model.dto.PostDTO;
@@ -16,10 +19,12 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
+    private final MailSenderService mailSenderService;
 
-    public PostService(PostRepository postRepository,  UserService userService) {
+    public PostService(PostRepository postRepository, UserService userService, MailSenderService mailSenderService) {
         this.postRepository = postRepository;
         this.userService = userService;
+        this.mailSenderService = mailSenderService;
     }
 
     public Post save(Post post, String token) {
@@ -35,6 +40,14 @@ public class PostService {
         User user = userService.getByToken(token);
         if (post.getUser().getId() == user.getId()){
             post.setAdopted(status);
+            if(status){
+                List<Favourite> favourites = post.getFavourites();
+                for(Favourite favourite:favourites){
+                    User favouriteUser = favourite.getUser();
+                    String favouriteEmail = favouriteUser.getEmail();
+                    mailSenderService.sendMail(MailType.POSTNOTAVAILABLE, favouriteEmail);
+                }
+            }
             postRepository.save(post);
         }else throw new NoAuthorizationException("Invalid id");
     }
@@ -84,6 +97,12 @@ public class PostService {
         User user = userService.getByToken(token);
         if(post != null && user != null){
             if(post.getUser().getId() == user.getId()){
+                List<Favourite> favourites = post.getFavourites();
+                for(Favourite favourite:favourites){
+                    User favouriteUser = favourite.getUser();
+                    String favouriteEmail = favouriteUser.getEmail();
+                    mailSenderService.sendMail(MailType.POSTNOTAVAILABLE, favouriteEmail);
+                }
                 postRepository.delete(post);
             }
             else{

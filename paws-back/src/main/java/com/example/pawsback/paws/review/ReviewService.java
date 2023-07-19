@@ -1,5 +1,7 @@
 package com.example.pawsback.paws.review;
 
+import com.example.pawsback.paws.mail.MailSenderService;
+import com.example.pawsback.paws.mail.model.MailType;
 import com.example.pawsback.paws.post.model.exceptions.NoAuthorizationException;
 import com.example.pawsback.paws.review.model.Review;
 import com.example.pawsback.paws.review.model.dto.CreateReviewDTO;
@@ -14,10 +16,12 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
+    private final MailSenderService mailSenderService;
 
-    public ReviewService(ReviewRepository reviewRepository, UserService userService) {
+    public ReviewService(ReviewRepository reviewRepository, UserService userService, MailSenderService mailSenderService) {
         this.reviewRepository = reviewRepository;
         this.userService = userService;
+        this.mailSenderService = mailSenderService;
     }
 
     public ReviewDTO toDto(Review review){
@@ -37,6 +41,8 @@ public class ReviewService {
         review.setAuthor(author);
         review.setValue(createReviewDTO.getValue());
         review.setSubjectId(createReviewDTO.getSubjectId());
+        String email = userService.getById(review.getSubjectId()).getEmail();
+        mailSenderService.sendMail(MailType.CREATEREVIEW, email);
         return reviewRepository.save(review);
 
     }
